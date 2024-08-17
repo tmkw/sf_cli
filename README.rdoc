@@ -2,7 +2,7 @@
 This is a Ruby class library, which is thin wrapper of Salesforce CLI commands. <br>
 Currently it implements just *sf* command and only some functions are supported.
 
-==== the list of supported operations in ver 0.0.1
+==== the list of supported operations in ver 0.0.2
 - sf org display
 - sf org login web
 - sf data query
