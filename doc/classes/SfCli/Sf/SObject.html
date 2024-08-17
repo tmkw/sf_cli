@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>SfCli::Sf::SObject</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+SfCli::Sf::SObject
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/sf_cli/sf/sobject_rb.html">lib/sf_cli/sf/sobject.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="Base.html">Base</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h4 id="class-SfCli::Sf::SObject-label-description">description<span><a href="#class-SfCli::Sf::SObject-label-description">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>The class representing <strong>sf</strong> <strong>sobject</strong></p>
+
+<p>command reference: <a target="_top" href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm">developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm</a></p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-describe">describe</a></li>
+<li><a href="#method-i-list">list</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-describe'>
+<a name='method-i-describe'></a>
+<div class='synopsis'>
+<span class='name'>describe</span><span class='arguments'>(objectType)</span>
+
+</div>
+<div class='description'>
+
+<p>get the schema information of a Salesforce object and returns a hash object. It’s equivalent to use <strong>sf</strong> <strong>sobject</strong> <strong>describe</strong></p>
+
+<p><strong>objectType</strong> — object type (ex: Account)</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-describe-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-describe-source'><span class="ruby-comment"># File lib/sf_cli/sf/sobject.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">describe</span>(<span class="ruby-identifier">objectType</span>)
+  <span class="ruby-identifier">json</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span> <span class="ruby-node">`sf sobject describe --json --sobject #{objectType} #{flag :&quot;target-org&quot;, target_org}  #{null_stderr_redirection}`</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">%|sf sobject describe: failed. (sobject: #{objectType})|</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">json</span>[<span class="ruby-string">&#39;status&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+
+  <span class="ruby-identifier">json</span>[<span class="ruby-string">&#39;result&#39;</span>]
+<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-list'>
+<a name='method-i-list'></a>
+<div class='synopsis'>
+<span class='name'>list</span><span class='arguments'>(object_type: 'all')</span>
+
+</div>
+<div class='description'>
+
+<p>returns a list of Salesforce object name (object’s API name). It’s equivalent to <strong>sf</strong> <strong>sobject</strong> <strong>list</strong></p>
+
+<p><strong>object_type</strong> — all or custom (default: all)</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-list-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-list-source'><span class="ruby-comment"># File lib/sf_cli/sf/sobject.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">list</span>(<span class="ruby-value">object_type:</span> <span class="ruby-string">&#39;all&#39;</span>)
+  <span class="ruby-identifier">json</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span> <span class="ruby-node">`sf sobject list --json --sobject #{object_type} #{flag :&quot;target-org&quot;, target_org} #{null_stderr_redirection}`</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">%|sf sobject list: failed.|</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">json</span>[<span class="ruby-string">&#39;status&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+
+  <span class="ruby-identifier">json</span>[<span class="ruby-string">&#39;result&#39;</span>]
+<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

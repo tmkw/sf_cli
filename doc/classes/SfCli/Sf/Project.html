@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>SfCli::Sf::Project</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+SfCli::Sf::Project
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/sf_cli/sf/project_rb.html">lib/sf_cli/sf/project.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="Base.html">Base</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h4 id="class-SfCli::Sf::Project-label-description">description<span><a href="#class-SfCli::Sf::Project-label-description">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>The class representing <strong>sf</strong> <strong>project</strong></p>
+
+<p>command reference: <a target="_top" href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_project_commands_unified.htm">developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_project_commands_unified.htm</a></p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-generate">generate</a></li>
+<li><a href="#method-i-generate_manifest">generate_manifest</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-generate'>
+<a name='method-i-generate'></a>
+<div class='synopsis'>
+<span class='name'>generate</span><span class='arguments'>(name, template: 'standard', output_dir: nil)</span>
+
+</div>
+<div class='description'>
+
+<p>generate a Salesforce project. It’s equivalent to <strong>sf</strong> <strong>project</strong> <strong>generate</strong>.</p>
+
+<p><strong>name</strong>        — project name</p>
+
+<p><strong>template</strong>    — project template name</p>
+
+<p><strong>output_dir</strong>  — output directory</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-generate-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-generate-source'><span class="ruby-comment"># File lib/sf_cli/sf/project.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">generate</span>(<span class="ruby-identifier">name</span>, <span class="ruby-value">template:</span> <span class="ruby-string">&#39;standard&#39;</span>, <span class="ruby-value">output_dir:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-node">`sf project generate #{flag :name, name} #{flag :template, template} #{flag :&quot;output-dir&quot;, output_dir} --manifest #{null_stderr_redirection}`</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">%|command &#39;sf project generate&#39; failed.|</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">$?</span>.<span class="ruby-identifier">success?</span>
+<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-generate_manifest'>
+<a name='method-i-generate_manifest'></a>
+<div class='synopsis'>
+<span class='name'>generate_manifest</span><span class='arguments'>(metadata: [], api_version: nil, project_dir: nil, output_dir: nil, from_org: nil, source_dir: nil)</span>
+
+</div>
+<div class='description'>
+
+<p>generate the manifest file of a Salesforce project.  It’s equivalent to <strong>sf</strong> <strong>project</strong> <strong>generate</strong> <strong>manifest</strong></p>
+
+<p><strong>metadata</strong>    — an array that consists of metadata type like CustomObject, Layout and so on.  (default: [])</p>
+
+<p><strong>api_verson</strong>  — api version (default: nil)</p>
+
+<p><strong>project_dir</strong> — project directory which you want to create the manifest  (default: nil)</p>
+
+<p><strong>output_dir</strong>  — manifest’s output directory in the project directory. You can use relative path from the project root (default: nil)</p>
+
+<p><strong>from_org</strong>    — username or alias of the org that contains the metadata components from which to build a manifest (default: nil)</p>
+
+<p><strong>source_dir</strong>  — paths to the local source files to include in the manifest (default: nil)</p>
+
+<h4 id="method-i-generate_manifest-label-examples">examples<span><a href="#method-i-generate_manifest-label-examples">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<pre>sf.project.generate_manifest metadata: %w[CustomObject Layout]  # creates a package.xml, which is initialized with CustomObject and Layout
+sf.project.generate_manifest from_org: &lt;org_name&gt;               # creates a package.xml, which is initialized with all metadata types in the org</pre>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-generate_manifest-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-generate_manifest-source'><span class="ruby-comment"># File lib/sf_cli/sf/project.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">generate_manifest</span>(<span class="ruby-value">metadata:</span> [], <span class="ruby-value">api_version:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">project_dir:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">output_dir:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">from_org:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">source_dir:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;Exactly one of the following must be provided: --from-org, --metadata, --source-dir&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">metadata</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">from_org</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">source_dir</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">base_dir</span> = <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">pwd</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">project_dir</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;the project directory not found&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">project_dir</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">project_dir</span>)
+    <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">chdir</span> <span class="ruby-identifier">project_dir</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">output_dir</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">output_dir</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">output_dir</span>) <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+
+  <span class="ruby-identifier">metdata_flags</span> = <span class="ruby-identifier">metadata</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">metadata</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">md</span><span class="ruby-operator">|</span> <span class="ruby-node">%|--metadata #{md}|</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39; &#39;</span>)
+  <span class="ruby-identifier">cmd</span> =
+    <span class="ruby-string">%|sf project generate manifest %{metdata} %{output_dir} %{api_version} %{from_org} %{source_dir}|</span> <span class="ruby-operator">%</span>
+      {
+        <span class="ruby-value">metdata:</span> <span class="ruby-identifier">metdata_flags</span>,
+        <span class="ruby-value">output_dir:</span>   <span class="ruby-identifier">flag</span>(<span class="ruby-value">:&quot;output-dir&quot;</span>, <span class="ruby-identifier">output_dir</span>),
+        <span class="ruby-value">api_version:</span>  <span class="ruby-identifier">flag</span>(<span class="ruby-value">:&quot;api-version&quot;</span>, <span class="ruby-identifier">api_version</span>),
+        <span class="ruby-value">from_org:</span>     <span class="ruby-identifier">flag</span>(<span class="ruby-value">:&quot;from-org&quot;</span>, <span class="ruby-identifier">from_org</span>),
+        <span class="ruby-value">source_dir:</span>   <span class="ruby-identifier">flag</span>(<span class="ruby-value">:&quot;source-dir&quot;</span>, <span class="ruby-identifier">source_dir</span>),
+      }
+  <span class="ruby-node">`#{cmd} #{null_stderr_redirection}`</span>
+
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">%|command &#39;sf project generate manifest&#39; failed.|</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">$?</span>.<span class="ruby-identifier">success?</span>
+<span class="ruby-keyword">ensure</span> 
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">chdir</span> <span class="ruby-identifier">base_dir</span>
+<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>

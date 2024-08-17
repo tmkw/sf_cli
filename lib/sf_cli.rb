@@ -1,0 +1,1 @@
+require 'sf_cli/sf'

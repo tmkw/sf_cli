@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>SfCli::Sf::Data</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+SfCli::Sf::Data
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/sf_cli/sf/data_rb.html">lib/sf_cli/sf/data.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="Base.html">Base</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h4 id="class-SfCli::Sf::Data-label-description">description<span><a href="#class-SfCli::Sf::Data-label-description">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>The class representing <strong>sf</strong> <strong>data</strong></p>
+
+<p><a target="_top" href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm">developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm</a></p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-query">query</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-query'>
+<a name='method-i-query'></a>
+<div class='synopsis'>
+<span class='name'>query</span><span class='arguments'>(soql, model_class: nil)</span>
+
+</div>
+<div class='description'>
+
+<p>get the object records. It’s eqivalent to use <strong>sf</strong> <strong>data</strong> <strong>query</strong></p>
+
+<p><strong>soql</strong> — SOQL</p>
+
+<p><strong>model_class</strong> — the data model class representing the record object.</p>
+
+<h4 id="method-i-query-label-examples">examples<span><a href="#method-i-query-label-examples">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<pre class="ruby"><span class="ruby-identifier">sf</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;SELECT Id, Name From Account Limit 3&#39;</span>) <span class="ruby-comment"># returns an array of Hash object</span>
+
+<span class="ruby-constant">Account</span> = <span class="ruby-constant">Struct</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:Id</span>, <span class="ruby-value">:Name</span>)
+<span class="ruby-identifier">sf</span>.<span class="ruby-identifier">data</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&#39;SELECT Id, Name From Account Limit 3&#39;</span>, <span class="ruby-value">model_class:</span> <span class="ruby-constant">Account</span>)  <span class="ruby-comment"># returns an array of Account struct object</span>
+</pre>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-query-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-query-source'><span class="ruby-comment"># File lib/sf_cli/sf/data.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">query</span>(<span class="ruby-identifier">soql</span>, <span class="ruby-value">model_class:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">json</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span> <span class="ruby-node">`sf data query --json --query &quot;#{soql}&quot; #{flag :&quot;target-org&quot;, target_org} #{null_stderr_redirection}`</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">%|sf data query: failed. (query: &quot;#{soql}&quot;)|</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">json</span>[<span class="ruby-string">&#39;status&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+
+  <span class="ruby-identifier">json</span>[<span class="ruby-string">&#39;result&#39;</span>][<span class="ruby-string">&#39;records&#39;</span>].<span class="ruby-identifier">each_with_object</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>, <span class="ruby-identifier">a</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">h</span>.<span class="ruby-identifier">delete</span> <span class="ruby-string">&quot;attributes&quot;</span>
+    <span class="ruby-identifier">a</span> <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-identifier">model_class</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">new</span>(<span class="ruby-operator">**</span><span class="ruby-identifier">h</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">h</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
+</div>
+</body>
+</html>
