@@ -1,6 +1,6 @@
 = Salesforce CLI library
-This is a Ruby class library, which is thin wrapper of Salesforce CLI commands. <br>
-Currently it implements just *sf* command and only some functions are supported.
+This is a Ruby class library, which is thin wrapper of Salesforce CLI[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm] commands. <br>
+Currently it simulates only *sf* command and just some functions are supported.
 
 ==== the list of supported operations in ver 0.0.2
 - sf org display
@@ -11,7 +11,7 @@ Currently it implements just *sf* command and only some functions are supported.
 - sf project generate
 - sf project generate manifest
 
-I won't cover sfdx command because it is getting deprecated. So only sf command is the target to implement so far.<br>
+I won't cover *sfdx* command because it is getting deprecated. So only *sf* command is the target to implement so far.<br>
 However I'm not interested in covering all functions of it. If someone send me good pull requests I consider to merge, of course. Bug reports and suggestions are also welcome.
 
 == prerequisite
@@ -51,7 +51,7 @@ then,
 
 
 == Documents
-You can generate RDOC document. For example,
+You can generate rdoc documents. For example,
   $ git clone https://github.com/tmkw/sf_cli.git
   $ cd sf_cli
   $ gem install hanna
