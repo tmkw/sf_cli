@@ -48,3 +48,13 @@ then,
 
   # generate a Salesforce DX project
   sf.project.generate 'MyProject'
+
+
+== Documents
+You can generate RDOC document. For example,
+  $ git clone https://github.com/tmkw/sf_cli.git
+  $ cd sf_cli
+  $ gem install hanna
+  $ rdoc -o doc -f hanna README.rdoc CHANGELOG.md lib
+
+then you can find index.html in the doc directory. Open it by the internet browser.
