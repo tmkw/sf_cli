@@ -14,7 +14,25 @@ Currently it implements just *sf* command and only some functions are supported.
 I won't cover sfdx command because it is getting deprecated. So only sf command is the target to implement so far.<br>
 However I'm not interested in covering all functions of it. If someone send me good pull requests I consider to merge, of course. Bug reports and suggestions are also welcome.
 
+== prerequisite
+Salesforce CLI must be installed.
+https://developer.salesforce.com/ja/tools/salesforcecli
+
+
+== install
+=== Rubygem
+  $ gem install sf_cli
+
+=== Bundler
+in Gemfile:
+  gem 'sf_cli'
+
+then,
+  $ bundle install
+
 == Examples
+  require 'sf_cli/sf'
+
   sf = SfCli::Sf.new                     # use default org
   sf = SfCli::Sf.new target_org: 'hoge'  # use an alias "hoge" as target org
 
@@ -30,7 +48,3 @@ However I'm not interested in covering all functions of it. If someone send me g
 
   # generate a Salesforce DX project
   sf.project.generate 'MyProject'
-
-== prerequisite
-Salesforce CLI must be installed.
-https://developer.salesforce.com/ja/tools/salesforcecli
