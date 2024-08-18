@@ -31,7 +31,7 @@ README.rdoc
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2024-08-18 04:06:42 +0900</span>
+<span class='datetime'>2024-08-18 10:38:55 +0900</span>
 </div>
 </div>
 <div id='content'>
@@ -41,7 +41,7 @@ Last Update:
 
 <p>This is a Ruby class library, which is thin wrapper of Salesforce CLI commands. <br> Currently it implements just <strong>sf</strong> command and only some functions are supported.</p>
 
-<h4 id="label-the+list+of+supported+operations+in+ver+0.0.1">the list of supported operations in ver 0.0.1<span><a href="#label-the+list+of+supported+operations+in+ver+0.0.1">&para;</a> <a href="#top">&uarr;</a></span></h4>
+<h4 id="label-the+list+of+supported+operations+in+ver+0.0.2">the list of supported operations in ver 0.0.2<span><a href="#label-the+list+of+supported+operations+in+ver+0.0.2">&para;</a> <a href="#top">&uarr;</a></span></h4>
 <ul><li>
 <p>sf org display</p>
 </li><li>
@@ -60,9 +60,32 @@ Last Update:
 
 <p>I won’t cover sfdx command because it is getting deprecated. So only sf command is the target to implement so far.<br> However I’m not interested in covering all functions of it. If someone send me good pull requests I consider to merge, of course. Bug reports and suggestions are also welcome.</p>
 
+<h2 id="label-prerequisite">prerequisite<span><a href="#label-prerequisite">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Salesforce CLI must be installed. <a target="_top" href="https://developer.salesforce.com/ja/tools/salesforcecli">developer.salesforce.com/ja/tools/salesforcecli</a></p>
+
+<h2 id="label-install">install<span><a href="#label-install">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<h3 id="label-Rubygem">Rubygem<span><a href="#label-Rubygem">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre>$ gem install sf_cli</pre>
+
+<h3 id="label-Bundler">Bundler<span><a href="#label-Bundler">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>in Gemfile:</p>
+
+<pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-string">&#39;sf_cli&#39;</span>
+</pre>
+
+<p>then,</p>
+
+<pre>$ bundle install</pre>
+
 <h2 id="label-Examples">Examples<span><a href="#label-Examples">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
-<pre class="ruby"><span class="ruby-identifier">sf</span> = <span class="ruby-constant">SfCli</span><span class="ruby-operator">::</span><span class="ruby-constant">Sf</span>.<span class="ruby-identifier">new</span>                     <span class="ruby-comment"># use default org</span>
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;sf_cli/sf&#39;</span>
+
+<span class="ruby-identifier">sf</span> = <span class="ruby-constant">SfCli</span><span class="ruby-operator">::</span><span class="ruby-constant">Sf</span>.<span class="ruby-identifier">new</span>                     <span class="ruby-comment"># use default org</span>
 <span class="ruby-identifier">sf</span> = <span class="ruby-constant">SfCli</span><span class="ruby-operator">::</span><span class="ruby-constant">Sf</span>.<span class="ruby-identifier">new</span> <span class="ruby-value">target_org:</span> <span class="ruby-string">&#39;hoge&#39;</span>  <span class="ruby-comment"># use an alias &quot;hoge&quot; as target org</span>
 
 <span class="ruby-comment"># login to org and get the connection infomation</span>
@@ -78,10 +101,6 @@ Last Update:
 <span class="ruby-comment"># generate a Salesforce DX project</span>
 <span class="ruby-identifier">sf</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">generate</span> <span class="ruby-string">&#39;MyProject&#39;</span>
 </pre>
-
-<h2 id="label-prerequisite">prerequisite<span><a href="#label-prerequisite">&para;</a> <a href="#top">&uarr;</a></span></h2>
-
-<p>Salesforce CLI must be installed. <a target="_top" href="https://developer.salesforce.com/ja/tools/salesforcecli">developer.salesforce.com/ja/tools/salesforcecli</a></p>
 </div>
 <div id='context'>
 </div>
