@@ -6,3 +6,5 @@ source "https://rubygems.org"
 gem 'cucumber'
 gem 'rspec'
 gem 'byebug'
+gem 'webmock'
+gem 'faker'
