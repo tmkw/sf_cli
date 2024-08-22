@@ -3,8 +3,5 @@
 source "https://rubygems.org"
 
 # gem "rails"
-gem 'cucumber'
 gem 'rspec'
 gem 'byebug'
-gem 'webmock'
-gem 'faker'
