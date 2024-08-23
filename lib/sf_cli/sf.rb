@@ -58,7 +58,7 @@ module SfCli
         if os.eql?('Windows_NT')
           ' 2>nul'
         else
-          ' 2> dev/null'
+          ' 2> /dev/null'
         end
     end
   end
