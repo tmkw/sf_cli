@@ -3,6 +3,13 @@ GEM
   specs:
     byebug (11.1.3)
     diff-lcs (1.5.1)
+    hanna (1.5.0)
+      rdoc (>= 4)
+    psych (5.1.2)
+      stringio
+    rake (13.2.1)
+    rdoc (6.7.0)
+      psych (>= 4.0.0)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -16,6 +23,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.1)
+    stringio (3.1.1)
 
 PLATFORMS
   aarch64-linux-gnu
@@ -32,6 +40,8 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  hanna
+  rake
   rspec
 
 BUNDLED WITH
