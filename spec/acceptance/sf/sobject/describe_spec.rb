@@ -14,6 +14,13 @@ RSpec.describe 'sf sobject describe' do
     expect(sf).to have_received(:`)
   end
 
+  it 'can retrieve a object information in a paticular org, not default one' do
+    allow(sf).to receive(:`).with('sf sobject describe --sobject TestCustomObject__c --target-org dev --json 2> /dev/null').and_return(command_response)
+
+    sf.sobject.describe 'TestCustomObject__c', target_org: :dev
+    expect(sf).to have_received(:`)
+  end
+
   def command_response
     <<~JSON
       {

@@ -19,6 +19,12 @@ RSpec.describe 'sf org display' do
     expect(sf).to have_received(:`)
   end
 
+  it 'can get a paticular org information' do
+    allow(sf).to receive(:`).with('sf org display --target-org dev2 --json 2> /dev/null').and_return(command_response)
+    connection_info = sf.org.display target_org: :dev2
+    expect(sf).to have_received(:`)
+  end
+
   def command_response
     <<~JSON
       {

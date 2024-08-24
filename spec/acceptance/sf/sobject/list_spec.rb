@@ -20,7 +20,12 @@ RSpec.describe 'sf sobject list' do
     result = sf.sobject.list :custom
 
     expect(result).to include 'TestCustomObject__c'
+    expect(sf).to have_received(:`)
+  end
 
+  it "can get the list of a paticular org, not default one" do
+    allow(sf).to receive(:`).with('sf sobject list --sobject all --target-org dev --json 2> /dev/null').and_return(command_response custom_only: true)
+    sf.sobject.list :all, target_org: :dev
     expect(sf).to have_received(:`)
   end
 
