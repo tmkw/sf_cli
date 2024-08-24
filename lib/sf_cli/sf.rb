@@ -1,10 +1,11 @@
 require 'json'
 require_relative 'sf/org'
 require_relative 'sf/sobject'
+require_relative 'sf/data'
 
 module SfCli
   class Sf
-    CATEGORIES = %w[Org Sobject].tap do |categories|
+    CATEGORIES = %w[Org Sobject Data].tap do |categories|
       categories.each do |category|
         attr_reader category.downcase.to_sym
       end
