@@ -1,4 +1,3 @@
-require 'json'
 require_relative './base'
 
 module SfCli
@@ -8,27 +7,33 @@ module SfCli
     #
     # command reference: https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm
     #
-    class SObject < Base
+    class Sobject < Base
 
-      # get the schema information of a Salesforce object and returns a hash object. It's equivalent to use *sf* *sobject* *describe*
+      # returns a hash object containing the Salesforce object schema. (equivalent to *sf* *sobject* *describe*)
       #
-      # *objectType* --- object type (ex: Account)
+      # *objectType* --- object type (ex: Account)<br>
+      # *target_org* --- an alias of paticular org, not default one<br>
       #
-      def describe(objectType)
-        json = JSON.parse `sf sobject describe --json --sobject #{objectType} #{flag :"target-org", target_org}  #{null_stderr_redirection}`
-        raise StandardError.new(%|sf sobject describe: failed. (sobject: #{objectType})|) if json['status'] != 0
-
+      def describe(object_type, target_org: nil)
+        flags    = {
+          :"sobject"    => object_type,
+          :"target-org" => target_org,
+        }
+        json = exec(__method__, flags: flags, redirection: :null_stderr)
         json['result']
       end
 
-      # returns a list of Salesforce object name (object's API name). It's equivalent to *sf* *sobject* *list*
+      # returns a list of Salesforce object API name. (equivalent to *sf* *sobject* *list*)
       #
-      # *object_type* --- all or custom (default: all)
+      # *object_type* --- all or custom<br>
+      # *target_org* --- an alias of paticular org, not default one<br>
       #
-      def list(object_type: 'all')
-        json = JSON.parse `sf sobject list --json --sobject #{object_type} #{flag :"target-org", target_org} #{null_stderr_redirection}`
-        raise StandardError.new(%|sf sobject list: failed.|) if json['status'] != 0
-
+      def list(object_type, target_org: nil)
+        flags    = {
+          :"sobject"    => (object_type.to_sym == :custom ? :custom : :all),
+          :"target-org" => target_org,
+        }
+        json = exec(__method__, flags: flags, redirection: :null_stderr)
         json['result']
       end
     end

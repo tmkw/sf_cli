@@ -1,16 +1,22 @@
-require_relative '../helper_methods'
-
 module SfCli
   class Sf
     class Base
-      include ::SfCli::HelperMethods
+      def initialize(_sf)
+        @sf  = _sf
+      end
 
-      attr_reader :target_org
+      private
 
-      # *target_org* --- an org alias name, which is used for sf command operations (default is nil). If it is nil, the command uses the default org.
-      #
-      def initialize(target_org = nil)
-        @target_org = target_org
+      def exec(action, flags: {}, switches: {}, redirection: nil)
+        sf.exec(category, action, flags: flags, switches: switches, redirection: redirection)
+      end
+
+      def category
+        self.class.name.split('::').last.downcase
+      end
+
+      def sf
+        @sf
       end
     end
   end

@@ -1,4 +1,3 @@
-require 'json'
 require_relative './base'
 
 module SfCli
@@ -11,11 +10,11 @@ module SfCli
     #
     class Data < Base
 
-      # get the object records. It's eqivalent to use *sf* *data* *query*
+      # get the object records. (eqivalent to *sf* *data* *query*)
       #
-      # *soql* --- SOQL
-      #
-      # *model_class* --- the data model class representing the record object.  
+      # *soql* --- SOQL<br>
+      # *target_org* --- an alias of paticular org, not default one<br>
+      # *model_class* --- the data model class representing the record object.<br> 
       #
       # ==== examples
       #   sf.data.query('SELECT Id, Name From Account Limit 3') # returns an array of Hash object
@@ -23,9 +22,12 @@ module SfCli
       #   Account = Struct.new(:Id, :Name)
       #   sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account struct object
       #
-      def query(soql, model_class: nil)
-        json = JSON.parse `sf data query --json --query "#{soql}" #{flag :"target-org", target_org} #{null_stderr_redirection}`
-        raise StandardError.new(%|sf data query: failed. (query: "#{soql}")|) if json['status'] != 0
+      def query(soql, target_org: nil, model_class: nil)
+        flags    = {
+          :"query"    => %("#{soql}"),
+          :"target-org" => target_org,
+        }
+        json = sf.exec(category, __method__, flags: flags, redirection: :null_stderr)
 
         json['result']['records'].each_with_object([]) do |h, a|
           h.delete "attributes"
@@ -35,4 +37,3 @@ module SfCli
     end
   end
 end
-
