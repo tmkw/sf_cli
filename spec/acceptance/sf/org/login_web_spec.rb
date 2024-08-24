@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe 'sf org login_web' do
+RSpec.describe 'sf org login web' do
   let(:sf) { SfCli::Sf.new }
 
   it "connects to the login page for authentication of the org" do
