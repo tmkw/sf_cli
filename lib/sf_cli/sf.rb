@@ -1,31 +1,25 @@
 require 'json'
-require_relative 'sf/org'
-require_relative 'sf/sobject'
-require_relative 'sf/data'
-require_relative 'sf/project'
 
 module SfCli
   class Sf
-    CATEGORIES = %w[Org Sobject Data Project].tap do |categories|
-      categories.each do |category|
-        attr_reader category.downcase.to_sym
-      end
+    OPERATION_CATEGORIES = %w[Org Sobject Data Project]
+
+    # load each operation class and define as a attribute
+    OPERATION_CATEGORIES.each do |category|
+      require_relative %(sf/#{category.downcase})
+      attr_reader category.downcase.to_sym
     end
 
     attr_reader :varbose
 
     def initialize
-      CATEGORIES.each do |category|
+      OPERATION_CATEGORIES.each do |category|
         instance_variable_set(:"@#{category.downcase}", Object.const_get(%|::SfCli::Sf::#{category}|).new(self))
       end
     end
 
     def exec(category, action, flags: {}, switches: {}, redirection: nil)
-      flag_options   = flags.map{|k,v| flag k, v}.reject(&:nil?).join(' ')
-      flag_options   = ' ' + flag_options unless flag_options.empty?
-      switch_options = ' ' + {json: true}.merge(switches).each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
-
-      cmd = %|sf #{category} #{action}#{flag_options}#{switch_options}#{redirect redirection}|
+      cmd = %|sf #{category} #{action}#{as_flag_options(flags)}#{as_switch_options(switches)}#{redirect redirection}|
 
       puts cmd if varbose
 
@@ -39,6 +33,17 @@ module SfCli
     end
 
     private
+
+    def as_flag_options(hash)
+      flag_options   = hash.map{|k,v| flag k, v}.reject(&:nil?).join(' ')
+      flag_options   = ' ' + flag_options unless flag_options.empty?
+
+      flag_options
+    end
+
+    def as_switch_options(hash)
+      ' ' + {json: true}.merge(hash).each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
+    end
 
     def flag(name, arg)
       arg ? %(--#{name} #{arg}) : nil

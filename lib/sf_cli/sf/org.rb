@@ -1,11 +1,9 @@
+require_relative './base'
+
 module SfCli
   class Sf
-    class Org
+    class Org < Base
       ConnectionInfo = Struct.new(:id, :access_token, :alias, :instance_url, :user_name, :api_version, :status)
-
-      def initialize(_sf)
-        @sf  = _sf
-      end
 
       def login_web(target_org: nil, instance_url: nil)
         flags    = {
@@ -13,12 +11,13 @@ module SfCli
           :"instance-url" => instance_url,
         }
         action = __method__.to_s.tr('_', ' ')
-        sf.exec(category, action, flags: flags)
+        exec(action, flags: flags)
       end
 
       def display(target_org: nil)
         flags    = {:"target-org" => target_org}
-        json = sf.exec(category, __method__, flags: flags, redirection: :null_stderr)
+        json = exec(__method__, flags: flags, redirection: :null_stderr)
+
         ConnectionInfo.new(
           id:           json['result']['id'],
           access_token: json['result']['accessToken'],
@@ -28,16 +27,6 @@ module SfCli
           api_version:  json['result']['apiVersion'],
           status:       json['result']['connectedStatus']
         )
-      end
-
-      private
-
-      def category
-        self.class.name.split('::').last.downcase
-      end
-
-      def sf
-        @sf
       end
     end
   end

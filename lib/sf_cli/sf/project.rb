@@ -1,11 +1,9 @@
+require_relative './base'
+
 module SfCli
   class Sf
-    class Project
+    class Project < Base
       GenerateResult = Struct.new(:output_dir, :files, :raw_output, :warnings)
-
-      def initialize(_sf)
-        @sf  = _sf
-      end
 
       def generate(name, manifest: false, template: nil, output_dir: nil)
         flags    = {
@@ -16,7 +14,7 @@ module SfCli
         switches = {
           manifest: manifest,
         }
-        json = sf.exec(category, __method__, flags: flags, switches: switches, redirection: :null_stderr)
+        json = exec(__method__, flags: flags, switches: switches, redirection: :null_stderr)
 
         GenerateResult.new(
           output_dir: json['result']['outputDir'],
@@ -36,19 +34,9 @@ module SfCli
           :"api-version"  => api_version,
         }
         action = __method__.to_s.tr('_', ' ')
-        json = sf.exec(category, action, flags: flags, redirection: :null_stderr)
+        json = exec(action, flags: flags, redirection: :null_stderr)
 
         json['result']['path']
-      end
-
-      private
-
-      def category
-        self.class.name.split('::').last.downcase
-      end
-
-      def sf
-        @sf
       end
     end
   end
