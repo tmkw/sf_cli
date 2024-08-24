@@ -10,8 +10,7 @@ module SfCli
           :"query"    => %("#{soql}"),
           :"target-org" => target_org,
         }
-        switches = [:json]
-        json = sf.exec(category, __method__, flags: flags, switches: switches, redirection: :null_stderr)
+        json = sf.exec(category, __method__, flags: flags, redirection: :null_stderr)
 
         json['result']['records'].each_with_object([]) do |h, a|
           h.delete "attributes"

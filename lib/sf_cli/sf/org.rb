@@ -12,15 +12,13 @@ module SfCli
           :"alias"        => target_org,
           :"instance-url" => instance_url,
         }
-        switches = [:json]
         action = __method__.to_s.tr('_', ' ')
-        sf.exec(category, action, flags: flags, switches: switches)
+        sf.exec(category, action, flags: flags)
       end
 
-      def display(options = {})
-        flags    = {:"target-org" => options[:target_org]}
-        switches = [:json]
-        json = sf.exec(category, __method__, flags: flags, switches: switches, redirection: :null_stderr)
+      def display(target_org: nil)
+        flags    = {:"target-org" => target_org}
+        json = sf.exec(category, __method__, flags: flags, redirection: :null_stderr)
         ConnectionInfo.new(
           id:           json['result']['id'],
           access_token: json['result']['accessToken'],

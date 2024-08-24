@@ -10,8 +10,7 @@ module SfCli
           :"sobject"    => object_type,
           :"target-org" => target_org,
         }
-        switches = [:json]
-        json = sf.exec(category, __method__, flags: flags, switches: switches, redirection: :null_stderr)
+        json = sf.exec(category, __method__, flags: flags, redirection: :null_stderr)
         json['result']
       end
 
@@ -20,8 +19,7 @@ module SfCli
           :"sobject"    => (object_type.to_sym == :custom ? :custom : :all),
           :"target-org" => target_org,
         }
-        switches = [:json]
-        json = sf.exec(category, __method__, flags: flags, switches: switches, redirection: :null_stderr)
+        json = sf.exec(category, __method__, flags: flags, redirection: :null_stderr)
         json['result']
       end
 
