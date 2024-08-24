@@ -1,6 +1,20 @@
 require 'json'
 
 module SfCli
+  # ==== description
+  # The main class of *sf* command.
+  #
+  # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm
+  #
+  # ==== examples
+  #  sf = SfCli::Sf.new # use default org
+  #
+  #  # get the org connection infomation, as same as 'sf org display'
+  #  sf.org.display
+  #
+  #  # get Account records (equivalent to 'sf data query')
+  #  sf.data.query 'SELECT Id, Name FROM Account LIMIT 3' # => returns an array containing 3 records
+  #
   class Sf
     OPERATION_CATEGORIES = %w[Org Sobject Data Project]
 
