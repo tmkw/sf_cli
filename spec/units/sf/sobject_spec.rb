@@ -24,11 +24,31 @@ RSpec.describe 'SfCli::Sf::Sobject' do
     end
   end
 
+  describe '#list' do
+    example "returns all object list" do
+      allow(sf).to receive(:exec).with('sobject', :list, flags: {:"target-org" => nil, sobject: :all}, switches: {}, redirection: :null_stderr).and_return(list_response)
+      result = sobject.list :all
+
+      expect(result).to include 'Account'
+      expect(result).to include 'TestCustomObject__c'
+
+      expect(sf).to have_received :exec
+    end
+
+    example "returns all custom object list" do
+      allow(sf).to receive(:exec).with('sobject', :list, flags: {:"target-org" => nil, sobject: :custom}, switches: {}, redirection: :null_stderr).and_return(list_response custom_only: true)
+      result = sobject.list :custom
+
+      expect(result).to include 'TestCustomObject__c'
+      expect(sf).to have_received :exec
+    end
+  end
+
   def describe_response
     {
       "status" => 0,
       "result" => {
-      "fields" => [
+        "fields" => [
           {
             "label" => "Custom Object ID",
             "name" => "Id"
@@ -42,6 +62,14 @@ RSpec.describe 'SfCli::Sf::Sobject' do
         "labelPlural" => "Test Custom Object",
         "name" => "TestCustomObject__c"
       },
+      "warnings" => []
+    }
+  end
+
+  def list_response(custom_only: false)
+    {
+      "status" => 0,
+      "result" => custom_only ? ["TestCustomObject__c"] : ["Account", "TestCustomObject__c"],
       "warnings" => []
     }
   end
