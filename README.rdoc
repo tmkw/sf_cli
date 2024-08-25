@@ -5,19 +5,9 @@ This is a class library for introducing {Salesforce CLI}[https://developer.sales
 It is designed to be similar usability to the command line interface.<br>
 Currently only *sf* command is the target of development.
 
-==== the list of supported operations in ver 0.0.2
-- sf org display
-- sf org login web
-- sf data query
-- sf sobject describe 
-- sf sobject list
-- sf project generate
-- sf project generate manifest
-
 == prerequisite
 Salesforce CLI must be installed.<br>
 As of as of August in 2024, ver.2.54.6 is the development target.
-
 
 == install
 === Rubygem
