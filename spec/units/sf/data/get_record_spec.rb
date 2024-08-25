@@ -2,7 +2,7 @@ RSpec.describe 'SfCli::Sf::Data' do
   let(:sf) { instance_double 'SfCli::Sf' }
   let(:data) { SfCli::Sf::Data.new(sf) }
 
-  describe '#get_record' do
+  describe '#get_record', :model do
     let(:object_type) { :TestCustomObject__c  }
     let(:record_id) { 'a record ID'  }
 
@@ -60,8 +60,6 @@ RSpec.describe 'SfCli::Sf::Data' do
         redirection: :null_stderr
       )
       .and_return(exec_output)
-
-      TestCustomObject__c = Struct.new(:Id, :Name)
 
       object = data.get_record object_type, record_id: record_id, model_class: TestCustomObject__c
 

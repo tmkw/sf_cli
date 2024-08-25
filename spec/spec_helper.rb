@@ -97,4 +97,8 @@ RSpec.configure do |config|
 =end
 
   require 'sf_cli'
+
+  config.when_first_matching_example_defined(:model) do
+    require_relative 'support/model_class'
+  end
 end

@@ -26,7 +26,6 @@ RSpec.describe 'sf data get record' do
   it "gets and converts a record into the model object" do
     allow(sf).to receive(:`).with(%|sf data get record --sobject #{object_type} --record-id #{record_id} --json 2> /dev/null|).and_return(command_response)
 
-    TestCustomObject__c = Struct.new(:Id, :Name)
     object = sf.data.get_record object_type, record_id: record_id, model_class: TestCustomObject__c
 
     expect(object).to have_attributes Id: record_id, Name: 'Akin Kristen'

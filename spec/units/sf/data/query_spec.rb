@@ -2,7 +2,7 @@ RSpec.describe 'SfCli::Sf::Data' do
   let(:sf) { instance_double 'SfCli::Sf' }
   let(:data) { SfCli::Sf::Data.new(sf) }
 
-  describe '#query' do
+  describe '#query', :model do
     it "queries with SOQL" do
       allow(sf).to receive(:exec).with(
         'data',
@@ -29,7 +29,6 @@ RSpec.describe 'SfCli::Sf::Data' do
       )
       .and_return(exec_output)
 
-      Account = Struct.new(:Id, :Name)
       rows = data.query 'SELECT Id, Name From Account', model_class: Account
 
       expect(rows).to contain_exactly( an_object_having_attributes(Id: "0015j00001dsDuhAAE", Name: "Aethna Home Products"))
