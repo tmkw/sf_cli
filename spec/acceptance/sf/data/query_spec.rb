@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe 'sf data query' do
+RSpec.describe 'sf data query', :model do
   let(:sf) { SfCli::Sf.new }
 
   it "queries with SOQL" do
@@ -15,7 +15,6 @@ RSpec.describe 'sf data query' do
   it "can convert each record into a paticular model object" do
     allow(sf).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
 
-    Account = Struct.new(:Id, :Name)
     rows = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, model_class: Account
 
     expect(rows).to contain_exactly( an_object_having_attributes('Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"))

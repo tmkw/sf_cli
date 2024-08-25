@@ -1,4 +1,6 @@
 = Salesforce CLI library
+https://badge.fury.io/rb/sf_cli.png
+
 This is a class library for introducing {Salesforce CLI}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm] to Ruby scripting.<br>
 It is designed to be similar usability to the command line interface.<br>
 Currently only *sf* command is the target of development.
