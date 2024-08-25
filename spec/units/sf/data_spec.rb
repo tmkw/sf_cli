@@ -167,28 +167,9 @@ RSpec.describe 'SfCli::Sf::Data' do
       )
       .and_return(update_response)
 
-      data.update_record object_type, record_id: record_id, values: {Name: 'John White', Age: 28}
-      expect(sf).to have_received :exec
-    end
-
-    it 'returns the updated record ID' do
-      allow(sf).to receive(:exec).with(
-        'data',
-        'update record',
-        flags: {
-          sobject:      object_type,
-          where:        nil,
-          values:       %|"Name='John White' Age=28"|,
-          :"record-id"  => record_id,
-          :"target-org" => nil,
-        },
-        switches: {},
-        redirection: :null_stderr
-      )
-      .and_return(update_response)
-
       id = data.update_record object_type, record_id: record_id, values: {Name: 'John White', Age: 28}
       expect(id).to eq record_id
+      expect(sf).to have_received :exec
     end
 
     it "updates a record, identifying by search conditions" do
@@ -281,6 +262,70 @@ RSpec.describe 'SfCli::Sf::Data' do
     end
   end
 
+  describe '#delete_record' do
+    let(:object_type) { :TestCustomObject__c  }
+    let(:record_id) { 'a record ID'  }
+
+    it "deletes a record by record ID" do
+      allow(sf).to receive(:exec).with(
+        'data',
+        'delete record',
+        flags: {
+          sobject:      object_type,
+          where:        nil,
+          :"record-id"  => record_id,
+          :"target-org" => nil,
+        },
+        switches: {},
+        redirection: :null_stderr
+      )
+      .and_return(delete_response)
+      id = data.delete_record object_type, record_id: record_id
+      expect(id).to eq record_id
+      expect(sf).to have_received :exec
+    end
+
+    it "deletes a record by search conditions" do
+      allow(sf).to receive(:exec).with(
+        'data',
+        'delete record',
+        flags: {
+          sobject:      object_type,
+          where:        %|"Name='Akin Kristen'"|,
+          :"record-id"  => nil,
+          :"target-org" => nil,
+        },
+        switches: {},
+        redirection: :null_stderr
+      )
+      .and_return(delete_response)
+
+      data.delete_record object_type, where: {Name: 'Akin Kristen'}
+      expect(sf).to have_received :exec
+    end
+
+    context 'using option: target_org' do
+      it "can delete a record of paticular org, not default one" do
+        allow(sf).to receive(:exec).with(
+          'data',
+          'delete record',
+          flags: {
+            sobject:      object_type,
+            where:        nil,
+            :"record-id"  => record_id,
+            :"target-org" => :dev,
+          },
+          switches: {},
+          redirection: :null_stderr
+        )
+        .and_return(delete_response)
+
+        data.delete_record object_type, record_id: record_id, target_org: :dev
+        expect(sf).to have_received :exec
+      end
+    end
+  end
+
   def query_response
     {
       "status" => 0,
@@ -334,6 +379,18 @@ RSpec.describe 'SfCli::Sf::Data' do
       "status" => 0,
       "result" => {
         "id" => "#{new_record_id}",
+        "success" => true,
+        "errors" => []
+      },
+      "warnings" => []
+    }
+  end
+
+  def delete_response
+    {
+      "status" => 0,
+      "result" => {
+        "id" => "#{record_id}",
         "success" => true,
         "errors" => []
       },
