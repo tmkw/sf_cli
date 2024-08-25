@@ -35,6 +35,21 @@ module SfCli
         end
       end
 
+      # get a object record. (eqivalent to *sf* *data* *get* *record*)
+      #
+      # *object_type* --- Object Type (ex. Account)<br>
+      # *record_id* --- id of the object<br>
+      # *where* --- hash object that is used to identify a record<br>
+      # *target_org* --- an alias of paticular org, not default one<br>
+      # *model_class* --- the data model class representing the record object.<br> 
+      #
+      # ==== examples
+      #   sf.data.get_record :Account, record_id: 'xxxxxxx'
+      #   sf.data.get_record :Account, where: {Name: 'Jonny B.Good', Country: 'USA'}
+      #
+      #   CustomObject = Struct.new(:Id, :Name)
+      #   sf.data.get_record :TheCustomObject__c, record_id: 'xxxxx', model_class: CustomObject  # returns a CustomObject struct object
+      #
       def get_record(object_type, record_id: nil, where: nil, target_org: nil, model_class: nil)
         where_conditions = field_value_pairs(where)
         flags = {

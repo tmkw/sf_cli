@@ -19,6 +19,24 @@ RSpec.describe 'SfCli::Sf::Data' do
       expect(sf).to have_received :exec
     end
 
+    example 'returns an array of the model class objects' do
+      allow(sf).to receive(:exec).with(
+        'data',
+        :query,
+        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"'},
+        switches: {},
+        redirection: :null_stderr
+      )
+      .and_return(query_response)
+
+      Account = Struct.new(:Id, :Name)
+      rows = data.query 'SELECT Id, Name From Account', model_class: Account
+
+      expect(rows).to contain_exactly( an_object_having_attributes(Id: "0015j00001dsDuhAAE", Name: "Aethna Home Products"))
+      expect(rows.first).to be_instance_of Account
+      expect(sf).to have_received :exec
+    end
+
     context 'using option: target_org' do
       it 'can query againt a paticular org, not default one' do
         allow(sf).to receive(:exec).with(
