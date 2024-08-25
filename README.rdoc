@@ -48,3 +48,6 @@ For more command details, see {Salesforce CLI Command Reference}[https://develop
   $ bundle exec rake rdoc
 
 This generates the documents in doc directory.
+
+
+Or, you can read the same documents online at {rubygems.org}[https://rubygems.org/gems/sf_cli]
