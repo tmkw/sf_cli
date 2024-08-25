@@ -10,7 +10,7 @@ module SfCli
     #
     class Data < Base
 
-      # get the object records. (eqivalent to *sf* *data* *query*)
+      # get object records using SQOL. (eqivalent to *sf* *data* *query*)
       #
       # *soql* --- SOQL<br>
       # *target_org* --- an alias of paticular org, not default one<br>
@@ -87,6 +87,29 @@ module SfCli
           :"record-id"  => record_id,
           :"where"      => (where_conditions.nil? ? nil : %|"#{where_conditions}"|),
           :"values"     => (field_values.nil? ? nil : %|"#{field_values}"|),
+          :"target-org" => target_org,
+        }
+        action = __method__.to_s.tr('_', ' ')
+        json = exec(action, flags: flags, redirection: :null_stderr)
+
+        json['result']['id']
+      end
+
+      # create a object record. (eqivalent to *sf* *data* *create* *record*)
+      #
+      # *object_type* --- Object Type (ex. Account)<br>
+      # *values* --- field values to be assigned<br>
+      # *target_org* --- an alias of paticular org, not default one<br>
+      #
+      # ==== examples
+      #
+      #   sf.data.create_record :TheCustomObject__c, values: {Name: "John Smith", Age: 33} # creating a TheCustomObject record with name and age
+      #
+      def create_record(object_type, values: {}, target_org: nil)
+        field_values = field_value_pairs(values)
+        flags = {
+          :"sobject"    => object_type,
+          :"values"      => (field_values.nil? ? nil : %|"#{field_values}"|),
           :"target-org" => target_org,
         }
         action = __method__.to_s.tr('_', ' ')
