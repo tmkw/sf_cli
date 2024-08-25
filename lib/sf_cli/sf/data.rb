@@ -27,12 +27,29 @@ module SfCli
           :"query"    => %("#{soql}"),
           :"target-org" => target_org,
         }
-        json = sf.exec(category, __method__, flags: flags, redirection: :null_stderr)
+        json = exec(__method__, flags: flags, redirection: :null_stderr)
 
         json['result']['records'].each_with_object([]) do |h, a|
           h.delete "attributes"
           a << (model_class ? model_class.new(**h) : h)
         end
+      end
+
+      def get_record(object_type, record_id: nil, where: nil, target_org: nil, model_class: nil)
+        where_conditions = field_value_pairs(where)
+        flags = {
+          :"sobject"    => object_type,
+          :"record-id"  => record_id,
+          :"where"      => (where_conditions.nil? ? nil : %|"#{where_conditions}"|),
+          :"target-org" => target_org,
+        }
+        action = __method__.to_s.tr('_', ' ')
+        json = exec(action, flags: flags, redirection: :null_stderr)
+
+        result = json['result']
+        result.delete 'attributes'
+
+        model_class ? model_class.new(**result) : result
       end
     end
   end
