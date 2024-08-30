@@ -30,8 +30,8 @@ module SfCli
         json = exec(__method__, flags: flags, redirection: :null_stderr)
 
         json['result']['records'].each_with_object([]) do |h, a|
-          h.delete "attributes"
-          a << (model_class ? model_class.new(**h) : h)
+          record = HelperMethods.prepare_record(h)
+          a << (model_class ? model_class.new(**record) : record)
         end
       end
 
@@ -142,6 +142,34 @@ module SfCli
         json = exec(action, flags: flags, redirection: :null_stderr)
 
         json['result']['id']
+      end
+
+      class HelperMethods
+        def self.prepare_record(hash)
+          hash.delete 'attributes'
+
+          hash.keys.each do |k|
+            if parent?(hash[k])
+              hash[k] = prepare_record(hash[k])
+            elsif children?(hash[k])
+              hash[k] = hash[k]['records'].map{|h| prepare_record(h)}
+            end
+          end
+
+          hash
+        end
+
+        def self.children?(h)
+          return false unless h.instance_of?(Hash)
+
+          h.has_key? 'records'
+        end
+
+        def self.parent?(h)
+          return false unless h.instance_of?(Hash)
+
+          h.has_key?('records') == false
+        end
       end
     end
   end
