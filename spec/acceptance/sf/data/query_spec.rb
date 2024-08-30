@@ -30,9 +30,9 @@ RSpec.describe 'sf data query', :model do
 
   context 'in case of multi sobject query:' do
     it "returns the combined sobject result" do
-      allow(sf).to receive(:`).with('sf data query --query "SELECT Id, Name, Account.Name FROM Contact Limit 1" --json 2> /dev/null').and_return(exec_output_by_multi_sobject_query)
+      allow(sf).to receive(:`).with('sf data query --query "SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1" --json 2> /dev/null').and_return(exec_output_by_multi_sobject_query)
 
-      rows = sf.data.query %|SELECT Id, Name, Account.Name FROM Contact Limit 1|
+      rows = sf.data.query %|SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1|
 
       expect(rows).to contain_exactly({
         'Id' => "0015j00001dsDuhAAE",
