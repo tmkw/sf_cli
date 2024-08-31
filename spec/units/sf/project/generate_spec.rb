@@ -1,11 +1,9 @@
 RSpec.describe 'SfCli::Sf::Project' do
-  let(:sf) { instance_double 'SfCli::Sf::Core' }
-  let(:project) { SfCli::Sf::Project::Core.new(sf) }
+  let(:project) { SfCli::Sf::Project::Core.new }
 
   describe '#generate' do
     it "create a Salesforce DX project directory" do
-      allow(sf).to receive(:exec).with(
-        'project',
+      allow(project).to receive(:exec).with(
         :generate,
         flags:        {name: 'TestProject', template: nil, :"output-dir" => nil},
         switches:     {manifest: false},
@@ -20,13 +18,12 @@ RSpec.describe 'SfCli::Sf::Project' do
       expect(result.raw_output).to eq 'ROW OUTPUT INFORMATION OF COMMAND'
       expect(result.warnings).to be_empty
 
-      expect(sf).to have_received :exec
+      expect(project).to have_received :exec
     end
 
     context 'using option: output_dir' do
       it 'can create the project at paticular directory' do
-        allow(sf).to receive(:exec).with(
-          'project',
+        allow(project).to receive(:exec).with(
           :generate,
           flags:        {name: 'TestProject', template: nil, :"output-dir" => 'tmp'},
           switches:     {manifest: false},
@@ -37,14 +34,13 @@ RSpec.describe 'SfCli::Sf::Project' do
         result = project.generate 'TestProject', output_dir: 'tmp'
 
         expect(result.files).to include 'tmp/TestProject/sfdx-project.json'
-        expect(sf).to have_received :exec
+        expect(project).to have_received :exec
       end
     end
 
     context 'using option: template' do
       it 'can create with paticular template (standard, empty or analytics)' do
-        allow(sf).to receive(:exec).with(
-          'project',
+        allow(project).to receive(:exec).with(
           :generate,
           flags:        {name: 'TestProject', template: :empty, :"output-dir" => nil},
           switches:     {manifest: false},
@@ -53,14 +49,13 @@ RSpec.describe 'SfCli::Sf::Project' do
         .and_return(exec_output)
 
         result = project.generate 'TestProject', template: :empty
-        expect(sf).to have_received :exec
+        expect(project).to have_received :exec
       end
     end
 
     context 'using option: manifest' do
       it 'can generate manifest file (package.xml)' do
-        allow(sf).to receive(:exec).with(
-          'project',
+        allow(project).to receive(:exec).with(
           :generate,
           flags:        {name: 'TestProject', template: nil, :"output-dir" => nil},
           switches:     {manifest: true},
@@ -71,14 +66,13 @@ RSpec.describe 'SfCli::Sf::Project' do
         result = project.generate 'TestProject', manifest: true
 
         expect(result.files).to include 'TestProject/manifest/package.xml'
-        expect(sf).to have_received :exec
+        expect(project).to have_received :exec
       end
     end
 
     context 'using all options' do
       it do
-        allow(sf).to receive(:exec).with(
-          'project',
+        allow(project).to receive(:exec).with(
           :generate,
           flags:        {name: 'TestProject', template: :empty, :"output-dir" => 'tmp'},
           switches:     {manifest: true},
@@ -89,7 +83,7 @@ RSpec.describe 'SfCli::Sf::Project' do
         result = project.generate 'TestProject', manifest: true, template: :empty, output_dir: 'tmp'
 
         expect(result.files).to include 'tmp/TestProject/manifest/package.xml'
-        expect(sf).to have_received :exec
+        expect(project).to have_received :exec
       end
     end
   end

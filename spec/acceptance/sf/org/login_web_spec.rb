@@ -2,25 +2,25 @@ require 'spec_helper'
 
 RSpec.describe 'sf org login web' do
   it "connects to the login page for authentication of the org" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf org login web --json').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org login web --json').and_return(command_response)
 
     sf.org.login_web
   end
 
   it "can connects particular org" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf org login web --alias dev --json').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org login web --alias dev --json').and_return(command_response)
 
     sf.org.login_web target_org: :dev
   end
 
   it "can login at the non standard url (ex. test.salesforce.com, etc)" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf org login web --instance-url https://test.salesforce.com --json').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org login web --instance-url https://test.salesforce.com --json').and_return(command_response)
 
     sf.org.login_web instance_url: 'https://test.salesforce.com'
   end
 
   it "can mix target org and url to login" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf org login web --alias dev --instance-url https://test.salesforce.com --json').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org login web --alias dev --instance-url https://test.salesforce.com --json').and_return(command_response)
 
     sf.org.login_web target_org: :dev, instance_url: 'https://test.salesforce.com'
   end

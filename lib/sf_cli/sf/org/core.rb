@@ -1,4 +1,4 @@
-require_relative '../operation_base'
+require_relative '../core/base'
 
 module SfCli
   module Sf
@@ -9,7 +9,9 @@ module SfCli
       #
       # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm
       #
-      class Core < OperationBase
+      class Core
+        include ::SfCli::Sf::Core::Base
+
         ConnectionInfo = Struct.new(:id, :access_token, :alias, :instance_url, :user_name, :api_version, :status)
 
         # login to the org by the browser. (equivalent to *sf* *org* *login* *web*)

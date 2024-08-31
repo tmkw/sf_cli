@@ -1,4 +1,4 @@
-require_relative '../operation_base'
+require_relative '../core/base'
 
 module SfCli
   module Sf
@@ -8,7 +8,8 @@ module SfCli
       #
       # command reference: https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm
       #
-      class Core < OperationBase
+      class Core
+        include ::SfCli::Sf::Core::Base
 
         # returns a hash object containing the Salesforce object schema. (equivalent to *sf* *sobject* *describe*)
         #

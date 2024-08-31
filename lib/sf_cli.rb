@@ -1,5 +1,5 @@
-require 'sf_cli/sf/core'
+require 'sf_cli/sf/main'
 
 def sf
-  SfCli::Sf::Core.instance
+  SfCli::Sf::Main.instance
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe 'sf sobject describe' do
   it "returns the schema infromation of an Object" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf sobject describe --sobject TestCustomObject__c --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Sobject::Core).to receive(:`).with('sf sobject describe --sobject TestCustomObject__c --json 2> /dev/null').and_return(command_response)
 
     result = sf.sobject.describe 'TestCustomObject__c'
 
@@ -11,7 +11,7 @@ RSpec.describe 'sf sobject describe' do
   end
 
   it 'can retrieve a object information in a paticular org, not default one' do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf sobject describe --sobject TestCustomObject__c --target-org dev --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Sobject::Core).to receive(:`).with('sf sobject describe --sobject TestCustomObject__c --target-org dev --json 2> /dev/null').and_return(command_response)
 
     sf.sobject.describe 'TestCustomObject__c', target_org: :dev
   end

@@ -1,4 +1,4 @@
-require_relative '../operation_base'
+require_relative '../core/base'
 require_relative './helper_methods'
 
 module SfCli
@@ -10,7 +10,8 @@ module SfCli
       #
       # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm
       #
-      class Core < OperationBase
+      class Core
+        include ::SfCli::Sf::Core::Base
         include ::SfCli::Sf::Data::HelperMethods
 
         # get object records using SQOL. (eqivalent to *sf* *data* *query*)

@@ -4,7 +4,7 @@ RSpec.describe 'sf data create record' do
   let(:new_record_id) { 'a00J4000001HkmlIAC' }
 
   it "creates an object record" do
-    allow_any_instance_of(SfCli::Sf::Core)
+    allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
       .with(%|sf data create record --sobject TestCustomObject__c --values "Name='test custom object'" --json 2> /dev/null|)
       .and_return(command_response)
@@ -14,7 +14,7 @@ RSpec.describe 'sf data create record' do
   end
 
   it "creates an record in the paticular org, not default one" do
-    allow_any_instance_of(SfCli::Sf::Core)
+    allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
       .with(%|sf data create record --sobject TestCustomObject__c --values "Name='test custom object'" --target-org dev --json 2> /dev/null|)
       .and_return(command_response)

@@ -1,16 +1,13 @@
 RSpec.describe 'SfCli::Sf::Data' do
-  let(:sf) { instance_double 'SfCli::Sf::Core' }
-  let(:data) { SfCli::Sf::Data::Core.new(sf) }
+  let(:data) { SfCli::Sf::Data::Core.new }
 
   describe '#query', :model do
     let(:prepared_record) { {'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"} }
 
     it "queries with SOQL" do
-      allow(sf).to receive(:exec).with(
-        'data',
+      allow(data).to receive(:exec).with(
         :query,
         flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"'},
-        switches: {},
         redirection: :null_stderr
       )
       .and_return(exec_output)
@@ -20,16 +17,14 @@ RSpec.describe 'SfCli::Sf::Data' do
       rows = data.query 'SELECT Id, Name From Account'
 
       expect(rows).to contain_exactly(prepared_record)
-      expect(sf).to have_received :exec
+      expect(data).to have_received :exec
       expect(data).to have_received :prepare_record
     end
 
     example 'returns an array of the model class objects' do
-      allow(sf).to receive(:exec).with(
-        'data',
+      allow(data).to receive(:exec).with(
         :query,
         flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"'},
-        switches: {},
         redirection: :null_stderr
       )
       .and_return(exec_output)
@@ -40,18 +35,17 @@ RSpec.describe 'SfCli::Sf::Data' do
 
       expect(rows).to contain_exactly( an_object_having_attributes(Id: "0015j00001dsDuhAAE", Name: "Aethna Home Products"))
       expect(rows.first).to be_instance_of Account
-      expect(sf).to have_received :exec
+      expect(data).to have_received :exec
+      expect(data).to have_received :prepare_record
     end
 
     context 'in case of multi sobject query:' do
       let(:prepared_record) { {'Id' => "0035j00001RW3xbAAD", 'Name' => "Akin Kristen", 'Account' => {'Name' => "Aethna Home Products"}} }
 
       it "returns the combined sobject result" do
-        allow(sf).to receive(:exec).with(
-          'data',
+        allow(data).to receive(:exec).with(
           :query,
           flags: {:"target-org" => nil, query: '"SELECT Id, Name, Account.Name FROM Contact Limit 1"'},
-          switches: {},
           redirection: :null_stderr
         )
         .and_return(exec_output_by_multi_sobject_query)
@@ -61,18 +55,16 @@ RSpec.describe 'SfCli::Sf::Data' do
         rows = data.query 'SELECT Id, Name, Account.Name FROM Contact Limit 1'
 
         expect(rows).to contain_exactly(prepared_record)
-        expect(sf).to have_received :exec
+        expect(data).to have_received :exec
         expect(data).to have_received :prepare_record
       end
     end
 
     context 'using option: target_org' do
       it 'can query againt a paticular org, not default one' do
-        allow(sf).to receive(:exec).with(
-          'data',
+        allow(data).to receive(:exec).with(
           :query,
           flags: {:"target-org" => :dev, query: '"SELECT Id, Name From Account"'},
-          switches: {},
           redirection: :null_stderr
         )
         .and_return(exec_output)
@@ -82,7 +74,8 @@ RSpec.describe 'SfCli::Sf::Data' do
         rows = data.query 'SELECT Id, Name From Account', target_org: :dev
 
         expect(rows).to contain_exactly(prepared_record)
-        expect(sf).to have_received :exec
+        expect(data).to have_received :exec
+        expect(data).to have_received :prepare_record
       end
     end
   end
