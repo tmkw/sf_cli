@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe 'sf org display' do
   it "returns the current connection information of the org" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf org display --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org display --json 2> /dev/null').and_return(command_response)
 
     connection_info = sf.org.display
 
@@ -16,9 +16,11 @@ RSpec.describe 'sf org display' do
   end
 
   it 'can get a paticular org information' do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf org display --target-org dev --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org display --target-org dev --json 2> /dev/null').and_return(command_response)
+
     connection_info = sf.org.display target_org: :dev
-    expect(sf).to have_received(:`)
+
+    expect(connection_info.id).to eq 'foobazbar'
   end
 
   def command_response

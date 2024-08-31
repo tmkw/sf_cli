@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe 'sf project generate' do
   it "create a Salesforce DX project directory" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf project generate --name TestProject --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --json 2> /dev/null').and_return(command_response)
 
     result = sf.project.generate 'TestProject'
 
@@ -13,7 +13,7 @@ RSpec.describe 'sf project generate' do
   end
 
   it 'can generate manifest file (package.xml)' do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf project generate --name TestProject --json --manifest 2> /dev/null').and_return(command_response manifest: true)
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --json --manifest 2> /dev/null').and_return(command_response manifest: true)
 
     result = sf.project.generate 'TestProject', manifest: true
 
@@ -21,7 +21,7 @@ RSpec.describe 'sf project generate' do
   end
 
   it 'can create the project at paticular directory' do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf project generate --name TestProject --output-dir tmp --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --output-dir tmp --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
 
     result = sf.project.generate 'TestProject', output_dir: 'tmp'
 
@@ -29,7 +29,7 @@ RSpec.describe 'sf project generate' do
   end
 
   it 'can create with paticular template (standard, empty or analytics)' do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf project generate --name TestProject --template empty --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --template empty --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
 
     result = sf.project.generate 'TestProject', template: 'empty'
   end

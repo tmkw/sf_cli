@@ -5,7 +5,7 @@ RSpec.describe 'sf data get record', :model do
   let(:record_id) { 'some record ID' }
 
   it "gets a record by record ID" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --record-id #{record_id} --json 2> /dev/null|).and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --record-id #{record_id} --json 2> /dev/null|).and_return(command_response)
 
     result = sf.data.get_record object_type, record_id: record_id
 
@@ -13,7 +13,7 @@ RSpec.describe 'sf data get record', :model do
   end
 
   it "gets a record by search conditions" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --where "Name='Akin Kristen'" --json 2> /dev/null|).and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --where "Name='Akin Kristen'" --json 2> /dev/null|).and_return(command_response)
 
     result = sf.data.get_record object_type, where: {Name: 'Akin Kristen'}
 
@@ -21,7 +21,7 @@ RSpec.describe 'sf data get record', :model do
   end
 
   it "gets and converts a record into the model object" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --record-id #{record_id} --json 2> /dev/null|).and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --record-id #{record_id} --json 2> /dev/null|).and_return(command_response)
 
     object = sf.data.get_record object_type, record_id: record_id, model_class: TestCustomObject__c
 
@@ -29,7 +29,7 @@ RSpec.describe 'sf data get record', :model do
   end
 
   it "can gets a record of paticular org, not default one" do
-    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --record-id #{record_id} --target-org dev --json 2> /dev/null|).and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with(%|sf data get record --sobject #{object_type} --record-id #{record_id} --target-org dev --json 2> /dev/null|).and_return(command_response)
 
     result = sf.data.get_record object_type, record_id: record_id, target_org: :dev
 
