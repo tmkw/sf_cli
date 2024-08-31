@@ -1,6 +1,6 @@
 RSpec.describe 'SfCli::Sf::Sobject' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:sobject) { SfCli::Sf::Sobject.new(sf) }
+  let(:sf) { instance_double 'SfCli::Sf::Core' }
+  let(:sobject) { SfCli::Sf::Sobject::Core.new(sf) }
 
   describe '#describe' do
     it "returns the schema infromation of an Object" do

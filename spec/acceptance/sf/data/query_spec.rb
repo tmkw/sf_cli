@@ -1,19 +1,16 @@
 require 'spec_helper'
 
 RSpec.describe 'sf data query', :model do
-  let(:sf) { SfCli::Sf.new }
-
   it "queries with SOQL" do
-    allow(sf).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
 
     rows = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|
 
     expect(rows).to contain_exactly({'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"})
-    expect(sf).to have_received(:`)
   end
 
   it "can convert each record into a paticular model object" do
-    allow(sf).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
 
     rows = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, model_class: Account
 
@@ -22,15 +19,14 @@ RSpec.describe 'sf data query', :model do
   end
 
   it 'can query againt a paticular org, not default one' do
-    allow(sf).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --target-org dev --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --target-org dev --json 2> /dev/null').and_return(command_response)
 
     sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, target_org: :dev
-    expect(sf).to have_received(:`)
   end
 
   context 'in case of multi sobject query:' do
     it "returns the combined sobject result" do
-      allow(sf).to receive(:`).with('sf data query --query "SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1" --json 2> /dev/null').and_return(exec_output_by_multi_sobject_query)
+      allow_any_instance_of(SfCli::Sf::Core).to receive(:`).with('sf data query --query "SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1" --json 2> /dev/null').and_return(exec_output_by_multi_sobject_query)
 
       rows = sf.data.query %|SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1|
 
@@ -50,8 +46,6 @@ RSpec.describe 'sf data query', :model do
           {'Name' => "Frank Edna", 'Foo' => {'Name' => "Foo Fighters"}},
         ]
       })
-
-      expect(sf).to have_received(:`)
     end
   end
 

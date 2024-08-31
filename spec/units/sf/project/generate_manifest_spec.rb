@@ -1,6 +1,6 @@
 RSpec.describe 'SfCli::Sf::Project' do
-  let(:sf) { SfCli::Sf.new }
-  let(:project) { SfCli::Sf::Project.new(sf) }
+  let(:sf) { instance_double 'SfCli::Sf::Core' }
+  let(:project) { SfCli::Sf::Project::Core.new(sf) }
 
   describe '#generate_manifest' do
     it "create the manifest file of Salesforce DX project with a paticular metadata name" do

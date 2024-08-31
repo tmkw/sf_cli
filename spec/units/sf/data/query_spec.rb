@@ -1,6 +1,6 @@
 RSpec.describe 'SfCli::Sf::Data' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:data) { SfCli::Sf::Data.new(sf) }
+  let(:sf) { instance_double 'SfCli::Sf::Core' }
+  let(:data) { SfCli::Sf::Data::Core.new(sf) }
 
   describe '#query', :model do
     let(:prepared_record) { {'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"} }
@@ -15,13 +15,13 @@ RSpec.describe 'SfCli::Sf::Data' do
       )
       .and_return(exec_output)
 
-      allow(SfCli::Sf::Data::HelperMethods).to receive(:prepare_record).with(exec_output['result']['records'].first).and_return(prepared_record)
+      allow(data).to receive(:prepare_record).with(exec_output['result']['records'].first).and_return(prepared_record)
 
       rows = data.query 'SELECT Id, Name From Account'
 
       expect(rows).to contain_exactly(prepared_record)
       expect(sf).to have_received :exec
-      expect(SfCli::Sf::Data::HelperMethods).to have_received :prepare_record
+      expect(data).to have_received :prepare_record
     end
 
     example 'returns an array of the model class objects' do
@@ -34,7 +34,7 @@ RSpec.describe 'SfCli::Sf::Data' do
       )
       .and_return(exec_output)
 
-      allow(SfCli::Sf::Data::HelperMethods).to receive(:prepare_record).with(exec_output['result']['records'].first).and_return(prepared_record)
+      allow(data).to receive(:prepare_record).with(exec_output['result']['records'].first).and_return(prepared_record)
 
       rows = data.query 'SELECT Id, Name From Account', model_class: Account
 
@@ -56,13 +56,13 @@ RSpec.describe 'SfCli::Sf::Data' do
         )
         .and_return(exec_output_by_multi_sobject_query)
 
-        allow(SfCli::Sf::Data::HelperMethods).to receive(:prepare_record).with(exec_output_by_multi_sobject_query['result']['records'].first).and_return(prepared_record)
+        allow(data).to receive(:prepare_record).with(exec_output_by_multi_sobject_query['result']['records'].first).and_return(prepared_record)
 
         rows = data.query 'SELECT Id, Name, Account.Name FROM Contact Limit 1'
 
         expect(rows).to contain_exactly(prepared_record)
         expect(sf).to have_received :exec
-        expect(SfCli::Sf::Data::HelperMethods).to have_received :prepare_record
+        expect(data).to have_received :prepare_record
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe 'SfCli::Sf::Data' do
         )
         .and_return(exec_output)
 
-        allow(SfCli::Sf::Data::HelperMethods).to receive(:prepare_record).with(exec_output['result']['records'].first).and_return(prepared_record)
+        allow(data).to receive(:prepare_record).with(exec_output['result']['records'].first).and_return(prepared_record)
 
         rows = data.query 'SELECT Id, Name From Account', target_org: :dev
 

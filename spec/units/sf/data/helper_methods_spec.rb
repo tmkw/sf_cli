@@ -1,13 +1,17 @@
 RSpec.describe 'SfCli::Sf::Data::HelperMethods' do
+  TestClass = Class.new do
+                include SfCli::Sf::Data::HelperMethods
+              end
+
+  let(:test_object) { TestClass.new }
+
   describe '.prepare_record' do
     it 'eliminates key "attributes" from a record (Hash object)' do
-      expect(SfCli::Sf::Data::HelperMethods.prepare_record(single_sobject_hash)).to eq({"Id" => "0015j00001dsDuhAAE", "Name" => "Aethna Home Products"})
+      expect(test_object.__send__(:prepare_record, single_sobject_hash)).to eq({"Id" => "0015j00001dsDuhAAE", "Name" => "Aethna Home Products"})
     end
 
     it 'can treat a record including child-parent relationship' do
-      expect(
-        SfCli::Sf::Data::HelperMethods.prepare_record(hash_including_child_parent_relation)
-      )
+      expect(test_object.__send__(:prepare_record, hash_including_child_parent_relation))
       .to eq({
         "Id"   => "0035j00001RW3xbAAD",
         "Name" => "Akin Kristen",
@@ -16,9 +20,7 @@ RSpec.describe 'SfCli::Sf::Data::HelperMethods' do
     end
 
     it 'can treat a record including parent-children relationship' do
-      expect(
-        SfCli::Sf::Data::HelperMethods.prepare_record(hash_including_parent_children_relation)
-      )
+      expect(test_object.__send__(:prepare_record, hash_including_parent_children_relation))
       .to eq({
         "Id"   => "0015j00001dsDuhAAE",
         "Name" => "Aethna Home Products",
@@ -30,9 +32,7 @@ RSpec.describe 'SfCli::Sf::Data::HelperMethods' do
     end
 
     it 'can treat a record with mixed relationships' do
-      expect(
-        SfCli::Sf::Data::HelperMethods.prepare_record(hash_including_mixed_relations)
-      )
+      expect(test_object.__send__(:prepare_record, hash_including_mixed_relations))
       .to eq({
         "Id"   => "0015j00001dsDuhAAE",
         "Name" => "Hoge BazBar",

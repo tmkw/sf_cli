@@ -1,6 +1,6 @@
 RSpec.describe 'SfCli::Sf::Base' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:base) { SfCli::Sf::Base.new(sf) }
+  let(:sf) { instance_double 'SfCli::Sf::Core' }
+  let(:base) { SfCli::Sf::OperationBase.new(sf) }
 
   describe '#field_value_pairs' do
     it "joins each key and value with '='" do

@@ -1,6 +1,6 @@
 RSpec.describe 'SfCli::Sf::Data' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:data) { SfCli::Sf::Data.new(sf) }
+  let(:sf) { instance_double 'SfCli::Sf::Core' }
+  let(:data) { SfCli::Sf::Data::Core.new(sf) }
 
   describe '#delete_record' do
     let(:object_type) { :TestCustomObject__c  }
