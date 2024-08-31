@@ -1,6 +1,6 @@
 RSpec.describe 'SfCli::Sf::Org' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:org) { SfCli::Sf::Org.new(sf) }
+  let(:sf) { instance_double 'SfCli::Sf::Core' }
+  let(:org) { SfCli::Sf::Org::Core.new(sf) }
 
   describe '#display' do
     it "returns the current connection information of the org" do

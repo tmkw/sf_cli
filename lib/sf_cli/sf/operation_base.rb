@@ -1,6 +1,6 @@
 module SfCli
-  class Sf
-    class Base
+  module Sf
+    class OperationBase
       def initialize(_sf)
         @sf  = _sf
       end
@@ -12,7 +12,7 @@ module SfCli
       end
 
       def category
-        self.class.name.split('::').last.downcase
+        self.class.name.split('::')[-2].downcase
       end
 
       def field_value_pairs(hash)

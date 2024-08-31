@@ -1,6 +1,6 @@
 RSpec.describe 'SfCli::Sf::Project' do
-  let(:sf) { SfCli::Sf.new }
-  let(:project) { SfCli::Sf::Project.new(sf) }
+  let(:sf) { instance_double 'SfCli::Sf::Core' }
+  let(:project) { SfCli::Sf::Project::Core.new(sf) }
 
   describe '#generate' do
     it "create a Salesforce DX project directory" do
@@ -13,7 +13,7 @@ RSpec.describe 'SfCli::Sf::Project' do
       )
       .and_return(exec_output)
 
-      result = sf.project.generate 'TestProject'
+      result = project.generate 'TestProject'
 
       expect(result.output_dir).to eq '/foo/baz/bar'
       expect(result.files).to include 'TestProject/sfdx-project.json'
@@ -34,7 +34,7 @@ RSpec.describe 'SfCli::Sf::Project' do
         )
         .and_return(exec_output output_dir: 'tmp')
 
-        result = sf.project.generate 'TestProject', output_dir: 'tmp'
+        result = project.generate 'TestProject', output_dir: 'tmp'
 
         expect(result.files).to include 'tmp/TestProject/sfdx-project.json'
         expect(sf).to have_received :exec
@@ -52,7 +52,7 @@ RSpec.describe 'SfCli::Sf::Project' do
         )
         .and_return(exec_output)
 
-        result = sf.project.generate 'TestProject', template: :empty
+        result = project.generate 'TestProject', template: :empty
         expect(sf).to have_received :exec
       end
     end
@@ -68,7 +68,7 @@ RSpec.describe 'SfCli::Sf::Project' do
         )
         .and_return(exec_output manifest: true)
 
-        result = sf.project.generate 'TestProject', manifest: true
+        result = project.generate 'TestProject', manifest: true
 
         expect(result.files).to include 'TestProject/manifest/package.xml'
         expect(sf).to have_received :exec
@@ -86,7 +86,7 @@ RSpec.describe 'SfCli::Sf::Project' do
         )
         .and_return(exec_output manifest: true, output_dir: 'tmp')
 
-        result = sf.project.generate 'TestProject', manifest: true, template: :empty, output_dir: 'tmp'
+        result = project.generate 'TestProject', manifest: true, template: :empty, output_dir: 'tmp'
 
         expect(result.files).to include 'tmp/TestProject/manifest/package.xml'
         expect(sf).to have_received :exec

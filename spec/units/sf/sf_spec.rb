@@ -1,5 +1,5 @@
 RSpec.describe 'SfCli::Sf' do
-  let(:sf) { SfCli::Sf.new }
+  let(:sf) { SfCli::Sf::Core.instance }
 
   it "has a getter method 'org' for 'sf org' operation" do
     expect(sf.methods).to include :org
