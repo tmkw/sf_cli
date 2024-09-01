@@ -7,8 +7,10 @@ RSpec.describe 'SfCli::Sf::Data' do
     it "queries with SOQL" do
       allow(data).to receive(:exec).with(
         :query,
-        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"'},
-        redirection: :null_stderr
+        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil},
+        redirection: :null_stderr,
+        raw_output: false,
+        format: :json
       )
       .and_return(exec_output)
 
@@ -21,11 +23,29 @@ RSpec.describe 'SfCli::Sf::Data' do
       expect(data).to have_received :prepare_record
     end
 
+    example "returns the raw output formatted by CSV" do
+      allow(data).to receive(:exec).with(
+        :query,
+        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => :csv},
+        redirection: :null_stderr,
+        raw_output: true,
+        format: :csv
+      )
+      .and_return(exec_output_formatted_by_csv)
+
+      output = data.query 'SELECT Id, Name From Account', format: :csv
+
+      expect(output).to eq exec_output_formatted_by_csv
+      expect(data).to have_received :exec
+    end
+
     example 'returns an array of the model class objects' do
       allow(data).to receive(:exec).with(
         :query,
-        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"'},
-        redirection: :null_stderr
+        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil},
+        redirection: :null_stderr,
+        raw_output: false,
+        format: :json
       )
       .and_return(exec_output)
 
@@ -45,8 +65,10 @@ RSpec.describe 'SfCli::Sf::Data' do
       it "returns the combined sobject result" do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => nil, query: '"SELECT Id, Name, Account.Name FROM Contact Limit 1"'},
-          redirection: :null_stderr
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name, Account.Name FROM Contact Limit 1"', :"result-format" => nil},
+          redirection: :null_stderr,
+          raw_output: false,
+          format: :json
         )
         .and_return(exec_output_by_multi_sobject_query)
 
@@ -64,8 +86,10 @@ RSpec.describe 'SfCli::Sf::Data' do
       it 'can query againt a paticular org, not default one' do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => :dev, query: '"SELECT Id, Name From Account"'},
-          redirection: :null_stderr
+          flags: {:"target-org" => :dev, query: '"SELECT Id, Name From Account"', :"result-format" => nil},
+          redirection: :null_stderr,
+          raw_output: false,
+          format: :json
         )
         .and_return(exec_output)
 
@@ -127,5 +151,9 @@ RSpec.describe 'SfCli::Sf::Data' do
       },
       "warnings" => []
     }
+  end
+
+  def exec_output_formatted_by_csv
+    "Id,Name\n0015j00001dsDuhAAE,Aethna Home Products\n"
   end
 end
