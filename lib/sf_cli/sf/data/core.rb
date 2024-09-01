@@ -18,13 +18,26 @@ module SfCli
         #
         # *soql* --- SOQL<br>
         # *target_org* --- an alias of paticular org, not default one<br>
-        # *model_class* --- the data model class representing the record object.<br> 
+        # *model_class* --- the object model class<br>
         #
-        # ==== examples
-        #   sf.data.query('SELECT Id, Name From Account Limit 3') # returns an array of Hash object
+        # == examples
+        #   sf.data.query 'SELECT Id, Name FROM Account LIMIT 1' # => [{Id: "abc", Name: "account name"}]
         #
         #   Account = Struct.new(:Id, :Name)
         #   sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account struct object
+        #
+        #   # child-parent relationship is supported
+        #   sf.data.query 'SELECT Id, Name, Account.Name From Contact Limit 1'  #  [{Id: "abc", Name: "contact name", Account: {Name: "account name"}}]
+        #
+        #   # parent-children relationship is supported
+        #   sf.data.query 'SELECT Id, Name, (SELECT Name From Contacts) FROM Account Limit 1'  #  [{Id: "abc", Name: "account name", Contacts: [{Name: "contact name"}]}]
+        #
+        #   Account = Struct.new(:Id, :Name) # you can manually prepare the object model
+        #   sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account
+        #
+        # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_unified]
+        #
+        # About querying with auto generated object model, see the section {"Object Model support"}[link://files/README_rdoc.html#label-Object+Model+support+-28experimental-2C+since+0.0.4-29] in README.
         #
         def query(soql, target_org: nil, format: nil, model_class: nil)
           flags    = {
@@ -47,11 +60,11 @@ module SfCli
 
         # get a object record. (eqivalent to *sf* *data* *get* *record*)
         #
-        # *object_type* --- Object Type (ex. Account)<br>
+        # *object_type* --- \Object Type (ex. Account)<br>
         # *record_id* --- id of the object<br>
         # *where* --- hash object that is used to identify a record<br>
         # *target_org* --- an alias of paticular org, not default one<br>
-        # *model_class* --- the data model class representing the record object.<br> 
+        # *model_class* --- the object model class<br>
         #
         # ==== examples
         #   sf.data.get_record :Account, record_id: 'xxxxxxx'
@@ -59,6 +72,8 @@ module SfCli
         #
         #   CustomObject = Struct.new(:Id, :Name)
         #   sf.data.get_record :TheCustomObject__c, record_id: 'xxxxx', model_class: CustomObject  # returns a CustomObject struct object
+        #
+        # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_get_record_unified]
         #
         def get_record(object_type, record_id: nil, where: nil, target_org: nil, model_class: nil)
           where_conditions = field_value_pairs(where)
@@ -79,7 +94,7 @@ module SfCli
 
         # update a object record. (eqivalent to *sf* *data* *update* *record*)
         #
-        # *object_type* --- Object Type (ex. Account)<br>
+        # *object_type* --- \Object Type (ex. Account)<br>
         # *record_id* --- id of the object<br>
         # *where* --- field values that is used to identify a record<br>
         # *values* --- field values for update<br>
@@ -88,6 +103,8 @@ module SfCli
         # ==== examples
         #   sf.data.update_record :Account, record_id: 'xxxxxxx', values: {Name: 'New Account Name'}
         #   sf.data.update_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}, values: {Phone: 'xxxxx', bar: 2000}
+        #
+        # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_update_record_unified]
         #
         def update_record(object_type, record_id: nil, where: nil, values: nil, target_org: nil)
           where_conditions  = field_value_pairs(where)
@@ -107,13 +124,15 @@ module SfCli
 
         # create a object record. (eqivalent to *sf* *data* *create* *record*)
         #
-        # *object_type* --- Object Type (ex. Account)<br>
+        # *object_type* --- \Object Type (ex. Account)<br>
         # *values* --- field values to be assigned<br>
         # *target_org* --- an alias of paticular org, not default one<br>
         #
         # ==== examples
         #
         #   sf.data.create_record :TheCustomObject__c, values: {Name: "John Smith", Age: 33} # creating a TheCustomObject record with name and age
+        #
+        # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_create_record_unified]
         #
         def create_record(object_type, values: {}, target_org: nil)
           field_values = field_value_pairs(values)
@@ -130,7 +149,7 @@ module SfCli
 
         # delete a object record. (eqivalent to *sf* *data* *delete* *record*)
         #
-        # *object_type* --- Object Type (ex. Account)<br>
+        # *object_type* --- \Object Type (ex. Account)<br>
         # *record_id* --- id of the object<br>
         # *where* --- hash object that is used to identify a record<br>
         # *target_org* --- an alias of paticular org, not default one<br>
@@ -139,6 +158,7 @@ module SfCli
         #   sf.data.delete_record :Hoge__c, record_id: 'xxxxxxx'
         #   sf.data.delete_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}
         #
+        # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_record_unified]
         #
         def delete_record(object_type, record_id: nil, where: nil, target_org: nil)
           where_conditions = field_value_pairs(where)

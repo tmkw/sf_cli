@@ -4,18 +4,12 @@ require 'json'
 module SfCli
   module Sf
     # ==== description
-    # The main class of *sf* command.
-    #
-    # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm
+    # The entry class of sf command. It is returned by sf method.
+    # With including Singleton module, the instance of this class is guaranteed as singleton.
     #
     # ==== examples
-    #  sf = SfCli::Sf.new # use default org
-    #
-    #  # get the org connection infomation, as same as 'sf org display'
-    #  sf.org.display
-    #
-    #  # get Account records (equivalent to 'sf data query')
-    #  sf.data.query 'SELECT Id, Name FROM Account LIMIT 3' # => returns an array containing 3 records
+    #   sf             # returns a instance of SfCli::Sf
+    #   sf.org.display # you can follow the similar syntax to the original command by using method chain.
     #
     class Main
       include Singleton

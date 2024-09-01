@@ -2,7 +2,7 @@ module SfCli
   module Sf
     module Data
       module HelperMethods
-        def prepare_record(hash)
+        def prepare_record(hash) # :doc:
           hash.delete 'attributes'
 
           hash.keys.each do |k|

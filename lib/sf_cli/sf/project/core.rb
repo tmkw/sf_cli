@@ -21,6 +21,8 @@ module SfCli
         # *output_dir*  --- output directory<br>
         # *manifest*    --- switch to create manifest file in the project directory (manifest/package.xml). default: false
         #
+        # For more command details, see the {reference document}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_project_commands_unified.htm#cli_reference_project_generate_unified]
+        #
         def generate(name, manifest: false, template: nil, output_dir: nil)
           flags    = {
             :name         => name,
@@ -48,9 +50,11 @@ module SfCli
         # *from_org*    --- username or alias of the org that contains the metadata components from which to build a manifest (default: nil)<br>
         # *source_dir*  --- paths to the local source files to include in the manifest (default: nil)
         #
-        # ==== examples
-        #   sf.project.generate_manifest metadata: %w[CustomObject Layout]  # creates a package.xml, which is initialized with CustomObject and Layout
-        #   sf.project.generate_manifest from_org: <org_name>               # creates a package.xml, which is initialized with all metadata types in the org
+        # == examples
+        #  sf.project.generate_manifest metadata: %w[CustomObject Layout]  # creates a package.xml, which is initialized with CustomObject and Layout
+        #  sf.project.generate_manifest from_org: <org_name>               # creates a package.xml, which is initialized with all metadata types in the org
+        #
+        # For more command details, see the {reference document}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_project_commands_unified.htm#cli_reference_project_generate_manifest_unified]
         #
         def generate_manifest(name: nil, output_dir: nil, api_version: nil, metadata: [], from_org: nil, source_dir: nil)
           flags    = {

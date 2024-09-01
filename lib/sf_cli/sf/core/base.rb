@@ -6,7 +6,7 @@ module SfCli
 
         private
 
-        def exec(action, flags: {}, switches: {}, redirection: nil, raw_output: false, format: :json)
+        def exec(action, flags: {}, switches: {}, redirection: nil, raw_output: false, format: :json) # :doc:
           cmd = %|sf #{category} #{action}#{as_flag_options(flags)}#{as_switch_options(switches, format)}#{redirect redirection}|
           puts cmd if varbose
 
