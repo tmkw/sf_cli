@@ -2,7 +2,7 @@
 https://badge.fury.io/rb/sf_cli.png
 
 This is a class library for introducing {Salesforce CLI}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm] to Ruby scripting.<br>
-It is designed to be similar usability to the command line interface.<br>
+It is designed to be similar usability to the original command.<br>
 Currently only *sf* command is the target of development.
 
 == prerequisite
@@ -21,6 +21,39 @@ then,
   $ bundle install
 
 == Examples
+=== Since 0.0.4
+  require 'sf_cli'
+  #
+  # login to org
+  #
+  sf.org.login_web
+  sf.org.login_web target_org: :dev  # if the org you login isn't the default one, you should give it alias name for later use. 
+
+  #
+  # get records
+  #
+  sf.data.query 'SELECT Id, Name FROM Account LIMIT 1' # => [{Id: "abc", Name: "account name"}]
+
+  Account = Struct.new(:Id, :Name) # you can manually prepare the object model
+  sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account
+
+  # child-parent relationship is supported
+  sf.data.query 'SELECT Id, Name, Account.Name From Contact Limit 1'  #  [{Id: "abc", Name: "contact name", Account: {Name: "account name"}}]
+
+  # parent-children relationship is supported
+  sf.data.query 'SELECT Id, Name, (SELECT Name From Contacts) FROM Account Limit 1'  #  [{Id: "abc", Name: "account name", Contacts: [{Name: "contact name"}]}]
+
+  #
+  # get sobject schema
+  #
+  sf.sobject.describe :Case  # get Case Object schema information
+
+  #
+  # generate a Salesforce DX project with manifest generation option
+  #
+  sf.project.generate 'MyProject', manifest: true
+
+=== Before 0.0.3
   require 'sf_cli/sf'
 
   sf = SfCli::Sf.new
@@ -38,16 +71,26 @@ then,
   # generate a Salesforce DX project
   sf.project.generate 'MyProject'
 
+== \Object Model support (experimental, since 0.0.4)
+  require 'sf_cli'
+  require 'sf_cli/sf/model'
 
-For more command details, see {Salesforce CLI Command Reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm]
+  # generates Model Class for Contact and Account, accessing the org aliased as 'dev'
+  SfCli::Sf::Model.generate %w[Contact Account], target_org: :dev
+
+  c = Contact.new(:Name => "John Smith")
+  c.Name # => "John Smith"
+
+  rows = sf.data.query 'SELECT Id, Name, Account.Name From Contact Limit 1', model_class: Contact
+  rows.size # => 1
+  rows.first.Name # => Name of the Contact
+  rows.first.Account.Name # => Name of the Account
 
 == Documents
+The following steps generate *doc* directory, which all documents are generated in.
   $ git clone https://github.com/tmkw/sf_cli.git
   $ cd sf_cli
   $ bundle install
   $ bundle exec rake rdoc
 
-This generates the documents in doc directory.
-
-
-Or, you can read the same documents online at {rubygems.org}[https://rubygems.org/gems/sf_cli]
+*Or*, you can read the same documents online at {rubygems.org}[https://rubygems.org/gems/sf_cli]

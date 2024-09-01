@@ -16,6 +16,8 @@ module SfCli
         # *objectType* --- object type (ex: Account)<br>
         # *target_org* --- an alias of paticular org, not default one<br>
         #
+        # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm#cli_reference_sobject_describe_unified]
+        #
         def describe(object_type, target_org: nil)
           flags    = {
             :"sobject"    => object_type,
@@ -29,6 +31,8 @@ module SfCli
         #
         # *object_type* --- all or custom<br>
         # *target_org* --- an alias of paticular org, not default one<br>
+        #
+        # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm#cli_reference_sobject_list_unified]
         #
         def list(object_type, target_org: nil)
           flags    = {

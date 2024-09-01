@@ -1,3 +1,14 @@
+## 0.0.4 - 2024-09-02
+- breaking change:
+  - Sf class doesn't exist anymore. You can not write like `sf = SfCli::Sf.new`. Instead of that,  global `sf` method is introduced. You can directly type like `sf.org.display`, which is as almost same usability as the original command. 
+- sf data query:
+  - support child-parent relationship
+  - support parent-children relationship
+  - add `--result-format` option
+- auto generation of Object Model (experimental)
+  - generates SF Object Classes automatically
+  - relationship is supported
+
 ## 0.0.3 - 2024-08-25
 add command operations:
 
