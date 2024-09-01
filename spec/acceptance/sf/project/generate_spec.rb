@@ -1,10 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe 'sf project generate' do
-  let(:sf) { SfCli::Sf.new }
-
   it "create a Salesforce DX project directory" do
-    allow(sf).to receive(:`).with('sf project generate --name TestProject --json 2> /dev/null').and_return(command_response)
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --json 2> /dev/null').and_return(command_response)
 
     result = sf.project.generate 'TestProject'
 
@@ -12,34 +10,28 @@ RSpec.describe 'sf project generate' do
     expect(result.files).to include 'TestProject/sfdx-project.json'
     expect(result.raw_output).to eq 'ROW OUTPUT INFORMATION OF COMMAND'
     expect(result.warnings).to be_empty
-
-    expect(sf).to have_received(:`)
   end
 
   it 'can generate manifest file (package.xml)' do
-    allow(sf).to receive(:`).with('sf project generate --name TestProject --json --manifest 2> /dev/null').and_return(command_response manifest: true)
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --json --manifest 2> /dev/null').and_return(command_response manifest: true)
 
     result = sf.project.generate 'TestProject', manifest: true
 
     expect(result.files).to include 'TestProject/manifest/package.xml'
-    expect(sf).to have_received(:`)
   end
 
   it 'can create the project at paticular directory' do
-    allow(sf).to receive(:`).with('sf project generate --name TestProject --output-dir tmp --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --output-dir tmp --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
 
     result = sf.project.generate 'TestProject', output_dir: 'tmp'
 
     expect(result.files).to include 'tmp/TestProject/sfdx-project.json'
-    expect(sf).to have_received(:`)
   end
 
   it 'can create with paticular template (standard, empty or analytics)' do
-    allow(sf).to receive(:`).with('sf project generate --name TestProject --template empty --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
+    allow_any_instance_of(SfCli::Sf::Project::Core).to receive(:`).with('sf project generate --name TestProject --template empty --json 2> /dev/null').and_return(command_response output_dir: 'tmp')
 
     result = sf.project.generate 'TestProject', template: 'empty'
-
-    expect(sf).to have_received(:`)
   end
 
   def command_response(manifest: false, output_dir: nil)

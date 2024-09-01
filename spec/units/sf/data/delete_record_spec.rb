@@ -1,14 +1,12 @@
 RSpec.describe 'SfCli::Sf::Data' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:data) { SfCli::Sf::Data.new(sf) }
+  let(:data) { SfCli::Sf::Data::Core.new }
 
   describe '#delete_record' do
     let(:object_type) { :TestCustomObject__c  }
     let(:record_id) { 'a record ID'  }
 
     it "deletes a record by record ID" do
-      allow(sf).to receive(:exec).with(
-        'data',
+      allow(data).to receive(:exec).with(
         'delete record',
         flags: {
           sobject:      object_type,
@@ -16,18 +14,16 @@ RSpec.describe 'SfCli::Sf::Data' do
           :"record-id"  => record_id,
           :"target-org" => nil,
         },
-        switches: {},
         redirection: :null_stderr
       )
       .and_return(exec_output)
       id = data.delete_record object_type, record_id: record_id
       expect(id).to eq record_id
-      expect(sf).to have_received :exec
+      expect(data).to have_received :exec
     end
 
     it "deletes a record by search conditions" do
-      allow(sf).to receive(:exec).with(
-        'data',
+      allow(data).to receive(:exec).with(
         'delete record',
         flags: {
           sobject:      object_type,
@@ -35,19 +31,17 @@ RSpec.describe 'SfCli::Sf::Data' do
           :"record-id"  => nil,
           :"target-org" => nil,
         },
-        switches: {},
         redirection: :null_stderr
       )
       .and_return(exec_output)
 
       data.delete_record object_type, where: {Name: 'Akin Kristen'}
-      expect(sf).to have_received :exec
+      expect(data).to have_received :exec
     end
 
     context 'using option: target_org' do
       it "can delete a record of paticular org, not default one" do
-        allow(sf).to receive(:exec).with(
-          'data',
+        allow(data).to receive(:exec).with(
           'delete record',
           flags: {
             sobject:      object_type,
@@ -55,13 +49,12 @@ RSpec.describe 'SfCli::Sf::Data' do
             :"record-id"  => record_id,
             :"target-org" => :dev,
           },
-          switches: {},
           redirection: :null_stderr
         )
         .and_return(exec_output)
 
         data.delete_record object_type, record_id: record_id, target_org: :dev
-        expect(sf).to have_received :exec
+        expect(data).to have_received :exec
       end
     end
   end

@@ -1,10 +1,9 @@
 RSpec.describe 'SfCli::Sf::Org' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:org) { SfCli::Sf::Org.new(sf) }
+  let(:org) { SfCli::Sf::Org::Core.new }
 
   describe '#display' do
     it "returns the current connection information of the org" do
-      allow(sf).to receive(:exec).with('org', :display, flags: {:"target-org" => nil}, switches: {}, redirection: :null_stderr).and_return(exec_output)
+      allow(org).to receive(:exec).with(:display, flags: {:"target-org" => nil}, redirection: :null_stderr).and_return(exec_output)
 
       connection_info = org.display
 
@@ -16,15 +15,15 @@ RSpec.describe 'SfCli::Sf::Org' do
       expect(connection_info.status).to eq 'Connected'
       expect(connection_info.alias).to eq 'dev'
 
-      expect(sf).to have_received :exec
+      expect(org).to have_received :exec
     end
 
     context 'using option: target_org' do
       it 'can get a paticular org information' do
-        allow(sf).to receive(:exec).with('org', :display, flags: {:"target-org" => :dev}, switches: {}, redirection: :null_stderr).and_return(exec_output)
+        allow(org).to receive(:exec).with(:display, flags: {:"target-org" => :dev}, redirection: :null_stderr).and_return(exec_output)
         org.display target_org: :dev
 
-        expect(sf).to have_received :exec
+        expect(org).to have_received :exec
       end
     end
   end

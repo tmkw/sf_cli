@@ -1,14 +1,12 @@
 RSpec.describe 'SfCli::Sf::Data' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:data) { SfCli::Sf::Data.new(sf) }
+  let(:data) { SfCli::Sf::Data::Core.new }
 
   describe '#get_record', :model do
     let(:object_type) { :TestCustomObject__c  }
     let(:record_id) { 'a record ID'  }
 
     example "get a record by record ID" do
-      allow(sf).to receive(:exec).with(
-        'data',
+      allow(data).to receive(:exec).with(
         'get record',
         flags: {
           sobject:      object_type,
@@ -16,19 +14,17 @@ RSpec.describe 'SfCli::Sf::Data' do
           :"record-id"  => record_id,
           :"target-org" => nil,
         },
-        switches: {},
         redirection: :null_stderr
       )
       .and_return(exec_output)
       result = data.get_record object_type, record_id: record_id
 
       expect(result).to include 'Id' => record_id, 'Name' => 'Akin Kristen'
-      expect(sf).to have_received :exec
+      expect(data).to have_received :exec
     end
 
     example "get a record by search conditions" do
-      allow(sf).to receive(:exec).with(
-        'data',
+      allow(data).to receive(:exec).with(
         'get record',
         flags: {
           sobject:      object_type,
@@ -36,19 +32,17 @@ RSpec.describe 'SfCli::Sf::Data' do
           :"record-id"  => nil,
           :"target-org" => nil,
         },
-        switches: {},
         redirection: :null_stderr
       )
       .and_return(exec_output)
 
       result = data.get_record object_type, where: {Name: 'Akin Kristen'}
       expect(result).to include 'Id' => record_id, 'Name' => 'Akin Kristen'
-      expect(sf).to have_received :exec
+      expect(data).to have_received :exec
     end
 
     example "get and convert a record into the model object" do
-      allow(sf).to receive(:exec).with(
-        'data',
+      allow(data).to receive(:exec).with(
         'get record',
         flags: {
           sobject:      object_type,
@@ -56,7 +50,6 @@ RSpec.describe 'SfCli::Sf::Data' do
           :"record-id"  => record_id,
           :"target-org" => nil,
         },
-        switches: {},
         redirection: :null_stderr
       )
       .and_return(exec_output)
@@ -65,13 +58,12 @@ RSpec.describe 'SfCli::Sf::Data' do
 
       expect(object).to be_instance_of(TestCustomObject__c)
       expect(object).to have_attributes(Id: record_id, Name: 'Akin Kristen')
-      expect(sf).to have_received :exec
+      expect(data).to have_received :exec
     end
 
     context 'using option: target_org' do
       it 'can get a record from the paticular org, not default one' do
-        allow(sf).to receive(:exec).with(
-          'data',
+        allow(data).to receive(:exec).with(
           'get record',
           flags: {
             sobject:      object_type,
@@ -79,14 +71,13 @@ RSpec.describe 'SfCli::Sf::Data' do
             :"record-id"  => record_id,
             :"target-org" => :dev,
           },
-          switches: {},
           redirection: :null_stderr
         )
         .and_return(exec_output)
 
         result = data.get_record object_type, record_id: record_id, target_org: :dev
         expect(result).to include 'Id' => record_id, 'Name' => 'Akin Kristen'
-        expect(sf).to have_received :exec
+        expect(data).to have_received :exec
       end
     end
   end

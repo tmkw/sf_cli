@@ -1,38 +1,37 @@
 RSpec.describe 'SfCli::Sf::Org' do
-  let(:sf) { instance_double 'SfCli::Sf' }
-  let(:org) { SfCli::Sf::Org.new(sf) }
+  let(:org) { SfCli::Sf::Org::Core.new }
 
 
   describe '#login_web' do
     it "connects to the login page for authentication of the org" do
-      allow(sf).to receive(:exec).with('org', 'login web', flags: {:"alias" => nil, :"instance-url" => nil}, switches: {}, redirection: nil).and_return(exec_output)
+      allow(org).to receive(:exec).with('login web', flags: {:"alias" => nil, :"instance-url" => nil}).and_return(exec_output)
       org.login_web
-      expect(sf).to have_received :exec
+      expect(org).to have_received :exec
     end
 
     context 'using option: target_org' do
       it 'can access a paticular org' do
-        allow(sf).to receive(:exec).with('org', 'login web', flags: {:"alias" => :dev, :"instance-url" => nil}, switches: {}, redirection: nil).and_return(exec_output)
+        allow(org).to receive(:exec).with('login web', flags: {:"alias" => :dev, :"instance-url" => nil}).and_return(exec_output)
         org.login_web target_org: :dev
 
-        expect(sf).to have_received :exec
+        expect(org).to have_received :exec
       end
     end
 
     context 'using option: instance_url' do
       it 'can access a paticular org' do
-        allow(sf).to receive(:exec).with('org', 'login web', flags: {:"alias" => nil, :"instance-url" => 'https://test.salesforce.com'}, switches: {}, redirection: nil).and_return(exec_output)
+        allow(org).to receive(:exec).with('login web', flags: {:"alias" => nil, :"instance-url" => 'https://test.salesforce.com'}).and_return(exec_output)
         org.login_web instance_url: 'https://test.salesforce.com'
 
-        expect(sf).to have_received :exec
+        expect(org).to have_received :exec
       end
     end
 
     context 'using all options' do
       it do
-        allow(sf).to receive(:exec).with('org', 'login web', flags: {:"alias" => :dev, :"instance-url" => 'https://test.salesforce.com'}, switches: {}, redirection: nil).and_return(exec_output)
+        allow(org).to receive(:exec).with('login web', flags: {:"alias" => :dev, :"instance-url" => 'https://test.salesforce.com'}).and_return(exec_output)
         org.login_web target_org: :dev, instance_url: 'https://test.salesforce.com'
-        expect(sf).to have_received :exec
+        expect(org).to have_received :exec
       end
     end
   end
