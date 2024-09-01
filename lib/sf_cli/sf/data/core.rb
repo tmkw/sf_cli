@@ -26,14 +26,20 @@ module SfCli
         #   Account = Struct.new(:Id, :Name)
         #   sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account struct object
         #
-        def query(soql, target_org: nil, model_class: nil)
+        def query(soql, target_org: nil, format: nil, model_class: nil)
           flags    = {
             :"query"    => %("#{soql}"),
             :"target-org" => target_org,
+            :"result-format" => format,
           }
-          json = exec(__method__, flags: flags, redirection: :null_stderr)
 
-          json['result']['records'].each_with_object([]) do |h, a|
+          raw_output = format ? true : false
+          format = format || :json
+
+          result = exec(__method__, flags: flags, redirection: :null_stderr, raw_output: raw_output, format: format)
+          return result if raw_output
+
+          result['result']['records'].each_with_object([]) do |h, a|
             record = prepare_record(h)
             a << (model_class ? model_class.new(**record) : record)
           end

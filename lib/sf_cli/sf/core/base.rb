@@ -6,15 +6,14 @@ module SfCli
 
         private
 
-        def exec(action, flags: {}, switches: {}, redirection: nil)
-          cmd = %|sf #{category} #{action}#{as_flag_options(flags)}#{as_switch_options(switches)}#{redirect redirection}|
-
+        def exec(action, flags: {}, switches: {}, redirection: nil, raw_output: false, format: :json)
+          cmd = %|sf #{category} #{action}#{as_flag_options(flags)}#{as_switch_options(switches, format)}#{redirect redirection}|
           puts cmd if varbose
 
+          return `#{cmd}` if raw_output
+
           json = JSON.parse `#{cmd}`
-
           puts json if varbose
-
           raise StandardError.new(json['message']) if json['status'] != 0
 
           json
@@ -42,8 +41,13 @@ module SfCli
           flag_options
         end
 
-        def as_switch_options(hash)
-          ' ' + {json: true}.merge(hash).each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
+        def as_switch_options(hash, format)
+          if format.to_sym == :json
+            ' ' + {json: true}.merge(hash).each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
+          else
+            return '' if hash.empty?
+            hash.each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
+          end
         end
 
         def flag(name, arg)

@@ -24,9 +24,34 @@ RSpec.describe 'sf data query', :model do
     sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, target_org: :dev
   end
 
+  it 'can returns the raw json output' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format json --json 2> /dev/null')
+      .and_return(command_response)
+
+    raw_output = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, format: :json
+
+    expect(raw_output).to eq command_response
+  end
+
+  it 'can returns the csv output' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format csv 2> /dev/null')
+      .and_return(command_response_formatted_by_csv)
+
+    raw_output = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, format: :csv
+
+    expect(raw_output).to eq command_response_formatted_by_csv
+  end
+
   context 'in case of multi sobject query:' do
     it "returns the combined sobject result" do
-      allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with('sf data query --query "SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1" --json 2> /dev/null').and_return(exec_output_by_multi_sobject_query)
+      allow_any_instance_of(SfCli::Sf::Data::Core)
+        .to receive(:`)
+        .with('sf data query --query "SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1" --json 2> /dev/null')
+        .and_return(exec_output_by_multi_sobject_query)
 
       rows = sf.data.query %|SELECT Id, Name, Account.Name, (SELECT Name FROM Contacts) FROM Hoge__c Limit 1|
 
@@ -47,6 +72,10 @@ RSpec.describe 'sf data query', :model do
         ]
       })
     end
+  end
+
+  def command_response_formatted_by_csv
+    "Id,Name\n0015j00001dsDuhAAE,Aethna Home Products\n"
   end
 
   def command_response
