@@ -96,6 +96,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
+  require 'byebug'
   require 'sf_cli'
 
   config.when_first_matching_example_defined(:model) do
