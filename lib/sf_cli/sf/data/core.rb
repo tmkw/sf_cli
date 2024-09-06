@@ -39,18 +39,23 @@ module SfCli
         #
         # About querying with auto generated object model, see the section {"Object Model support"}[link://files/README_rdoc.html#label-Object+Model+support+-28experimental-2C+since+0.0.4-29] in README.
         #
-        def query(soql, target_org: nil, format: nil, model_class: nil)
+        def query(soql, target_org: nil, format: nil, bulk: false, timeout: nil, model_class: nil)
           flags    = {
             :"query"    => %("#{soql}"),
             :"target-org" => target_org,
             :"result-format" => format,
+            :"wait" => (bulk ? (timeout || 1) : nil),
           }
-
+          switches = {
+            bulk: bulk,
+          }
           raw_output = format ? true : false
           format = format || :json
 
-          result = exec(__method__, flags: flags, redirection: :null_stderr, raw_output: raw_output, format: format)
+          result = exec(__method__, flags: flags, switches: switches, redirection: :null_stderr, raw_output: raw_output, format: format)
           return result if raw_output
+
+          return create_query_bulk_response(result, model_class) if bulk
 
           result['result']['records'].each_with_object([]) do |h, a|
             record = prepare_record(h)
@@ -172,6 +177,19 @@ module SfCli
           json = exec(action, flags: flags, redirection: :null_stderr)
 
           json['result']['id']
+        end
+
+        private
+
+        def create_query_bulk_response(result, model_class) # :nodoc:
+          done = result['result']['done']
+          id   = result['result']['id']
+          rows = result['result']['records'].each_with_object([]) do |h, a|
+              record = prepare_record_in_bulk_mode(h)
+              a << (model_class ? model_class.new(**record) : record)
+            end
+
+          done ? [done, rows] : [done, id]
         end
       end
     end

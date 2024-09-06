@@ -5,7 +5,7 @@ RSpec.describe 'SfCli::Sf::Data::HelperMethods' do
 
   let(:test_object) { TestClass.new }
 
-  describe '.prepare_record' do
+  describe '#prepare_record' do
     it 'eliminates key "attributes" from a record (Hash object)' do
       expect(test_object.__send__(:prepare_record, single_sobject_hash)).to eq({"Id" => "0015j00001dsDuhAAE", "Name" => "Aethna Home Products"})
     end
@@ -45,12 +45,40 @@ RSpec.describe 'SfCli::Sf::Data::HelperMethods' do
     end
   end
 
+  describe '#prepare_record_in_bulk_mode' do
+    it 'can treat a record without "attributes" key' do
+      expect(
+        test_object.__send__(:prepare_record_in_bulk_mode, single_sobject_hash_without_attributes)
+      ).to eq(
+        {"Id" => "0015j00001dsDuhAAE", "Name" => "Aethna Home Products"}
+      )
+    end
+
+    it 'can treat a record including child-parent relationship' do
+      expect(
+        test_object.__send__(:prepare_record_in_bulk_mode, hash_including_child_parent_relation_in_bulk_mode)
+      ).to eq({
+        "Id"   => "0035j00001RW3xbAAD",
+        "Name" => "Akin Kristen",
+        "Account" => { "Name" => "Aethna Home Products" }
+      })
+    end
+
+  end
+
   def single_sobject_hash
     {
       "attributes" => {
         "type" => "Account",
         "url" => "/services/data/v61.0/sobjects/Account/0015j00001dsDuhAAE"
       },
+      "Id" => "0015j00001dsDuhAAE",
+      "Name" => "Aethna Home Products"
+    }
+  end
+
+  def single_sobject_hash_without_attributes
+    {
       "Id" => "0015j00001dsDuhAAE",
       "Name" => "Aethna Home Products"
     }
@@ -71,6 +99,14 @@ RSpec.describe 'SfCli::Sf::Data::HelperMethods' do
         },
         "Name" => "Aethna Home Products"
       }
+    }
+  end
+
+  def hash_including_child_parent_relation_in_bulk_mode
+    {
+      "Id" => "0035j00001RW3xbAAD",
+      "Name" => "Akin Kristen",
+      "Account.Name" => "Aethna Home Products",
     }
   end
 

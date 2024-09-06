@@ -7,7 +7,8 @@ RSpec.describe 'SfCli::Sf::Data' do
     it "queries with SOQL" do
       allow(data).to receive(:exec).with(
         :query,
-        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil},
+        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, :"wait" => nil},
+        switches: {bulk: false},
         redirection: :null_stderr,
         raw_output: false,
         format: :json
@@ -26,7 +27,8 @@ RSpec.describe 'SfCli::Sf::Data' do
     example "returns the raw output formatted by CSV" do
       allow(data).to receive(:exec).with(
         :query,
-        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => :csv},
+        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => :csv, wait: nil},
+        switches: {bulk: false},
         redirection: :null_stderr,
         raw_output: true,
         format: :csv
@@ -42,7 +44,8 @@ RSpec.describe 'SfCli::Sf::Data' do
     example 'returns an array of the model class objects' do
       allow(data).to receive(:exec).with(
         :query,
-        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil},
+        flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, wait: nil},
+        switches: {bulk: false},
         redirection: :null_stderr,
         raw_output: false,
         format: :json
@@ -65,7 +68,8 @@ RSpec.describe 'SfCli::Sf::Data' do
       it "returns the combined sobject result" do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => nil, query: '"SELECT Id, Name, Account.Name FROM Contact Limit 1"', :"result-format" => nil},
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name, Account.Name FROM Contact Limit 1"', :"result-format" => nil, wait: nil},
+          switches: {bulk: false},
           redirection: :null_stderr,
           raw_output: false,
           format: :json
@@ -86,7 +90,8 @@ RSpec.describe 'SfCli::Sf::Data' do
       it 'can query againt a paticular org, not default one' do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => :dev, query: '"SELECT Id, Name From Account"', :"result-format" => nil},
+          flags: {:"target-org" => :dev, query: '"SELECT Id, Name From Account"', :"result-format" => nil, wait: nil},
+          switches: {bulk: false},
           redirection: :null_stderr,
           raw_output: false,
           format: :json
