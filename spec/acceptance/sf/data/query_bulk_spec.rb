@@ -6,7 +6,7 @@ RSpec.describe 'sf data query' do
   it "queries with SOQL,  using bulk API (default timeout: 1 minute)" do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
-      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --wait 1 --json --bulk 2> /dev/null')
+      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json --bulk 2> /dev/null')
       .and_return(success_response)
 
     done, rows = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, bulk: true
@@ -30,7 +30,7 @@ RSpec.describe 'sf data query' do
   example 'in case of failure because of timeout, etc...' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
-      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --wait 1 --json --bulk 2> /dev/null')
+      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json --bulk 2> /dev/null')
       .and_return(failure_response)
 
     done, id = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, bulk: true

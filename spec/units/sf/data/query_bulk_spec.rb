@@ -12,10 +12,10 @@ RSpec.describe 'SfCli::Sf::Data', :model do
           .to receive(:new).with(success_output, nil).and_return(result_adjuster)
       end
 
-      it "queries with SOQL,  using bulk API (default timeout: 1 minute)" do
+      it "queries with SOQL,  using bulk API" do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, :"wait" => 1},
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, wait: nil},
           switches: {:"bulk" => true},
           redirection: :null_stderr,
           raw_output: false,
@@ -26,6 +26,27 @@ RSpec.describe 'SfCli::Sf::Data', :model do
         allow(result_adjuster).to receive(:get_return_value).and_return([true, [prepared_record]])
 
         done, rows = data.query 'SELECT Id, Name From Account', bulk: true
+
+        expect(done).to be true
+        expect(rows).to contain_exactly(prepared_record)
+        expect(data).to have_received :exec
+        expect(result_adjuster).to have_received :get_return_value
+      end
+
+      example 'setting timeout' do
+        allow(data).to receive(:exec).with(
+          :query,
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, wait: 5},
+          switches: {:"bulk" => true},
+          redirection: :null_stderr,
+          raw_output: false,
+          format: :json
+        )
+        .and_return(success_output)
+
+        allow(result_adjuster).to receive(:get_return_value).and_return([true, [prepared_record]])
+
+        done, rows = data.query 'SELECT Id, Name From Account', bulk: true, timeout: 5
 
         expect(done).to be true
         expect(rows).to contain_exactly(prepared_record)
@@ -45,7 +66,7 @@ RSpec.describe 'SfCli::Sf::Data', :model do
       it 'converts records from hash object to model object' do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, :"wait" => 1},
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, wait: nil},
           switches: {:"bulk" => true},
           redirection: :null_stderr,
           raw_output: false,
@@ -74,7 +95,7 @@ RSpec.describe 'SfCli::Sf::Data', :model do
       it 'returns a flag, which implies failure, and a job ID' do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, :"wait" => 1},
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, wait: nil},
           switches: {:"bulk" => true},
           redirection: :null_stderr,
           raw_output: false,
@@ -106,7 +127,7 @@ RSpec.describe 'SfCli::Sf::Data', :model do
       it 'returns records including the parent relation fields' do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, :"wait" => 1},
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => nil, :"wait" => nil},
           switches: {:"bulk" => true},
           redirection: :null_stderr,
           raw_output: false,
@@ -135,7 +156,7 @@ RSpec.describe 'SfCli::Sf::Data', :model do
       it "returns the command's raw output, which is formatted by particular format" do
         allow(data).to receive(:exec).with(
           :query,
-          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => :csv, :"wait" => 1},
+          flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => :csv, :"wait" => nil},
           switches: {:"bulk" => true},
           redirection: :null_stderr,
           raw_output: true,
