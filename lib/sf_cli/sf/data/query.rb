@@ -33,7 +33,7 @@ module SfCli::Sf::Data
         :"query"    => %("#{soql}"),
         :"target-org" => target_org,
         :"result-format" => format,
-        :"wait" => (bulk ? (timeout || 1) : nil),
+        :"wait" => (bulk ? timeout : nil),
       }
       switches = {
         bulk: bulk,
@@ -44,7 +44,6 @@ module SfCli::Sf::Data
       result = exec(__method__, flags: flags, switches: switches, redirection: :null_stderr, raw_output: raw_output, format: format)
 
       return_result(result, raw_output, bulk, model_class)
-      
     end
 
     def query_resume(job_id:, target_org: nil, format: nil, model_class: nil)
