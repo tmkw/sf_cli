@@ -4,6 +4,8 @@ require_relative './get_record'
 require_relative './update_record'
 require_relative './create_record'
 require_relative './delete_record'
+require_relative './delete_bulk'
+require_relative './delete_resume'
 
 module SfCli
   module Sf
@@ -21,6 +23,8 @@ module SfCli
         include UpdateRecord
         include CreateRecord
         include DeleteRecord
+        include DeleteBulk
+        include DeleteResume
       end
     end
   end
