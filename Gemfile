@@ -2,8 +2,10 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
-gem 'rspec'
-gem 'byebug'
+group :development do
+  gem 'rspec'
+  gem 'byebug'
+end
+
 gem 'rake'
 gem 'hanna'

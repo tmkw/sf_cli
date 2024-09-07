@@ -16,6 +16,18 @@ module SfCli
           hash
         end
 
+        def prepare_record_in_bulk_mode(hash) # :doc:
+          hash.keys.each do |k|
+            match_result = /(.*)\.(.*)/.match(k)
+            if match_result
+              hash[match_result[1]] = {match_result[2] => hash[k]}
+              hash.delete k
+            end
+          end
+
+          hash
+        end
+
         def children?(h)
           return false unless h.instance_of?(Hash)
 
