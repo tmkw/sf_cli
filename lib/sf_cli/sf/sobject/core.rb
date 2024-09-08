@@ -11,10 +11,11 @@ module SfCli
       class Core
         include ::SfCli::Sf::Core::Base
 
-        # returns a hash object containing the Salesforce object schema. (equivalent to *sf* *sobject* *describe*)
+        # returns a hash object containing the Salesforce object schema
         #
         # *objectType* --- object type (ex: Account)<br>
-        # *target_org* --- an alias of paticular org, not default one<br>
+        #
+        # *target_org* --- an alias of paticular org, or username can be used<br>
         #
         # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm#cli_reference_sobject_describe_unified]
         #
@@ -27,10 +28,11 @@ module SfCli
           json['result']
         end
 
-        # returns a list of Salesforce object API name. (equivalent to *sf* *sobject* *list*)
+        # returns a list of Salesforce object name
         #
         # *object_type* --- all or custom<br>
-        # *target_org* --- an alias of paticular org, not default one<br>
+        #
+        # *target_org* --- an alias of paticular org, or username can be used<br>
         #
         # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm#cli_reference_sobject_list_unified]
         #

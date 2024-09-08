@@ -2,7 +2,7 @@ require_relative './helper_methods'
 
 module SfCli::Sf::Data
   module Query
-    class RegularResultAdjuster
+    class RegularResultAdjuster # :nodoc: all
       include ::SfCli::Sf::Data::HelperMethods
 
       attr_reader :result, :model_class
@@ -20,7 +20,7 @@ module SfCli::Sf::Data
       end
     end
 
-    class BulkResultAdjuster
+    class BulkResultAdjuster # :nodoc: all
       include ::SfCli::Sf::Data::HelperMethods
 
       attr_reader :result, :model_class
@@ -42,7 +42,7 @@ module SfCli::Sf::Data
       end
     end
 
-    class RawOutputResultAdjuster
+    class RawOutputResultAdjuster # :nodoc: all
       attr_reader :result
 
       def initialize(result)

@@ -7,7 +7,7 @@ Currently only *sf* command is the target of development.
 
 == prerequisite
 Salesforce CLI must be installed.<br>
-As of as of August in 2024, ver.2.54.6 is the development target.
+As of as of September in 2024, ver.2.56.7 is the development target.
 
 == install
 === Rubygem
@@ -23,35 +23,15 @@ then,
 == Examples
 === Since 0.0.4
   require 'sf_cli'
-  #
-  # login to org
-  #
-  sf.org.login_web
-  sf.org.login_web target_org: :dev  # if the org you login isn't the default one, you should give it alias name for later use. 
 
-  #
+  # login to org
+  sf.org.login_web
+
   # get records
-  #
   sf.data.query 'SELECT Id, Name FROM Account LIMIT 1' # => [{Id: "abc", Name: "account name"}]
 
-  Account = Struct.new(:Id, :Name) # you can manually prepare the object model
-  sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account
-
-  # child-parent relationship is supported
-  sf.data.query 'SELECT Id, Name, Account.Name From Contact Limit 1'  #  [{Id: "abc", Name: "contact name", Account: {Name: "account name"}}]
-
-  # parent-children relationship is supported
-  sf.data.query 'SELECT Id, Name, (SELECT Name From Contacts) FROM Account Limit 1'  #  [{Id: "abc", Name: "account name", Contacts: [{Name: "contact name"}]}]
-
-  #
-  # get sobject schema
-  #
-  sf.sobject.describe :Case  # get Case Object schema information
-
-  #
-  # generate a Salesforce DX project with manifest generation option
-  #
-  sf.project.generate 'MyProject', manifest: true
+  # generate a Salesforce DX project
+  sf.project.generate 'MyProject'
 
 === Before 0.0.3
   require 'sf_cli/sf'
@@ -60,14 +40,10 @@ then,
 
   # login to org
   sf.org.login_web
-  sf.org.login_web target_org: :dev  # name an alias to the org, which you're going to log in, for later use. This is needed when you don't use the default org.
 
   # get Account records
   sf.data.query 'SELECT Id, Name FROM Account LIMIT 3' # => returns an array containing 3 records
   
-  Account = Struct.new(:Id, :Name)
-  sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account struct object
-
   # generate a Salesforce DX project
   sf.project.generate 'MyProject'
 
@@ -75,14 +51,14 @@ then,
   require 'sf_cli'
   require 'sf_cli/sf/model'
 
-  # generates Model Class for Contact and Account, accessing the org aliased as 'dev'
-  SfCli::Sf::Model.generate %w[Contact Account], target_org: :dev
+  # generates Model Class for Contact and Account
+  SfCli::Sf::Model.generate %w[Contact Account]
 
   c = Contact.new(:Name => "John Smith")
   c.Name # => "John Smith"
 
-  rows = sf.data.query 'SELECT Id, Name, Account.Name From Contact Limit 1', model_class: Contact
-  rows.size # => 1
+  rows = sf.data.query 'SELECT Id, Name, Account.Name From Contact Limit 3', model_class: Contact
+  rows.size # => 3
   rows.first.Name # => Name of the Contact
   rows.first.Account.Name # => Name of the Account
 

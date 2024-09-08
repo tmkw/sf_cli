@@ -3,13 +3,21 @@ require_relative './query_helper'
 
 module SfCli::Sf::Data
   module Query
-    # get object records using SQOL. (eqivalent to *sf* *data* *query*)
+    # get object records using SOQL.
     #
     # *soql* --- SOQL<br>
-    # *target_org* --- an alias of paticular org, not default one<br>
+    #
+    # *target_org* --- an alias of paticular org, or username can be used<br>
+    #
+    # *format* --- get the command's raw output. human, csv, json can be available<br>
+    #
     # *model_class* --- the object model class<br>
     #
-    # == examples
+    # *bulk* --- use Bulk API<br>
+    #
+    # *timeout* --- max minutes to wait for the job complete in Bulk API mode<br>
+    #
+    # ======
     #   sf.data.query 'SELECT Id, Name FROM Account LIMIT 1' # => [{Id: "abc", Name: "account name"}]
     #
     #   Account = Struct.new(:Id, :Name)
@@ -21,8 +29,16 @@ module SfCli::Sf::Data
     #   # parent-children relationship is supported
     #   sf.data.query 'SELECT Id, Name, (SELECT Name From Contacts) FROM Account Limit 1'  #  [{Id: "abc", Name: "account name", Contacts: [{Name: "contact name"}]}]
     #
-    #   Account = Struct.new(:Id, :Name) # you can manually prepare the object model
-    #   sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account
+    # When using Bulk API, you get the records when the query job completes within time limit.
+    # The method returns a tapple(an array), which changes its contents according to the job result.
+    #
+    # ======
+    #   done, result = sf.data.query 'SELECT Id, Name FROM Account', bulk: true              # max wait 1 min to get result (default)
+    #   done, result = sf.data.query 'SELECT Id, Name FROM Account', bulk: true, timeout: 5  # max wait 5 min to get result
+    #   done, result = sf.data.query 'SELECT Id, Name FROM Account', bulk: true, timeout: 0  # returns immediately
+    #
+    #   rows = result   if done     # if job is completed, the result is an array of record
+    #   job_id = result unless done # if job hasn't completed or it has aborted, the result is the job ID
     #
     # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_unified]
     #
@@ -46,6 +62,31 @@ module SfCli::Sf::Data
       return_result(result, raw_output, bulk, model_class)
     end
 
+    # resume a bulk query job, which you previously started, and get records
+    #
+    # *job_id* ---  job ID you want to resume<br>
+    #
+    # *target_org* --- an alias of paticular org, or username can be used<br>
+    #
+    # *format* --- get the command's raw output. human, csv, json can be available<br>
+    #
+    # *model_class* --- the object model class<br>
+    #
+    # ======
+    #   # start a query job
+    #   result1 = sf.data.query 'SELECT Id, Name FROM Account', bulk: true, timeout: 0  # returns immediately
+    #
+    #   result1 # => [false, "<job id>"]
+    #
+    #   # the job has already started asynchronously.
+    #   # So you should check and get the result.
+    #   done, result2 = sf.data.query_resume job_id: result1.last
+    #
+    #   puts 'get the records!' if done # the job has completed
+    #
+    #   result2 # => if done is true, this is an array of record. Otherwise it should be the Job ID.
+    #
+    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_resume_unified]
     def query_resume(job_id:, target_org: nil, format: nil, model_class: nil)
       flags    = {
         :"bulk-query-id" => job_id,

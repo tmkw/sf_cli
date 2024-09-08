@@ -14,11 +14,14 @@ module SfCli
         GenerateResult = Struct.new(:output_dir, :files, :raw_output, :warnings)
 
         #
-        # generate a Salesforce project. (equivalent to *sf* *project* *generate*)
+        # generate a Salesforce project
         #
         # *name*        --- project name<br>
+        #
         # *template*    --- project template name<br>
+        #
         # *output_dir*  --- output directory<br>
+        #
         # *manifest*    --- switch to create manifest file in the project directory (manifest/package.xml). default: false
         #
         # For more command details, see the {reference document}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_project_commands_unified.htm#cli_reference_project_generate_unified]
@@ -42,15 +45,19 @@ module SfCli
           )
         end
 
-        # generate the manifest file of a Salesforce project. (equivalent to *sf* *project* *generate* *manifest*)
+        # generate the manifest file of a Salesforce project
         #
         # *metadata*    --- an array that consists of metadata type like CustomObject, Layout and so on.  (default: [])<br>
+        #
         # *api_verson*  --- api version (default: nil)<br>
+        #
         # *output_dir*  --- manifest's output directory in the project directory. You can use relative path from the project root (default: nil)<br>
+        #
         # *from_org*    --- username or alias of the org that contains the metadata components from which to build a manifest (default: nil)<br>
+        #
         # *source_dir*  --- paths to the local source files to include in the manifest (default: nil)
         #
-        # == examples
+        # ======
         #  sf.project.generate_manifest metadata: %w[CustomObject Layout]  # creates a package.xml, which is initialized with CustomObject and Layout
         #  sf.project.generate_manifest from_org: <org_name>               # creates a package.xml, which is initialized with all metadata types in the org
         #
