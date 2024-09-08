@@ -3,34 +3,59 @@ RSpec.describe 'SfCli::Sf::Org' do
 
 
   describe '#login_web' do
+    let(:org_alias) { nil }
+    let(:instance_url) { nil }
+    let(:browser_name) { nil }
+
+    before do
+      allow(org)
+        .to receive(:exec)
+        .with('login web', flags: {
+          :"alias" => org_alias,
+          :"instance-url" => instance_url,
+          browser: browser_name
+        })
+        .and_return(exec_output)
+    end
+
     it "connects to the login page for authentication of the org" do
-      allow(org).to receive(:exec).with('login web', flags: {:"alias" => nil, :"instance-url" => nil}).and_return(exec_output)
       org.login_web
       expect(org).to have_received :exec
     end
 
     context 'using option: target_org' do
-      it 'can access a paticular org' do
-        allow(org).to receive(:exec).with('login web', flags: {:"alias" => :dev, :"instance-url" => nil}).and_return(exec_output)
-        org.login_web target_org: :dev
+      let(:org_alias) { :dev }
 
+      it 'can access a paticular org' do
+        org.login_web target_org: org_alias
         expect(org).to have_received :exec
       end
     end
 
     context 'using option: instance_url' do
-      it 'can access a paticular org' do
-        allow(org).to receive(:exec).with('login web', flags: {:"alias" => nil, :"instance-url" => 'https://test.salesforce.com'}).and_return(exec_output)
-        org.login_web instance_url: 'https://test.salesforce.com'
+      let(:instance_url) { 'https://test.salesforce.com' }
 
+      it 'can access a paticular org' do
+        org.login_web instance_url: instance_url
         expect(org).to have_received :exec
       end
     end
 
-    context 'using all options' do
+    context 'using both options: target org and instance url' do
+      let(:org_alias) { :dev }
+      let(:instance_url) { 'https://test.salesforce.com' }
+
       it do
-        allow(org).to receive(:exec).with('login web', flags: {:"alias" => :dev, :"instance-url" => 'https://test.salesforce.com'}).and_return(exec_output)
-        org.login_web target_org: :dev, instance_url: 'https://test.salesforce.com'
+        org.login_web target_org: org_alias, instance_url: instance_url
+        expect(org).to have_received :exec
+      end
+    end
+
+    context 'using option: browser' do
+      let(:browser_name) { 'chrome' }
+
+      it 'use a paticular browser to login' do
+        org.login_web browser: browser_name
         expect(org).to have_received :exec
       end
     end

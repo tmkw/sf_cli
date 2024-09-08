@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe 'sf org login web' do
+  let(:browser_name) { "chrome" }
+
   it "connects to the login page for authentication of the org" do
     allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org login web --json').and_return(command_response)
 
@@ -23,6 +25,12 @@ RSpec.describe 'sf org login web' do
     allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org login web --alias dev --instance-url https://test.salesforce.com --json').and_return(command_response)
 
     sf.org.login_web target_org: :dev, instance_url: 'https://test.salesforce.com'
+  end
+
+  it "can use paticular browser for login operation" do
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with("sf org login web --browser #{browser_name} --json").and_return(command_response)
+
+    sf.org.login_web browser: browser_name
   end
 
   def command_response
