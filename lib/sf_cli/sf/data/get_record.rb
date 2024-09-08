@@ -4,17 +4,21 @@ module SfCli::Sf::Data
     # get a object record. (eqivalent to *sf* *data* *get* *record*)
     #
     # *object_type* --- \Object Type (ex. Account)<br>
+    #
     # *record_id* --- id of the object<br>
+    #
     # *where* --- hash object that is used to identify a record<br>
+    #
     # *target_org* --- an alias of paticular org, not default one<br>
+    #
     # *model_class* --- the object model class<br>
     #
-    # ==== examples
+    # ======
     #   sf.data.get_record :Account, record_id: 'xxxxxxx'
     #   sf.data.get_record :Account, where: {Name: 'Jonny B.Good', Country: 'USA'}
     #
     #   CustomObject = Struct.new(:Id, :Name)
-    #   sf.data.get_record :TheCustomObject__c, record_id: 'xxxxx', model_class: CustomObject  # returns a CustomObject struct object
+    #   sf.data.get_record :TheCustomObject__c, record_id: 'xxxxx', model_class: CustomObject  # returns a CustomObject instance
     #
     # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_get_record_unified]
     #

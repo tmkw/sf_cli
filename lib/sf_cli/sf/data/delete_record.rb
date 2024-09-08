@@ -1,13 +1,16 @@
 module SfCli::Sf::Data
   module DeleteRecord
-    # delete a object record. (eqivalent to *sf* *data* *delete* *record*)
+    # delete a object record.
     #
     # *object_type* --- \Object Type (ex. Account)<br>
-    # *record_id* --- id of the object<br>
-    # *where* --- hash object that is used to identify a record<br>
-    # *target_org* --- an alias of paticular org, not default one<br>
     #
-    # ==== examples
+    # *record_id* --- id of the object<br>
+    #
+    # *where* --- hash object that is used to identify a record<br>
+    #
+    # *target_org* --- an alias of paticular org, or username can be used<br>
+    #
+    # ======
     #   sf.data.delete_record :Hoge__c, record_id: 'xxxxxxx'
     #   sf.data.delete_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}
     #

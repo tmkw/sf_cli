@@ -1,15 +1,18 @@
 require 'sf_cli/sf/main'
 #
 # the global method that represents *sf* command.
-# This is desgined as the syntax suger, which can use with similar usability to the original.
 #
-# For command details, see the {reference document}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm]
+# With method chaining, you can use similar syntax as original command.
 #
 # == examples
-#   # you can follow the similar syntax to the original command by using method chain.
 #
-#   sf.org.display                            # same as original command 'sf org display'
-#   sf.data.query "SELECT Name FROM Account"  # same as original command 'sf data query "SELECT Name FROM Account"`
+# ======
+#   sf.org.display # => returns the org information object
+#
+# ======
+#   sf.data.query "SELECT Name FROM Account" # => [{"Name"=>"Aethna Home Products"}]
+#
+# For details of sf command, see the {reference guide}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm]
 #
 def sf
   SfCli::Sf::Main.instance

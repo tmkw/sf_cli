@@ -1,13 +1,17 @@
 module SfCli::Sf::Data
   module UpdateRecord
 
-    # update a object record. (eqivalent to *sf* *data* *update* *record*)
+    # update a object record.
     #
     # *object_type* --- \Object Type (ex. Account)<br>
+    #
     # *record_id* --- id of the object<br>
+    #
     # *where* --- field values that is used to identify a record<br>
+    #
     # *values* --- field values for update<br>
-    # *target_org* --- an alias of paticular org, not default one<br>
+    #
+    # *target_org* --- an alias of paticular org, or username can be used<br>
     #
     # ==== examples
     #   sf.data.update_record :Account, record_id: 'xxxxxxx', values: {Name: 'New Account Name'}

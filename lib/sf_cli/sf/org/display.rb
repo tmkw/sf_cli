@@ -5,7 +5,21 @@ module SfCli::Sf::Org
     #
     # returns the org's connection information. (equivalent to *sf* *org* *display*)
     #
-    # *target_org* --- an alias of paticular org, not default one<br>
+    # *target_org* --- an alias of paticular org, or username can be used<br>
+    #
+    # ======
+    #  # example (in irb):
+    #
+    #  > sf.org.display
+    #  =>
+    #  #<struct SfCli::Sf::Org::Display::ConnectionInfo
+    #   id="00D5j00000DiuxmEAB",
+    #   access_token="<some access token>",
+    #   alias="dev",
+    #   instance_url="https://hoge-bar-baz.abc.my.salesforce.com.example",
+    #   user_name="user@example.sandbox",
+    #   api_version="61.0",
+    #   status="Connected">
     #
     # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_display_unified]
     #
