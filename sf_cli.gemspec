@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "sf_cli"
-  s.version     = "0.0.4"
+  s.version     = "0.0.5"
   s.summary     = "A library for using Salesforce CLI in Ruby"
   s.description = "This is a class library for introducing Salesforce CLI to Ruby scripting. Currenty only sf command is the target of development."
   s.authors     = ["Takanobu Maekawa"]
@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.required_ruby_version = '>= 3.3.3'
   s.extra_rdoc_files = ['README.rdoc', 'CHANGELOG.md']
-  s.requirements = 'Salesforce CLI ( >= 2.54.0): https://developer.salesforce.com/tools/salesforcecli'
+  s.requirements = 'Salesforce CLI ( >= 2.56.7): https://developer.salesforce.com/tools/salesforcecli'
   s.metadata = {
     "homepage_url" => "https://github.com/tmkw/sf_cli"
   }
