@@ -39,7 +39,7 @@ module SfCli::Sf::Data
         bulk: bulk,
       }
       raw_output = format ? true : false
-      format = format || :json
+      format = format&.to_sym || :json
 
       result = exec(__method__, flags: flags, switches: switches, redirection: :null_stderr, raw_output: raw_output, format: format)
 
