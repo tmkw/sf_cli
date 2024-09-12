@@ -75,6 +75,22 @@ module SfCli
               def children_relations
                 @children_relations ||= #{ schema.children_relations }
               end
+
+              def connection
+                @connection
+              end
+
+              def connection=(conn)
+                @connection = conn
+              end
+
+              def create(values = {})
+                connection.create(name.to_sym, values, Object.const_get(name.to_sym))
+              end
+
+              def take(id)
+                connection.take(name.to_sym, id, Object.const_get(name.to_sym))
+              end
             end
           EOS
         end
