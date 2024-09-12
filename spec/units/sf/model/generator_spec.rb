@@ -2,12 +2,14 @@ require 'sf_cli/sf/model/generator'
 require 'sf_cli/sf/model/class_definition'
 
 RSpec.describe 'SfCli::Sf::Model::Generator' do
+  let(:org_alias)         { :dev }
+  let(:connection)        { double('Connection Object', target_org: org_alias) }
   let(:sf_sobject)        { instance_double('SfCli::Sf::Sobject::Core') }
   let(:class_definition)  { instance_double('SfCli::Sf::Model::ClassDefinition') }
-  let(:org_alias)         { :dev }
   let(:schema)            { anything }
   let(:object_name)       { 'Account' }
-  let(:class_expression)  { 'Class.new{ def aaa; 100; end}' }
+  let(:class_expression)  { 'Class.new{ def self.connection=(conn); @con = conn; end }' }
+  let(:klass) { double('Account') }
 
   before do
     allow(SfCli::Sf::Sobject::Core).to receive(:new).and_return(sf_sobject)
@@ -21,15 +23,18 @@ RSpec.describe 'SfCli::Sf::Model::Generator' do
     end
 
     it 'generates a class' do
-      generator = SfCli::Sf::Model::Generator.new target_org: org_alias
+      generator = SfCli::Sf::Model::Generator.new(connection)
 
       allow(generator).to receive(:instance_eval).with("::#{object_name} = #{class_expression}")
+      allow(Object).to receive(:const_get).with(object_name.to_sym).and_return(klass)
+      allow(klass).to receive(:connection=).with(connection)
 
       generator.generate(object_name)
 
       expect(sf_sobject).to have_received :describe
       expect(class_definition).to have_received :to_s
       expect(generator).to have_received :instance_eval
+      expect(klass).to have_received :connection=
     end
   end
 end
