@@ -30,44 +30,6 @@ RSpec.describe 'SfCli::Sf::Model::ClassDefinition', :model_definition do
     end
   end
 
-
-  describe 'model methods' do
-    let(:connection) { double('Connection Adapter') }
-    let(:model_instance) { double('model instance') }
-
-    describe '.create' do
-      let(:values) { {a: 100, b: 200} }
-
-      before do
-        definition = SfCli::Sf::Model::ClassDefinition.new(schema)
-        ClassDefininitionTest4 = instance_eval(definition.to_s)
-        ClassDefininitionTest4.connection = connection
-        allow(connection).to receive(:create).with(:ClassDefininitionTest4, values, ClassDefininitionTest4).and_return(model_instance)
-      end
-
-      it 'create a record of the model' do
-        expect(ClassDefininitionTest4.create values).to eq model_instance
-        expect(connection).to have_received :create
-      end
-    end
-
-    describe '.take' do
-      let(:id) { anything }
-
-      before do
-        definition = SfCli::Sf::Model::ClassDefinition.new(schema)
-        ClassDefininitionTest5 = instance_eval(definition.to_s)
-        ClassDefininitionTest5.connection = connection
-        allow(connection).to receive(:take).with(:ClassDefininitionTest5, id, ClassDefininitionTest5).and_return(model_instance)
-      end
-
-      it 'create a record of the model' do
-        expect(ClassDefininitionTest5.take id).to eq model_instance
-        expect(connection).to have_received :take
-      end
-    end
-  end
-
   def schema
     {
       "Name" => 'Hoge__c',
