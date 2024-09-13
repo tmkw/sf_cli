@@ -28,9 +28,19 @@ module SfCli
           sf_data.get_record object_type, record_id: id, target_org: target_org, model_class: klass
         end
 
-        def create(object_type, values, klass)
+        def create(object_type, values, klass = nil)
           id = sf_data.create_record object_type, values: values, target_org: target_org
+          return id if klass.nil?
+
           take(object_type, id, klass)
+        end
+
+        def update(object_type, id, where, values)
+          sf_data.update_record object_type, record_id: id, where: where, values: values, target_org: target_org
+        end
+
+        def delete(object_type, id)
+          sf_data.delete_record object_type, record_id: id, where: nil, target_org: target_org
         end
 
         private
