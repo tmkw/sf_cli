@@ -10,7 +10,7 @@ module SfCli
           if new_record?
             self.Id = self.class.connection.create(self.class.name.to_sym, current_attributes.reject{|_,v| v.nil?})
           else
-            self.class.connection.update(self.class.name.to_sym, self.Id, nil, updated_attributes.reject{|_,v| v.nil?})
+            self.class.connection.update(self.class.name.to_sym, self.Id, updated_attributes.reject{|_,v| v.nil?})
           end
 
           @original_attributes = current_attributes.dup
@@ -28,10 +28,6 @@ module SfCli
         module ClassMethods
           def create(values = {})
             connection.create(name.to_sym, values, Object.const_get(name.to_sym))
-          end
-
-          def take(id)
-            connection.take(name.to_sym, id, Object.const_get(name.to_sym))
           end
         end
       end

@@ -1,2 +1,5 @@
 require 'sf_cli/sf/model/class_definition'
-require_relative 'shared_examples/model_definition'
+require_relative 'shared_examples/model_dml_definition'
+require_relative 'shared_examples/model_query_definition'
+require_relative 'shared_examples/query_condition_example'
+require_relative 'shared_examples/generator_examples'

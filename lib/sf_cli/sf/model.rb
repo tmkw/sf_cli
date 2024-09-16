@@ -9,7 +9,15 @@ module SfCli
     # see the section {"Object Model support"}[link://files/README_rdoc.html#label-Object+Model+support+-28experimental-2C+since+0.0.4-29] in README.
     #
     module Model
-      def self.generate(connection, object_names)
+      def self.connection
+        @@connection
+      end
+
+      def self.set_connection(conn)
+        @@connection = conn
+      end
+
+      def self.generate(object_names)
         generator = Generator.new(connection)
 
         object_names.each do |object_name|

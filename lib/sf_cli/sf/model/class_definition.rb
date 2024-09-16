@@ -1,6 +1,7 @@
 require_relative './schema'
 require_relative './base_methods'
 require_relative './dml_methods'
+require_relative './query_methods'
 
 module SfCli
   module Sf
@@ -17,6 +18,7 @@ module SfCli
             Class.new do
               include ::SfCli::Sf::Model::BaseMethods
               include ::SfCli::Sf::Model::DmlMethods
+              include ::SfCli::Sf::Model::QueryMethods
 
               attr_reader :original_attributes, :current_attributes, :updated_attributes
 
@@ -77,7 +79,7 @@ module SfCli
               end
 
               def #{r[:name]}=(attributes)
-                @#{r[:name]} = #{r[:class_name]}.new(attributes)
+                @#{r[:name]} = attributes.nil? ? nil : #{r[:class_name]}.new(attributes)
               end
             EOS
           end
