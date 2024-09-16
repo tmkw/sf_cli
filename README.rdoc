@@ -89,12 +89,12 @@ then,
   contact # => #<Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen">
   contact.Name # Akin Kristen
 
-==== query and get records
-  contacts = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).all # get all records that is modified yesterday
-
   # these 2 example are the same meaning
   Contact.select(Name).where(Name: 'John Smith', LastModifiedDate: :Yesterday).take
   Contact.select(Name).where(Name: 'John Smith').where(LastModifiedDate: :Yesterday).take
+
+==== query and get records
+  contacts = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).all # get all records that is modified yesterday
 
 ==== child-parent relationship
   contact = Contact.select(:Id, :Name, "Account.Name").where(Name: 'Akin Kristen').take
