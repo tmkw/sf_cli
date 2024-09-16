@@ -127,9 +127,9 @@ then,
   Account.select(:Id, :Name).where(:Name, :LIKE, "%OIL%").all                    # SELECT Id, Name FROM Account WHERE Name LIKE '%OIL%'
 
 ==== get schema
-schema = Account.describe
-schema.name # Account
-schema.field_names # [Id, Name, ....]
+  schema = Account.describe
+  schema.name # Account
+  schema.field_names # [Id, Name, ....]
 
 == Documents
 The following steps generate *doc* directory, which all documents are generated in.
