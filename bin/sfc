@@ -2,10 +2,6 @@
 
 require 'rake'
 
-rakefile = File.expand_path('../irb.rake', __FILE__)
-
-Rake.application.add_loader("rake", Rake::DefaultLoader.new)
-Rake.application.add_import(rakefile)
-Rake.application.load_imports
 Rake.application.init
+Rake.application.define_task(Rake::Task, :default) { system('irb -r sf_cli/sf/console') }
 Rake.application.top_level

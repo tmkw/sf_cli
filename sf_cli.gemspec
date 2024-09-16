@@ -13,5 +13,7 @@ Gem::Specification.new do |s|
   s.metadata = {
     "homepage_url" => "https://github.com/tmkw/sf_cli"
   }
+  s.bindir = 'bin'
+  s.executables << "sfc"
 end
 
