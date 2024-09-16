@@ -102,8 +102,4 @@ RSpec.configure do |config|
   config.when_first_matching_example_defined(:model) do
     require_relative 'support/model_class'
   end
-
-  config.when_first_matching_example_defined(:model_definition) do
-    require_relative 'support/model_definition'
-  end
 end

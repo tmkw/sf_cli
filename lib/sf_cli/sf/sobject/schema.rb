@@ -16,13 +16,17 @@ module SfCli
           @name ||= schema['name']
         end
 
+        def label
+          @label ||= schema['label']
+        end
+
         def field_names
           @field_names ||= schema['fields'].map{|f| f['name'].to_sym}
         end
 
         def fields
           @field_map ||= schema['fields'].each_with_object({}) do |f, h|
-            h[f['name']] = f
+            h[f['name'].to_sym] = f
           end
         end
 

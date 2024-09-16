@@ -1,6 +1,6 @@
 require_relative '../../../support/shared_examples/query_condition_example'
 
-RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition', :model_definition do
+RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
   QueryContditionTestClass = Struct.new(:a, :b)
 
   let(:query_condition) { SfCli::Sf::Model::QueryMethods::QueryCondition.new(connection, klass.name, field_names) }

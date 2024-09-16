@@ -7,8 +7,8 @@ RSpec.describe 'SfCli::Sf::Sobject' do
 
       schema = sobject.describe 'Account'
 
-      expect(schema['label']).to eq 'Test Custom Object'
-      expect(schema['name']).to eq 'TestCustomObject__c'
+      expect(schema.label).to eq 'Test Custom Object'
+      expect(schema.name).to eq 'TestCustomObject__c'
 
       expect(sobject).to have_received :exec
     end
