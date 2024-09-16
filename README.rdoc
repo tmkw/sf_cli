@@ -126,6 +126,11 @@ then,
   Contact.select(:Id, :Name).where(:LastModifiedDate, :>=, :"LAST_N_DAYS:5").all # SELECT Id, Name FROM Contact WHERE LastModifiedDate >= LAST_N_DAYS:5
   Account.select(:Id, :Name).where(:Name, :LIKE, "%OIL%").all                    # SELECT Id, Name FROM Account WHERE Name LIKE '%OIL%'
 
+==== get schema
+schema = Account.describe
+schema.name # Account
+schema.field_names # [Id, Name, ....]
+
 == Documents
 The following steps generate *doc* directory, which all documents are generated in.
   $ git clone https://github.com/tmkw/sf_cli.git
