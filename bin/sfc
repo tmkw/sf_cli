@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require 'rake'
+
+rakefile = File.expand_path('../irb.rake', __FILE__)
+
+Rake.application.add_loader("rake", Rake::DefaultLoader.new)
+Rake.application.add_import(rakefile)
+Rake.application.load_imports
+Rake.application.init
+Rake.application.top_level
