@@ -14,6 +14,10 @@ module SfCli
           def connection=(conn)
             @connection = conn
           end
+
+          def describe
+            connection.describe(name.to_sym)
+          end
         end
 
         def initialize(attributes = {})

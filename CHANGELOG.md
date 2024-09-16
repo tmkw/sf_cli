@@ -1,19 +1,25 @@
+## 0.0.6 - 2024-09-16
+- NEW: Object Model Support renewal;
+  - `SfCli::Sf::Model.connection` represents the connection to Salesforce. It can be set by `set_connection` class method in the module. As of now there is only `SfCommandConnection`, which is based on sf command, as connection adapter. After the connection is set by `set_connection`, it is also automatically set to classes when `SfCli::Sf::Model.generate` method is called.
+  - Each object model class has `create` class method for creating a new record.
+  - Each object model has `#save` and `#delete` instance methods to create, update and delete the record it represents.
+  - Each object class has query interface such as `where`, `select`, `limit` and `order` methods that can be chainable.
+  - Each object class has query interface such as `find`, `all`, `take` and `pluck`.
+- CHANGE: `sf.sobject.describe` changed to return `schema` object.
 ## 0.0.5 - 2024-09-08
-- target CLI version is changed: from 2.54.6 to 2.56.7
-- sf data:
-  - add `--bulk` option to query
-  - add query resume
-  - add upsert bulk
-  - add upsert resume
-  - add delete bulk
-  - add delete resume
-  - add resume
-  - add search
-- sf org:
-  - add list
-  - add login access-token
-  - add `--browser` option to login web
-
+- CHANGE: target CLI version is changed: from 2.54.6 to 2.56.7
+- NEW: new command features are added;
+  - `--bulk` option to `sf.data.query`
+  - `sf.data.query_resume`
+  - `sf.data.upsert_bulk`
+  - `sf.data.upsert_resume`
+  - `sf.data.delete_bulk`
+  - `sf.data.delete_resume`
+  - `sf.data.resume`
+  - `sf.data.search`
+  - `sf.org.list`
+  - `sf.login_access_token`
+  - `--browser` option to `sf.login_web`
 ## 0.0.4 - 2024-09-02
 - breaking change:
   - Sf class doesn't exist anymore. You can not write like `sf = SfCli::Sf.new`. Instead of that,  global `sf` method is introduced. You can directly type like `sf.org.display`, which is as almost same usability as the original command. 

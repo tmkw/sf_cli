@@ -41,7 +41,7 @@ module SfCli
                               o
                             end
                           end
-                        %|(#{candidates.join(', ')})|
+                        %|IN (#{candidates.join(', ')})|
                       else
                         expr[2]
                       end

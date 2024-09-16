@@ -12,11 +12,18 @@ module SfCli
       class Core
         include ::SfCli::Sf::Core::Base
 
-        # returns a hash object containing the Salesforce object schema
+        # returns a schema object containing the Salesforce object schema
         #
         # *objectType* --- object type (ex: Account)<br>
         #
         # *target_org* --- an alias of paticular org, or username can be used<br>
+        #
+        # ======
+        #   schema = sf.sobject.describe :Account
+        #   schema.name  # Account
+        #   schema.label # Account
+        #   schema.field_names # [:Id, :Name, ....]
+        #   schema.fields[:Name] # => {"aggregatable"=>true, "aiPredictionField"=>false, "autoNumber"=>false,...}
         #
         # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm#cli_reference_sobject_describe_unified]
         #

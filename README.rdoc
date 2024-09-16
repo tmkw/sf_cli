@@ -1,4 +1,4 @@
-= Salesforce CLI library
+= Salesforce CLI library for Ruby
 https://badge.fury.io/rb/sf_cli.png
 
 This is a class library for introducing {Salesforce CLI}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm] to Ruby scripting.<br>
@@ -10,10 +10,10 @@ Salesforce CLI must be installed.<br>
 As of as of September in 2024, ver.2.56.7 is the development target.
 
 == install
-=== Rubygem
+==== Rubygem
   $ gem install sf_cli
 
-=== Bundler
+==== Bundler
 in Gemfile:
   gem 'sf_cli'
 
@@ -48,19 +48,88 @@ then,
   sf.project.generate 'MyProject'
 
 == \Object Model support (experimental, since 0.0.4)
-  require 'sf_cli'
+=== generate Models
   require 'sf_cli/sf/model'
+  require 'sf_cli/sf/model/sf_command_connection'
 
-  # generates Model Class for Contact and Account
-  SfCli::Sf::Model.generate %w[Contact Account]
+  # first, you must prepare the connection
+  conn = SfCli::Sf::Model::SfCommandConnection.new target_org: your_org, instance_url: your_org_url
 
+  # then set it to Model module
+  SfCli::Sf::Model.set_connection conn
+
+  # generates some model classes (for example, Account and Contact)
+  SfCli::Sf::Model.generate %w[Account Contact]
+=== apply to sf command
+  rows = sf.data.query "SELECT Id, Name FROM Contact WHERE Name = 'Akin Kristen'", model_class: Contact
+
+  # the array object contains Contact object instances
+  rows.size  # 1
+  rows.first # <Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen">
+  rows.first.Name # Akin Kristen
+
+=== using models Independently
+==== initialize and save a record
   c = Contact.new(:Name => "John Smith")
-  c.Name # => "John Smith"
+  c.Name # "John Smith"
+  c.save
 
-  rows = sf.data.query 'SELECT Id, Name, Account.Name From Contact Limit 3', model_class: Contact
-  rows.size # => 3
-  rows.first.Name # => Name of the Contact
-  rows.first.Account.Name # => Name of the Account
+==== find and update a record
+  # find by record ID and update
+  c2 = Contact.find(c.id)
+  c2.Name = "Johnny Smith"
+  c2.save # update
+
+==== delete a record
+  c2 = Contact.find(c.id)
+  c2.delete
+
+==== query and get a record
+  contact = Contact.select(:Id, :Name).where(Name: 'Akin Kristen').take
+  contact # => #<Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen">
+  contact.Name # Akin Kristen
+
+==== query and get records
+  contacts = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).all # get all records that is modified yesterday
+
+  # these 2 example are the same meaning
+  Contact.select(Name).where(Name: 'John Smith', LastModifiedDate: :Yesterday).take
+  Contact.select(Name).where(Name: 'John Smith').where(LastModifiedDate: :Yesterday).take
+
+==== child-parent relationship
+  contact = Contact.select(:Id, :Name, "Account.Name").where(Name: 'Akin Kristen').take
+  contact # <Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen", @Account= #<Account @Name="Aethna Home Products">>
+  contact.Account.Name # Aethna Home Products
+
+==== parent-children relationship
+  account = Account.select(:Id, :Name, "(SELECT Name FROM Contacts)").take
+  account # <Account @Contacts=[#<Contact @Name="Akin Kristen">], @Id="0015j00001dsDuhAAE", @Name="Aethna Home Products">
+  account.Name             # Aethna Home Products
+  rows.Contacts            # [#<Contact @Name="Akin Kristen">]
+  rows.Contacts.first.Name # Akin Kristen
+
+==== get all fields in a record
+  # just by not using 'select' method
+  contact = Contact.find(record_id) # <Contact @Id="...", @Name="...", other fields...>
+
+==== time keywords such as 'yesterday' or 'LAST_N_DAYS:N' with symbol style
+  Contact.select(:Name).where(LastModifiedDate: :Yesterday).take       # "SELECT Id, Name FROM Contact WHERE LastModifiedDate = Yesterday"
+  Contact.select(:Name).where(LastModifiedDate: :"LAST_N_DAYS:5").take # "SELECT Id, Name FROM Contact WHERE LastModifiedDate = LAST_N_DAYS:5"
+
+==== array for 'IN' keyword
+  Contact.select(:Name).where(Name: ['Jonny Good', 'John Smith']).all # same as "SELECT Name FROM Contact WHERE Name IN ('Jonny Good', 'John Smith')"
+
+==== using partial soql directly
+  Contact.select("Id, Name").where("LastModifiedDate = LAST_N_DAYS:5").all
+
+==== ternary style
+  Contact.select(:Id, :Name).where(:LastModifiedDate, :>=, :"LAST_N_DAYS:5").all # SELECT Id, Name FROM Contact WHERE LastModifiedDate >= LAST_N_DAYS:5
+  Account.select(:Id, :Name).where(:Name, :LIKE, "%OIL%").all                    # SELECT Id, Name FROM Account WHERE Name LIKE '%OIL%'
+
+==== get schema
+  schema = Account.describe
+  schema.name # Account
+  schema.field_names # [Id, Name, ....]
 
 == Documents
 The following steps generate *doc* directory, which all documents are generated in.
