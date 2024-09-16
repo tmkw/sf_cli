@@ -4,10 +4,10 @@ RSpec.describe 'sf sobject describe' do
   it "returns the schema infromation of an Object" do
     allow_any_instance_of(SfCli::Sf::Sobject::Core).to receive(:`).with('sf sobject describe --sobject TestCustomObject__c --json 2> /dev/null').and_return(command_response)
 
-    result = sf.sobject.describe 'TestCustomObject__c'
+    schema = sf.sobject.describe 'TestCustomObject__c'
 
-    expect(result['label']).to eq 'Test Custom Object'
-    expect(result['name']).to eq 'TestCustomObject__c'
+    expect(schema.label).to eq 'Test Custom Object'
+    expect(schema.name).to eq 'TestCustomObject__c'
   end
 
   it 'can retrieve a object information in a paticular org, not default one' do

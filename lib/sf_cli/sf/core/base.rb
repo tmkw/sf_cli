@@ -1,3 +1,5 @@
+require 'json'
+
 module SfCli
   module Sf
     module Core

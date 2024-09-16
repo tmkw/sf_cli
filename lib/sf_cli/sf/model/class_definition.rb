@@ -1,4 +1,6 @@
-require_relative './schema'
+require_relative './base_methods'
+require_relative './dml_methods'
+require_relative './query_methods'
 
 module SfCli
   module Sf
@@ -7,58 +9,25 @@ module SfCli
         attr_reader :schema
 
         def initialize(schema)
-          @schema = Schema.new(schema)
+          @schema = schema
         end
 
         def to_s
           <<~Klass
             Class.new do
+              include ::SfCli::Sf::Model::BaseMethods
+              include ::SfCli::Sf::Model::DmlMethods
+              include ::SfCli::Sf::Model::QueryMethods
+
+              attr_reader :original_attributes, :current_attributes, :updated_attributes
+
               #{ class_methods }
 
-              field_names.each do |name|
-                attr_accessor name
-              end
-
+              #{ field_attribute_methods  }
               #{ parent_relation_methods }
               #{ children_relation_methods }
-
-              #{ define_initialize }
-
-              #{ define_to_h }
             end
           Klass
-        end
-
-        def define_initialize
-          <<~EOS
-            def initialize(attributes = {})
-              attributes.each do |k, v|
-                field_name = k.to_sym
-                if self.class.field_names.include?(field_name)
-                  #instance_variable_set ('@' + field_name.to_s).to_sym, v
-                  __send__ (field_name.to_s + '='), v
-                elsif self.class.parent_relations.find{|r| r[:name] == field_name}
-                  __send__ (field_name.to_s + '='), v
-                elsif self.class.children_relations.find{|r| r[:name] == field_name}
-                  __send__ (field_name.to_s + '='), (v.nil? ? [] : v)
-                end
-              end
-            end
-          EOS
-        end
-
-        def define_to_h
-          <<~EOS
-            def to_h(keys: nil)
-              self.class.field_names.each_with_object({}) do |name, hash|
-                if keys&.instance_of?(Array)
-                  hash[name] = __send__(name) if keys.include?(name)
-                else
-                  hash[name] = __send__(name)
-                end
-              end
-            end
-          EOS
         end
 
         def class_methods
@@ -79,6 +48,28 @@ module SfCli
           EOS
         end
 
+        def field_attribute_methods
+          schema.field_names.each_with_object('') do |name, s|
+            s << <<~EOS
+              def #{name}
+                @#{name}
+              end
+
+              def #{name}=(value)
+                @#{name} = value
+                return if %i[Id LastModifiedDate IsDeleted SystemModstamp CreatedById CreatedDate LastModifiedById].include?(:#{name})
+
+                current_attributes[:#{name}] = value
+                if current_attributes[:#{name}] == original_attributes[:#{name}]
+                  updated_attributes[:#{name}] = nil
+                else
+                  updated_attributes[:#{name}] = value
+                end
+              end
+            EOS
+          end
+        end
+
         def parent_relation_methods
           schema.parent_relations.each_with_object('') do |r, s|
             s << <<~EOS
@@ -87,7 +78,7 @@ module SfCli
               end
 
               def #{r[:name]}=(attributes)
-                @#{r[:name]} = #{r[:class_name]}.new(attributes)
+                @#{r[:name]} = attributes.nil? ? nil : #{r[:class_name]}.new(attributes)
               end
             EOS
           end

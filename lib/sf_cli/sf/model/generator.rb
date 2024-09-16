@@ -1,25 +1,26 @@
-require_relative '../sobject/core'
 require_relative './class_definition'
 
 module SfCli
   module Sf
     module Model
       class Generator
-        attr_reader :sf_sobject, :target_org
+        attr_reader :sf_sobject, :connection
 
-        def initialize(target_org: nil)
-          @sf_sobject = ::SfCli::Sf::Sobject::Core.new
-          @target_org = target_org
+        def initialize(connection)
+          @connection = connection
         end
 
         def generate(object_name)
-          class_definition = ClassDefinition.new(describe object_name)
+          schema = describe(object_name)
+          class_definition = ClassDefinition.new(schema)
 
           instance_eval "::#{object_name} = #{class_definition}"
+          klass = Object.const_get object_name.to_sym
+          klass.connection = connection
         end
 
         def describe(object_name)
-          sf_sobject.describe object_name, target_org: target_org
+          connection.describe object_name
         end
       end
     end
