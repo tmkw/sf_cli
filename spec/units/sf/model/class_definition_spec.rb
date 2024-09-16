@@ -1,4 +1,10 @@
 RSpec.describe 'SfCli::Sf::Model::ClassDefinition', :model_definition do
+  let(:schema) { SfCli::Sf::Sobject::Schema.new(sobject_schema) }
+  let(:parent_schema) { SfCli::Sf::Sobject::Schema.new(sobject_parent_schema) }
+  let(:child_schema) { SfCli::Sf::Sobject::Schema.new(sobject_child_schema) }
+  let(:schema_with_parent_relation) { SfCli::Sf::Sobject::Schema.new(sobject_schema_with_parent_relation) }
+  let(:schema_with_children_relation) { SfCli::Sf::Sobject::Schema.new(sobject_schema_with_children_relation) }
+
   describe '#to_s' do
     it 'returns a new Class definition' do
       definition = SfCli::Sf::Model::ClassDefinition.new(schema)
@@ -89,7 +95,7 @@ RSpec.describe 'SfCli::Sf::Model::ClassDefinition', :model_definition do
     end
   end
 
-  def schema
+  def sobject_schema
     {
       "name" => 'Hoge__c',
       "custom" => true,
@@ -101,7 +107,7 @@ RSpec.describe 'SfCli::Sf::Model::ClassDefinition', :model_definition do
     }
   end
 
-  def parent_schema
+  def sobject_parent_schema
     {
       "name" => 'Bar__c',
       "custom" => true,
@@ -113,7 +119,7 @@ RSpec.describe 'SfCli::Sf::Model::ClassDefinition', :model_definition do
     }
   end
 
-  def child_schema
+  def sobject_child_schema
     {
       "name" => 'Foo__c',
       "custom" => true,
@@ -125,7 +131,7 @@ RSpec.describe 'SfCli::Sf::Model::ClassDefinition', :model_definition do
     }
   end
 
-  def schema_with_parent_relation
+  def sobject_schema_with_parent_relation
     {
       "name" => 'Hoge__c',
       "custom" => true,
@@ -138,7 +144,7 @@ RSpec.describe 'SfCli::Sf::Model::ClassDefinition', :model_definition do
     }
   end
 
-  def schema_with_children_relation
+  def sobject_schema_with_children_relation
     {
       "name" => 'Hoge__c',
       "custom" => true,

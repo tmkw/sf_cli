@@ -1,6 +1,6 @@
 module SfCli
   module Sf
-    module Model
+    module Sobject
       class Schema
         attr_reader :schema
 

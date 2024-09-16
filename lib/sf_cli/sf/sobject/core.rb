@@ -1,4 +1,5 @@
 require_relative '../core/base'
+require_relative './schema'
 
 module SfCli
   module Sf
@@ -25,7 +26,7 @@ module SfCli
             :"target-org" => target_org,
           }
           json = exec(__method__, flags: flags, redirection: :null_stderr)
-          json['result']
+          Schema.new(json['result'])
         end
 
         # returns a list of Salesforce object name

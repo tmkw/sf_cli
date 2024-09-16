@@ -1,4 +1,3 @@
-require_relative './schema'
 require_relative './base_methods'
 require_relative './dml_methods'
 require_relative './query_methods'
@@ -10,7 +9,7 @@ module SfCli
         attr_reader :schema
 
         def initialize(schema)
-          @schema = Schema.new(schema)
+          @schema = schema
         end
 
         def to_s
