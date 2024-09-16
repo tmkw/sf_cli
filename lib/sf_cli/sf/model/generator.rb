@@ -1,4 +1,3 @@
-require_relative '../sobject/core'
 require_relative './class_definition'
 
 module SfCli
@@ -9,11 +8,11 @@ module SfCli
 
         def initialize(connection)
           @connection = connection
-          @sf_sobject = ::SfCli::Sf::Sobject::Core.new
         end
 
         def generate(object_name)
-          class_definition = ClassDefinition.new(describe object_name)
+          schema = describe(object_name)
+          class_definition = ClassDefinition.new(schema)
 
           instance_eval "::#{object_name} = #{class_definition}"
           klass = Object.const_get object_name.to_sym
@@ -21,7 +20,7 @@ module SfCli
         end
 
         def describe(object_name)
-          sf_sobject.describe object_name, target_org: connection.target_org
+          connection.describe object_name
         end
       end
     end
