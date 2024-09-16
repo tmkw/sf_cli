@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "sf_cli"
-  s.version     = "0.0.6"
+  s.version     = "0.0.7.beta2"
   s.summary     = "A library for using Salesforce CLI in Ruby"
   s.description = "This is a class library for introducing Salesforce CLI to Ruby scripting. Currenty only sf command is the target of development."
   s.authors     = ["Takanobu Maekawa"]
@@ -13,5 +13,7 @@ Gem::Specification.new do |s|
   s.metadata = {
     "homepage_url" => "https://github.com/tmkw/sf_cli"
   }
+  s.bindir = 'bin'
+  s.executables << "sfc"
 end
 
