@@ -14,7 +14,7 @@ module SfCli
     class Main
       include Singleton
 
-      OPERATION_CATEGORIES = %w[Org Sobject Data Project]
+      OPERATION_CATEGORIES = %w[Org Sobject Data Project Apex]
 
       OPERATION_CATEGORIES.each do |category|
         require_relative %(#{category.downcase}/core)
