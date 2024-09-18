@@ -1,6 +1,7 @@
 require 'sf_cli'
 require 'sf_cli/sf/model'
 require 'sf_cli/sf/model/sf_command_connection'
+require 'stringio'
 
 def sf_init(org_alias)
   org_info = sf.org.display target_org: org_alias
@@ -18,6 +19,10 @@ end
 
 def target_org
   connection.target_org
+end
+
+def apex(apex_code)
+  sf.apex.run target_org: target_org, file: StringIO.new(apex_code)
 end
 
 alias :sfinit :sf_init
