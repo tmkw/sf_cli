@@ -35,11 +35,13 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
     let(:rows) { [row1, row2] }
 
     before do
+      allow(query_condition).to receive(:limit).with(1).and_return(query_condition)
       allow(query_condition).to receive(:all).and_return(rows)
     end
 
     it "returns a values of paticular field" do
       expect(query_condition.take).to eq row1
+      expect(query_condition).to have_received :limit
       expect(query_condition).to have_received :all
     end
   end

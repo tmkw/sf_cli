@@ -28,7 +28,7 @@ Class Library Reference::
       $ cd sf_cli
       $ bundle install
       $ bundle exec rake rdoc
-    *As* *of* *now*, *this* *is* *better* *to* *know* *what* *it* *is* *exactly*.
+    *As* *of* *0.0.7*, *this* *may* *be* *better* *to* *know* *what* *it* *is* *exactly*.
 Salesforce CLI and Sf command::
     1. {Salesforce CLI reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm]
     2. {sf command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm]
@@ -76,3 +76,4 @@ As of now, there is experimental support for object model in Salesforce.
 ===== Doing the same thing with model independently
   contact = Contact.select(:Id, :Name).where(Name: 'Akin Kristen').take
   contact.Name # Akin Kristen
+For more details, take a look at {the object model section}[link://files/rdoc/ObjectModel_rdoc.html]

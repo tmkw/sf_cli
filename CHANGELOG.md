@@ -1,3 +1,5 @@
+## 0.0.7 - 2024-09-19
+- NEW: add `sf.apex.run`
 ## 0.0.6 - 2024-09-16
 - NEW: Object Model Support renewal;
   - `SfCli::Sf::Model.connection` represents the connection to Salesforce. It can be set by `set_connection` class method in the module. As of now there is only `SfCommandConnection`, which is based on sf command, as connection adapter. After the connection is set by `set_connection`, it is also automatically set to classes when `SfCli::Sf::Model.generate` method is called.

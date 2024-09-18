@@ -123,7 +123,7 @@ module SfCli
           end
 
           def take
-            all.first
+            limit(1).all.first
           end
 
           def select_fields
