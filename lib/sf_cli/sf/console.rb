@@ -29,3 +29,5 @@ alias :sfinit :sf_init
 alias :gen    :generate
 alias :conn   :connection
 alias :org    :target_org
+
+sfinit ARGV[0]
