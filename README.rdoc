@@ -12,12 +12,12 @@ As of as of September in 2024, ver.2.56.7 is the development target.
 == install
 Rubygem::
     the simplest way:
-        $ gem install sf_cli
+      $ gem install sf_cli
 Bundler::
     in Gemfile:
-        gem 'sf_cli'
+      gem 'sf_cli'
     then,
-        $ bundle install
+      $ bundle install
 == Documents
 Class Library Reference::
     {Online document}[https://www.rubydoc.info/gems/sf_cli/0.0.7] at rubygems.org
@@ -28,51 +28,49 @@ Class Library Reference::
       $ cd sf_cli
       $ bundle install
       $ bundle exec rake rdoc
-    *As* *of* *now*, *this* *is* *better* *to* *know* *what* *it* *is* *exactly*.
 Salesforce CLI and Sf command::
     1. {Salesforce CLI reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm]
     2. {sf command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm]
 
-== Short Examples
+== Usage
+Load module
   require 'sf_cli'
 
-  # login to org
+Login to org
   sf.org.login_web
 
-  # get salesforce object schema 
+Get Salesforce Object schema 
   sf.sobject.describe :Account
 
-  # get a record
+Get a record
   sf.data.get_record :Account, record_id: 'xxxxxxx'
   sf.data.get_record :Account, where: {Name: 'Jonny B.Good', Country: 'USA'}
 
-  # execute soql
+Execute soql
   sf.data.query "SELECT Id, Name FROM Account LIMIT 1" # => [{Id: "abc", Name: "account name"}]
 
-  # create a record
+Create a record
   sf.data.create_record :TheCustomObject__c, values: {Name: "John Smith", Age: 33}
 
-  # update a record
+Update a record
   sf.data.update_record :Account, record_id: 'xxxxxxx', values: {Name: 'New Account Name'}
   sf.data.update_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}, values: {Phone: 'xxxxx', bar: 2000}
 
-  # delete a record
+Delete a record
   sf.data.delete_record :Hoge__c, record_id: 'xxxxxxx'
   sf.data.delete_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}
 
-  # using Bulk API 2.0
+Using Bulk API 2.0
   sf.data.upsert_bulk sobject: :TestCustomObject__c, file: 'upsert.csv', timeout: 5  # waiting for 5 minutes at maximum
 
-  # run Apex
+Run Apex
   sf.apex.run file: 'path/to/file'
   sf.apex.run file: StringIO.new("System.debug('Hello World')")
-== \Object Model Support
-As of now, there is experimental support for object model in Salesforce.
-=== Short examples
-===== With sf command:
+== Object Model Support (experimental)
+With sf command:
   rows = sf.data.query "SELECT Id, Name FROM Contact WHERE Name = 'Akin Kristen'", model_class: Contact
   rows.first      # <Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen">
   rows.first.Name # Akin Kristen
-===== Doing the same thing with model independently
+Doing the same thing independently:
   contact = Contact.select(:Id, :Name).where(Name: 'Akin Kristen').take
   contact.Name # Akin Kristen
