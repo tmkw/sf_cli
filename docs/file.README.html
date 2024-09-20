@@ -63,10 +63,17 @@
 <p><img src="https://badge.fury.io/rb/sf_cli.png" /></p>
 
 <p>This is a class library for introducing <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm">Salesforce CLI</a> to Ruby scripting.<br> It is designed to be similar usability to the original command.<br> Currently only <strong>sf</strong> command is the target of development.</p>
+<dl class="rdoc-list label-list"><dt>rubygems
+<dd>
+<p><a href="https://rubygems.org/gems/sf_cli">rubygems.org/gems/sf_cli</a></p>
+</dd><dt>official document
+<dd>
+<p><a href="https://tmkw.github.io/sf_cli">tmkw.github.io/sf_cli</a>/</p>
+</dd></dl>
 
 <h2 id="label-prerequisite">prerequisite</h2>
 
-<p>Salesforce CLI must be installed.<br> As of as of September in 2024, ver.2.56.7 is the development target.</p>
+<p><a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm">Salesforce CLI</a> must be installed.<br> As of as of September in 2024, ver.2.56.7 is the development target.</p>
 
 <h2 id="label-install">install</h2>
 <dl class="rdoc-list note-list"><dt>Rubygem
@@ -86,26 +93,6 @@
 
 <pre class="code ruby"><code class="ruby">$ bundle install
 </code></pre>
-</dd></dl>
-
-<h2 id="label-Documents">Documents</h2>
-<dl class="rdoc-list note-list"><dt>Class Library Reference
-<dd>
-<p><a href="https://www.rubydoc.info/gems/sf_cli/0.0.7">Online document</a> at rubygems.org</p>
-
-<p>Or, Generate locally:</p>
-
-<pre class="code ruby"><code class="ruby">$ git clone https://github.com/tmkw/sf_cli.git
-$ cd sf_cli
-$ bundle install
-$ bundle exec rake rdoc
-</code></pre>
-</dd><dt>Salesforce CLI and Sf command
-<dd><ol><li>
-<p><a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm">Salesforce CLI reference</a></p>
-</li><li>
-<p><a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm">sf command reference</a></p>
-</li></ol>
 </dd></dl>
 
 <h2 id="label-Usage">Usage</h2>
@@ -131,7 +118,7 @@ $ bundle exec rake rdoc
 <span class='id identifier rubyid_sf'><span class='object_link'><a href="top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_get_record'>get_record</span> <span class='symbol'>:Account</span><span class='comma'>,</span> <span class='label'>where:</span> <span class='lbrace'>{</span><span class='label'>Name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Jonny B.Good</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>Country:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>USA</span><span class='tstring_end'>&#39;</span></span><span class='rbrace'>}</span>
 </code></pre>
 
-<p>Execute soql</p>
+<p>Execute SOQL</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_sf'><span class='object_link'><a href="top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT Id, Name FROM Account LIMIT 1</span><span class='tstring_end'>&quot;</span></span> <span class='comment'># =&gt; [{Id: &quot;abc&quot;, Name: &quot;account name&quot;}]
 </span></code></pre>
@@ -181,7 +168,7 @@ $ bundle exec rake rdoc
 </div></div>
 
       <div id="footer">
-  Generated on Sat Sep 21 04:42:16 2024 by
+  Generated on Sat Sep 21 05:42:54 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

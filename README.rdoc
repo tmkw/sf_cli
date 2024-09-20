@@ -5,33 +5,22 @@ This is a class library for introducing {Salesforce CLI}[https://developer.sales
 It is designed to be similar usability to the original command.<br>
 Currently only *sf* command is the target of development.
 
+[rubygems]          https://rubygems.org/gems/sf_cli
+[official document] https://tmkw.github.io/sf_cli/
+
 == prerequisite
-Salesforce CLI must be installed.<br>
+{Salesforce CLI}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm] must be installed.<br>
 As of as of September in 2024, ver.2.56.7 is the development target.
 
 == install
 Rubygem::
-    the simplest way:
-      $ gem install sf_cli
+  the simplest way:
+    $ gem install sf_cli
 Bundler::
-    in Gemfile:
-      gem 'sf_cli'
-    then,
-      $ bundle install
-== Documents
-Class Library Reference::
-    {Online document}[https://www.rubydoc.info/gems/sf_cli/0.0.7] at rubygems.org
-
-    Or,
-    Generate locally:
-      $ git clone https://github.com/tmkw/sf_cli.git
-      $ cd sf_cli
-      $ bundle install
-      $ bundle exec rake rdoc
-Salesforce CLI and Sf command::
-    1. {Salesforce CLI reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm]
-    2. {sf command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm]
-
+  in Gemfile:
+    gem 'sf_cli'
+  then,
+    $ bundle install
 == Usage
 Load module
   require 'sf_cli'
@@ -46,7 +35,7 @@ Get a record
   sf.data.get_record :Account, record_id: 'xxxxxxx'
   sf.data.get_record :Account, where: {Name: 'Jonny B.Good', Country: 'USA'}
 
-Execute soql
+Execute SOQL
   sf.data.query "SELECT Id, Name FROM Account LIMIT 1" # => [{Id: "abc", Name: "account name"}]
 
 Create a record
