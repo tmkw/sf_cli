@@ -1,8 +1,8 @@
-## 0.0.8 - 2024-09-20
-Maintenance Release: no additional functions
+## 0.0.8 - 2024-09-21
+Maintenance Release: document enhancement
+
 - CHANGE: document generator change from hanna-rdoc to yard
-- NEW: new online document page:
-  - This must be done because document generation at rubygems.org(RubyDoc.info) is neither stable nor controllable to build documents.
+- NEW: new online document page: https://tmkw.github.io/sf_cli/
 ## 0.0.7 - 2024-09-19
 - NEW: add `sf.apex.run`
 ## 0.0.6 - 2024-09-16
