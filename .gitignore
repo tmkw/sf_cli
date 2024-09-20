@@ -1,5 +1,6 @@
 sf_cli-*.gem
 tmp/*
+doc
 *.swp
 .byebug_history
 .bundle

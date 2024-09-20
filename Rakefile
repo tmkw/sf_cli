@@ -1,8 +1,12 @@
 require 'yard'
+require 'fileutils'
 
 desc 'generate documents'
-YARD::Rake::YardocTask.new do |t, args|
+YARD::Rake::YardocTask.new do |t|
   t.options = ['--no-private'] if ENV['SFCLI_DOC'].nil?
+  t.after = Proc.new do
+    FileUtils.mv('doc', 'docs')
+  end
 end
 
 desc 'execute irb for sf_cli'
