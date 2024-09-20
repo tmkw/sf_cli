@@ -2,15 +2,15 @@ require_relative './bulk_result_v2'
 
 module SfCli::Sf::Data
   module DeleteResume
-    # resume a bulk delete job you previously started with Bulk API 2.0 and return a bulk result object.
+    # Resume a bulk delete job you previously started with Bulk API 2.0 and return a bulk result object.
     #
-    # *job_id* ---  job ID you want to resume<br>
+    # @param job_id     [String]         job ID you want to resume<br>
+    # @param timeout    [Integer]        max minutes to wait for the job complete the task.<br>
+    # @param target_org [Symbol, String] an alias of paticular org, or username can be used<br>
     #
-    # *timeout* --- max minutes to wait for the job complete the task.<br>
+    # @return [JobInfo, BulkResultV2] the job result, whose type is changed by situation
     #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # ======
+    # @example
     #   # start a delete job
     #   jobinfo = sf.data.delete_bulk sobject: :TestCustomObject__c, file: 'delete.csv' # this returns immediately
     #   jobinfo.id  # => "750J4000003g1OaIAI" it's job ID
@@ -22,9 +22,7 @@ module SfCli::Sf::Data
     #
     #   puts 'yey!' if result.job_info.completed? # the job has completed
     #
-    # To know more about a job result, take a look at SfCli::Sf::Data module
-    #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_resume_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_resume_unified the command reference
     #
     def delete_resume(job_id:, timeout: nil, target_org: nil)
       flags = {

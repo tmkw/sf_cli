@@ -5,6 +5,7 @@ require_relative './query_methods'
 module SfCli
   module Sf
     module Model
+      # @private :nodoc: just for developers
       class ClassDefinition
         attr_reader :schema
 

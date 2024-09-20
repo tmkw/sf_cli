@@ -49,12 +49,12 @@ module SfCli::Sf::Data
     end
 
     # View the status of a bulk job.
+    # @param job_id     [String]        job ID you want to resume
+    # @param target_org [Symbol,String] an alias of paticular org, or username can be used
     #
-    # *job_id* ---  job ID you want to resume<br>
+    # @return [JobInfo] job information
     #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # ======
+    # @example
     #   # start a delete job
     #   jobinfo = sf.data.delete_bulk sobject: :TestCustomObject__c, file: 'delete.csv' # this returns immediately
     #   jobinfo.id  # => "750J4000003g1OaIAI" it's job ID
@@ -69,9 +69,9 @@ module SfCli::Sf::Data
     # - in_progress?
     # - completed?
     #
-    # To know job status more, take a look at {the bulk API developer guide}[https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/bulk_api_2_job_states.htm]
+    # To know job status more, take a look at {https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/bulk_api_2_job_states.htm the bulk API developer guide}
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_resume_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_resume_unified command reference
     #
     def resume(job_id:, target_org: nil)
       flags = {

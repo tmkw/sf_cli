@@ -1,6 +1,7 @@
 module SfCli
   module Sf
     module Model
+      # @private :nodoc: just for developers
       module DmlMethods
         def self.included(c)
           c.extend ClassMethods

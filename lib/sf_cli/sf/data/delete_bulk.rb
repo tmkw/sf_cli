@@ -2,17 +2,15 @@ require_relative './bulk_result_v2'
 
 module SfCli::Sf::Data
   module DeleteBulk
-    # delete records using Bulk API 2.0
+    # Delete records using Bulk API 2.0
+    # @param file       [String]         path of a CSV file, which is written record IDs to delete
+    # @param sobject    [Symbol, String] object type (ex. Account)
+    # @param timeout    [Integer]        max minutes to wait for the job complete the task.
+    # @param target_org [Symbol, String] an alias of paticular org, or username can be used
     #
-    # *file* --- a CSV file, which is written record IDs to delete<br>
+    # @return [JobInfo, BulkResultV2] the job result, whose type is changed by situation
     #
-    # *sobject* --- \Object Type (ex. Account)<br>
-    #
-    # *timeout* --- max minutes to wait for the job complete the task.<br>
-    #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # ======
+    # @example
     #   # start a delete job
     #   jobinfo = sf.data.delete_bulk sobject: :TestCustomObject__c, file: 'delete.csv' # this returns immediately
     #   jobinfo.id  # => "750J4000003g1OaIAI" it's job ID
@@ -23,7 +21,8 @@ module SfCli::Sf::Data
     #   # Or, you can wait for the job completion with one try.
     #   result = sf.data.delete_bulk sobject: :TestCustomObject__c, file: 'delete.csv', timeout: 5  # wait within 5 minutes
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_bulk_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_bulk_unified command reference
+    #
     #
     def delete_bulk(file:, sobject:, timeout: nil, target_org: nil)
       flags = {

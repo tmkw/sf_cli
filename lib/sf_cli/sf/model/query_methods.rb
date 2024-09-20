@@ -3,6 +3,7 @@ require_relative './query_condition'
 module SfCli
   module Sf
     module Model
+      # @private :nodoc: just for developers
       module QueryMethods
         def self.included(c)
           c.extend ClassMethods

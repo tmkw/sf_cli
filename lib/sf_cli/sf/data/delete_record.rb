@@ -1,20 +1,19 @@
 module SfCli::Sf::Data
   module DeleteRecord
-    # delete a object record.
+    # Delete a object record.
     #
-    # *object_type* --- \Object Type (ex. Account)<br>
+    # @param object_type [Symbol, String] Object Type (ex. Account)
+    # @param record_id   [String]         Id of the object
+    # @param where       [Hash]           conditions to identify a record
+    # @param target_org  [Symbol, String] an alias of paticular org, or username can be used
     #
-    # *record_id* --- id of the object<br>
+    # @return [String] ID that is deleted.
     #
-    # *where* --- hash object that is used to identify a record<br>
-    #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # ======
+    # @example
     #   sf.data.delete_record :Hoge__c, record_id: 'xxxxxxx'
     #   sf.data.delete_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_record_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_record_unified the command reference
     #
     def delete_record(object_type, record_id: nil, where: nil, target_org: nil)
       where_conditions = field_value_pairs(where)

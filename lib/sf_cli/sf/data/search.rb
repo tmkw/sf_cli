@@ -1,16 +1,15 @@
 module SfCli::Sf::Data
   module Search
-    # search objects using SOSL.
+    # Search objects using SOSL.
+    # @param sosl       [String]        SOSL
+    # @param target_org [Symbol,String] an alias of paticular org, or username can be used
+    # @param format     [Symbol,String] get the command's raw output. human, csv, json can be available.
     #
-    # *sosl* --- SOSL<br>
+    # @return [Hash] the search result
+    # @note if you choose csv as format, csv files are downloaded in current directory
     #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # *format* --- get the command's raw output. human, csv, json can be available. *NOTE*: if you choose csv, csv files are downloaded in current directory<br>
-    #
-    # ======
-    #  # example (in irb):
-    #
+    # @example
+    #  (in irb):
     #  > sf.data.search "FIND {TIM OR YOUNG OR OIL} IN Name Fields"
     #  =>
     #  {"Lead"=>["00Q5j00000WgEuDEAV"],
@@ -24,7 +23,7 @@ module SfCli::Sf::Data
     #     "0065j00001XHJLJAA5"],
     #   "User"=>["0055j00000CcL2bAAF", "0055j00000CcL1YAAV"]}
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_search_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_search_unified command reference
     #
     def search(sosl, target_org: nil, format: nil)
       flags = {

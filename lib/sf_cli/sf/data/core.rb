@@ -13,13 +13,12 @@ require_relative './search'
 
 module SfCli
   module Sf
+    #
+    # Data Command
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm command reference
+    #
     module Data
-      #
-      # ==== description
-      # The class representing *sf* *data*
-      #
-      # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm
-      #
+      # @private :nodoc: just for developers
       class Core
         include ::SfCli::Sf::Core::Base
         include Query
