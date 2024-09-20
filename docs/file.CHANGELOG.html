@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: CHANGELOG
+  
+    &mdash; Documentation by YARD 0.9.37
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "CHANGELOG";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: CHANGELOG</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h2 id="label-0.0.8+-+2024-09-20">0.0.8 - 2024-09-20</h2>
+
+<p>Maintenance Release: no additional functions - CHANGE: document generator change from hanna-rdoc to yard - NEW: new online document page: - This must be done because document generation at rubygems.org(RubyDoc.info) is neither stable nor controllable to build documents.</p>
+
+<h2 id="label-0.0.7+-+2024-09-19">0.0.7 - 2024-09-19</h2>
+<ul><li>
+<p>NEW: add <code>sf.apex.run</code></p>
+
+<h2 id="label-0.0.6+-+2024-09-16">0.0.6 - 2024-09-16</h2>
+</li><li>
+<p>NEW: Object Model Support renewal;</p>
+</li><li>
+<p><code>SfCli::Sf::Model.connection</code> represents the connection to Salesforce. It can be set by <code>set_connection</code> class method in the module. As of now there is only <code>SfCommandConnection</code>, which is based on sf command, as connection adapter. After the connection is set by <code>set_connection</code>, it is also automatically set to classes when <code>SfCli::Sf::Model.generate</code> method is called.</p>
+</li><li>
+<p>Each object model class has <code>create</code> class method for creating a new record.</p>
+</li><li>
+<p>Each object model has <code>#save</code> and <code>#delete</code> instance methods to create, update and delete the record it represents.</p>
+</li><li>
+<p>Each object class has query interface such as <code>where</code>, <code>select</code>, <code>limit</code> and <code>order</code> methods that can be chainable.</p>
+</li><li>
+<p>Each object class has query interface such as <code>find</code>, <code>all</code>, <code>take</code> and <code>pluck</code>.</p>
+</li><li>
+<p>CHANGE: <code>sf.sobject.describe</code> changed to return <code>schema</code> object.</p>
+
+<h2 id="label-0.0.5+-+2024-09-08">0.0.5 - 2024-09-08</h2>
+</li><li>
+<p>CHANGE: target CLI version is changed: from 2.54.6 to 2.56.7</p>
+</li><li>
+<p>NEW: new command features are added;</p>
+</li><li>
+<p><code>--bulk</code> option to <code>sf.data.query</code></p>
+</li><li>
+<p><code>sf.data.query_resume</code></p>
+</li><li>
+<p><code>sf.data.upsert_bulk</code></p>
+</li><li>
+<p><code>sf.data.upsert_resume</code></p>
+</li><li>
+<p><code>sf.data.delete_bulk</code></p>
+</li><li>
+<p><code>sf.data.delete_resume</code></p>
+</li><li>
+<p><code>sf.data.resume</code></p>
+</li><li>
+<p><code>sf.data.search</code></p>
+</li><li>
+<p><code>sf.org.list</code></p>
+</li><li>
+<p><code>sf.login_access_token</code></p>
+</li><li>
+<p><code>--browser</code> option to <code>sf.login_web</code></p>
+
+<h2 id="label-0.0.4+-+2024-09-02">0.0.4 - 2024-09-02</h2>
+</li><li>
+<p>breaking change:</p>
+</li><li>
+<p>Sf class doesn’t exist anymore. You can not write like <code>sf = SfCli::Sf.new</code>. Instead of that, global <code>sf</code> method is introduced. You can directly type like <code>sf.org.display</code>, which is as almost same usability as the original command.</p>
+</li><li>
+<p>sf data query:</p>
+</li><li>
+<p>support child-parent relationship</p>
+</li><li>
+<p>support parent-children relationship</p>
+</li><li>
+<p>add <code>--result-format</code> option</p>
+</li><li>
+<p>auto generation of Object Model (experimental)</p>
+</li><li>
+<p>generates SF Object Classes automatically</p>
+</li><li>
+<p>relationship is supported</p>
+</li></ul>
+
+<h2 id="label-0.0.3+-+2024-08-25">0.0.3 - 2024-08-25</h2>
+
+<p>add command operations:</p>
+<ul><li>
+<p>sf data get record</p>
+</li><li>
+<p>sf data create record</p>
+</li><li>
+<p>sf data update record</p>
+</li><li>
+<p>sf data delete record</p>
+</li></ul>
+
+<h2 id="label-0.0.2+-+2024-08-18">0.0.2 - 2024-08-18</h2>
+
+<p>this version up was made by mistake. nothing was changed.</p>
+
+<h2 id="label-0.0.1+-+2024-08-18">0.0.1 - 2024-08-18</h2>
+
+<p>support some command operations:</p>
+<ul><li>
+<p>sf org login web</p>
+</li><li>
+<p>sf display</p>
+</li><li>
+<p>sf data query</p>
+</li><li>
+<p>sf sobject describe</p>
+</li><li>
+<p>sf sobject list</p>
+</li><li>
+<p>sf project generate</p>
+</li><li>
+<p>sf project generate manifest</p>
+</li></ul>
+</div></div>
+
+      <div id="footer">
+  Generated on Sat Sep 21 04:42:16 2024 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.37 (ruby-3.3.4).
+</div>
+
+    </div>
+  </body>
+</html>
