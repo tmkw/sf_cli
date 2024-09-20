@@ -4,6 +4,7 @@ module SfCli
   module Sf
     module Model
       module QueryMethods
+        # @private :nodoc: just for developers
         class QueryCondition
           attr_reader :connection, :object_name, :all_field_names, :fields, :conditions, :limit_num, :row_order
 

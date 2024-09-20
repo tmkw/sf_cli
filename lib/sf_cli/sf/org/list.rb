@@ -29,23 +29,22 @@ module SfCli::Sf::Org
       end
     end
 
-    # \List orgs you’ve created or authenticated to
+    # List orgs you’ve created or authenticated to
     #
-    # ======
-    #   org_config_list = sf.org.list # returns a list of OrgConfig
+    # @note this function returns org information including security sensitive things such as access token, username and so on.
+    # @return [OrgConfig] the org configulation
     #
-    # \OrgConfig object has a org information including security sensitive things such as access token, username and so on.
+    # @example
+    #   org_config_list = sf.org.list        # returns a list of OrgConfig
     #
-    # It also has some methods to identify its org type:
-    # - devhub?
-    # - sandbox?
-    # - scratch?
-    # - default?
-    # - default_devhub?
+    #   org_config.first.accesstoken         # returns the access token
+    #   org_config.first.instance_url        # returns the org's url
     #
-    # and you can check the org connected like this:
-    #   org_config_list = sf.org.list # returns a list of OrgConfig
-    #   org_config.first.conncected?
+    #   org_config.first.conncected?         # check the connection status
+    #   org_config.first.devhub?             # check if the org is devhub or not
+    #   org_config.first.scratch?            # check if the org is scratch or not
+    #   org_config.first.default?            # check if the org is default or not
+    #   org_config.first.default_devhub?     # check if the org is devhub default or not
     #
     # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_unified]
     #

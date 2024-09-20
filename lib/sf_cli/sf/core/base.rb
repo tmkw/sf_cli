@@ -2,6 +2,7 @@ require 'json'
 
 module SfCli
   module Sf
+    # @private :nodoc: just for developers
     module Core
       module Base
         attr_reader :varbose

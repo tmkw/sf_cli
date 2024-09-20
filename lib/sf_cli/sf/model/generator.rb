@@ -3,8 +3,9 @@ require_relative './class_definition'
 module SfCli
   module Sf
     module Model
+      # @private :nodoc: just for developers
       class Generator
-        attr_reader :sf_sobject, :connection
+        attr_reader :connection
 
         def initialize(connection)
           @connection = connection

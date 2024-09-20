@@ -1,7 +1,6 @@
 module SfCli
   module Sf
     module Data
-      #
       # Bulk Job information.
       #
       # You can check the job status using the following method:
@@ -9,11 +8,11 @@ module SfCli
       # - upload_completed?
       # - in_progress?
       # - completed?
-      # ==== example:
+      # @example
       #   result = sf.data.delete_resume job_id: jobinfo.id
       #   puts 'yey!' if result.job_info.completed? # the job has completed
       #
-      # For more details, see {the guide document}[https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/bulk_api_2_job_states.htm]
+      # See Also: {https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/bulk_api_2_job_states.htm the guide document}
       #
       JobInfo = Struct.new(
         :id,

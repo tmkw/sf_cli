@@ -1,23 +1,20 @@
 module SfCli::Sf::Data
   module UpdateRecord
 
-    # update a object record.
-    #
-    # *object_type* --- \Object Type (ex. Account)<br>
-    #
-    # *record_id* --- id of the object<br>
-    #
-    # *where* --- field values that is used to identify a record<br>
-    #
-    # *values* --- field values for update<br>
-    #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # ==== examples
+    # Update a object record.
+    # @param object_type [Symbol,String] object type(ex. Account)
+    # @param record_id   [String]        ID of the object
+    # @param where       [Hash]          field values to identify a record
+    # @param values      [Hash]          field values for update
+    # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
+    # 
+    # @return [String] ID of the record updated 
+    # 
+    # @example
     #   sf.data.update_record :Account, record_id: 'xxxxxxx', values: {Name: 'New Account Name'}
     #   sf.data.update_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}, values: {Phone: 'xxxxx', bar: 2000}
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_update_record_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_update_record_unified command reference
     #
     def update_record(object_type, record_id: nil, where: nil, values: nil, target_org: nil)
       where_conditions  = field_value_pairs(where)

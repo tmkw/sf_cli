@@ -5,13 +5,13 @@ require_relative './list'
 
 module SfCli
   module Sf
+    #
+    # Org Commands
+    #
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm command reference
+    #
     module Org
-      #
-      # ==== description
-      # The class representing *sf* *org*.
-      #
-      # https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm
-      #
+      # @private :nodoc: just for developers
       class Core
         include ::SfCli::Sf::Core::Base
         include Login

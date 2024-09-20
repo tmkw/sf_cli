@@ -1,26 +1,24 @@
 module SfCli::Sf::Data
   module GetRecord
 
-    # get a object record. (eqivalent to *sf* *data* *get* *record*)
+    # Get a object record.
+    # @param object_type [Symbol,String] object type(ex. Account)
+    # @param record_id   [String]        id of the object
+    # @param where       [Hash]          conditions to identify a record
+    # @param target_org  [Symbol,String] an alias of paticular org, not default one
+    # @param model_class [Class]         the object model class
     #
-    # *object_type* --- \Object Type (ex. Account)<br>
+    # @return [Hash,Class] if proper model class is specified, the return value is the instance of the class. Otherwise, it's a Hash object.
     #
-    # *record_id* --- id of the object<br>
-    #
-    # *where* --- hash object that is used to identify a record<br>
-    #
-    # *target_org* --- an alias of paticular org, not default one<br>
-    #
-    # *model_class* --- the object model class<br>
-    #
-    # ======
+    # @example
     #   sf.data.get_record :Account, record_id: 'xxxxxxx'
     #   sf.data.get_record :Account, where: {Name: 'Jonny B.Good', Country: 'USA'}
     #
     #   CustomObject = Struct.new(:Id, :Name)
-    #   sf.data.get_record :TheCustomObject__c, record_id: 'xxxxx', model_class: CustomObject  # returns a CustomObject instance
+    #   obj = sf.data.get_record :TheCustomObject__c, record_id: 'xxxxx', model_class: CustomObject # returns a CustomObject instance
+    #   obj.Name # Name field of the record
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_get_record_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_get_record_unified command reference
     #
     def get_record(object_type, record_id: nil, where: nil, target_org: nil, model_class: nil)
       where_conditions = field_value_pairs(where)

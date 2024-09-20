@@ -3,13 +3,14 @@ module SfCli::Sf::Org
     ConnectionInfo = Struct.new(:id, :access_token, :alias, :instance_url, :user_name, :api_version, :status)
 
     #
-    # returns the org's connection information. (equivalent to *sf* *org* *display*)
+    # Returns the org's connection information
+    # @param target_org [Symbol,String] an alias of paticular org, or username can be used
     #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
+    # @note this function returns the org information including security sensitive things such as access token, username and so on.
+    # @return [ConnectionInfo] the org's connection information
     #
-    # ======
-    #  # example (in irb):
-    #
+    # @example
+    #  (in irb):
     #  > sf.org.display
     #  =>
     #  #<struct SfCli::Sf::Org::Display::ConnectionInfo
@@ -21,7 +22,7 @@ module SfCli::Sf::Org
     #   api_version="61.0",
     #   status="Connected">
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_display_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_display_unified command reference
     #
     def display(target_org: nil)
       flags    = {:"target-org" => target_org}

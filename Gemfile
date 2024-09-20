@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
+gem 'rake'
 
 group :development do
   gem 'rspec'
   gem 'byebug'
 end
 
-gem 'rake'
-gem 'hanna'
+group :doc do
+  gem 'yard'
+end
