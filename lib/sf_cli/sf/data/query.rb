@@ -3,21 +3,17 @@ require_relative './query_helper'
 
 module SfCli::Sf::Data
   module Query
-    # get object records using SOQL.
+    # Get object records using SOQL.
+    # @param soql        [String]        SOQL
+    # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
+    # @param format      [Symbol,String] get the command's raw output. human, csv, json can be available
+    # @param model_class [Class]         the object model class
+    # @param bulk        [Boolean]       use Bulk API
+    # @param timeout     [Integer]       max minutes to wait for the job complete in Bulk API mode
     #
-    # *soql* --- SOQL<br>
+    # @return [Array,[String,Array]] records or a tuple containing a flag and records
     #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # *format* --- get the command's raw output. human, csv, json can be available<br>
-    #
-    # *model_class* --- the object model class<br>
-    #
-    # *bulk* --- use Bulk API<br>
-    #
-    # *timeout* --- max minutes to wait for the job complete in Bulk API mode<br>
-    #
-    # ======
+    # @example
     #   sf.data.query 'SELECT Id, Name FROM Account LIMIT 1' # => [{Id: "abc", Name: "account name"}]
     #
     #   Account = Struct.new(:Id, :Name)
@@ -32,7 +28,7 @@ module SfCli::Sf::Data
     # When using Bulk API, you get the records when the query job completes within time limit.
     # The method returns a tapple(an array), which changes its contents according to the job result.
     #
-    # ======
+    # @example
     #   done, result = sf.data.query 'SELECT Id, Name FROM Account', bulk: true              # max wait 1 min to get result (default)
     #   done, result = sf.data.query 'SELECT Id, Name FROM Account', bulk: true, timeout: 5  # max wait 5 min to get result
     #   done, result = sf.data.query 'SELECT Id, Name FROM Account', bulk: true, timeout: 0  # returns immediately
@@ -40,9 +36,7 @@ module SfCli::Sf::Data
     #   rows = result   if done     # if job is completed, the result is an array of record
     #   job_id = result unless done # if job hasn't completed or it has aborted, the result is the job ID
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_unified]
-    #
-    # About querying with auto generated object model, see the section {"Object Model support"}[link://files/README_rdoc.html#label-Object+Model+support+-28experimental-2C+since+0.0.4-29] in README.
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_unified command reference
     #
     def query(soql, target_org: nil, format: nil, bulk: false, timeout: nil, model_class: nil)
       flags    = {
@@ -62,17 +56,15 @@ module SfCli::Sf::Data
       return_result(result, raw_output, bulk, model_class)
     end
 
-    # resume a bulk query job, which you previously started, and get records
+    # Resume a bulk query job, which you previously started, and get records
+    # @param job_id      [String]        job ID you want to resume
+    # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
+    # @param format      [Symbol,String] get the command's raw output. human, csv, json can be available
+    # @param model_class [Class]         the object model class
     #
-    # *job_id* ---  job ID you want to resume<br>
+    # @return [Array,[String,Array]] records or a tuple containing a flag and records
     #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # *format* --- get the command's raw output. human, csv, json can be available<br>
-    #
-    # *model_class* --- the object model class<br>
-    #
-    # ======
+    # @example
     #   # start a query job
     #   result1 = sf.data.query 'SELECT Id, Name FROM Account', bulk: true, timeout: 0  # returns immediately
     #
@@ -86,7 +78,8 @@ module SfCli::Sf::Data
     #
     #   result2 # => if done is true, this is an array of record. Otherwise it should be the Job ID.
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_resume_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_resume_unified command reference
+    #
     def query_resume(job_id:, target_org: nil, format: nil, model_class: nil)
       flags    = {
         :"bulk-query-id" => job_id,

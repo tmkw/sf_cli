@@ -1,4 +1,5 @@
-== \Object Model support
+= \Object Model support
+--------
 === generate Models
   require 'sf_cli/sf/model'
   require 'sf_cli/sf/model/sf_command_connection'

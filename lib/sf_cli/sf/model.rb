@@ -3,20 +3,22 @@ require_relative 'model/generator'
 module SfCli
   module Sf
     #
-    # ==== description
-    # The module for \Object \Model definition and generation
-    #
-    # see the section {"Object Model support"}[link://files/README_rdoc.html#label-Object+Model+support+-28experimental-2C+since+0.0.4-29] in README.
+    # The module for object model definition and generation
     #
     module Model
+      # The connection object to access Salesforce
       def self.connection
         @@connection
       end
 
+      # set the connection
       def self.set_connection(conn)
         @@connection = conn
       end
 
+      # generate object models
+      # @param object_names [Array] a list of object name
+      #
       def self.generate(object_names)
         generator = Generator.new(connection)
 

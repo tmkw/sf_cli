@@ -1,18 +1,15 @@
 module SfCli::Sf::Org
   module Login
-    # login to the org by the browser.
+    # Login to the org by the browser.
+    # @param target_org   [Symbol,String] an alias of paticular org, or username can be used
+    # @param instance_url [String]        URL of the instance that the org lives on.
+    # @param browser      [Symbol,String] browser in which to open the org.
     #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # *instance_url* --- URL of the instance that the org lives on.
-    #
-    # *browser* --- browser in which to open the org.
-    #
-    # == examples:
+    # @example
     #   sf.org.login_web
     #   sf.org.login_web target_org: :dev
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_login_web_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_login_web_unified command reference
     #
     def login_web(target_org: nil, instance_url: nil, browser: nil)
       flags = {
@@ -24,30 +21,27 @@ module SfCli::Sf::Org
       exec(action, flags: flags)
     end
 
-    # login to the org by access token.
+    # Login to the org by access token.
+    # @note This method doesn't support user interactive mode, so *SF_ACCESS_TOKEN* environment variable must be set before call this method.
     #
-    # NOTE: this method doesn't support user interactive mode, so *SF_ACCESS_TOKEN* environment variable must be set before call this method.
+    # @param target_org   [Symbol,String] an alias of paticular org, or username can be used
+    # @param instance_url [String]        URL of the instance that the org lives on.
     #
-    # *instance_url* --- URL of the instance that the org lives on.
-    #
-    # *target_org* --- an alias of paticular org, or username can be used<br>
-    #
-    # ======
+    # @example
     #  ENV['SF_ACCESS_TOKEN'] = 'xxxxxxxxxx'
     #  sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com
     #
-    # == how to set env variable outside of ruby
-    # In Unix/mac:
-    #   $ SF_ACCESS_TOKEN='xxxxxxxxxx'
-    #   $ ruby app_using_sfcli.rb
-    # or
-    #   $ SF_ACCESS_TOKEN='xxxxxxxxxx' ruby app_using_sfcli.rb
+    # How to set env variable outside of Ruby::
+    #   In Unix/mac::
+    #     $ SF_ACCESS_TOKEN='xxxxxxxxxx'
+    #     $ ruby app_using_sfcli.rb
+    #   OR
+    #     $ SF_ACCESS_TOKEN='xxxxxxxxxx' ruby app_using_sfcli.rb
+    #   In Windows::
+    #     $ set SF_ACCESS_TOKEN=xxxxxxxxxx
+    #     $ ruby app_using_sfcli.rb
     #
-    # In Windows:
-    #   $ set SF_ACCESS_TOKEN=xxxxxxxxxx
-    #   $ ruby app_using_sfcli.rb
-    #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_login_access-token_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_login_access-token_unified command reference
     #
     def login_access_token(instance_url:, target_org: nil)
       flags = {
