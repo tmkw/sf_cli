@@ -4,3 +4,4 @@ tmp/*
 *.swp
 .byebug_history
 .bundle
+.yardoc
