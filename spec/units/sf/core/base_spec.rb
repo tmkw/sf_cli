@@ -1,3 +1,6 @@
+require 'stringio'
+require 'tempfile'
+
 RSpec.describe 'SfCli::Sf::Core::Base' do
   module Hoge; end
   Hoge::Core = Class.new do
@@ -5,6 +8,29 @@ RSpec.describe 'SfCli::Sf::Core::Base' do
                   end
 
   let(:test_object) { Hoge::Core.new }
+
+  describe '#create_tmpfile_by_io' do
+    let(:tempfile) { instance_double('Tempfile') }
+    let(:contents) { anything }
+    let(:io) { double('some IO-like class', read: contents) }
+
+    before do
+      allow(Tempfile).to receive(:open).with(%w[sf]).and_yield(tempfile)
+      allow(tempfile).to receive(:write).with(contents)
+    end
+
+    it "returns nil when the argument object doesn't have #read" do
+      expect(test_object.__send__(:create_tmpfile_by_io, 'path/to/file')).to be nil
+    end
+
+    it "returns a Tmpfile object that contains the contents of IO-like object" do
+      expect(test_object.__send__(:create_tmpfile_by_io, io)).to be tempfile
+
+      expect(Tempfile).to have_received :open
+      expect(io).to       have_received :read
+      expect(tempfile).to have_received :write
+    end
+  end
 
   describe '#exec' do
     before do

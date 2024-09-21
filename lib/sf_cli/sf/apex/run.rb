@@ -1,5 +1,4 @@
 require 'tempfile'
-require 'stringio'
 
 module SfCli::Sf::Apex
   module Run
@@ -11,9 +10,9 @@ module SfCli::Sf::Apex
     # @param target_org [Symbol,String]
     #   an alias of paticular org, or username can be used.
     #
-    # @param file [String,StringIO]
+    # @param file [String,#read]
     #   (1) path to a local file that contains Apex code. 
-    #   (2) StringIO object
+    #   (2) object that has #read method
     #
     # @return [ApexResult] Apex execution result.
     #
@@ -55,9 +54,7 @@ module SfCli::Sf::Apex
     #
     def run(target_org: nil, file: nil)
       return run_interactive(target_org) if file.nil?
-      return run_by_io(target_org, file) if file.is_a? StringIO
-
-      return unless file.is_a? String
+      return run_by_io(target_org, file) if file.respond_to? :read
 
       flags = {:"target-org" => target_org, :"file" => file}
 
@@ -68,7 +65,7 @@ module SfCli::Sf::Apex
     private
 
     def run_by_io(target_org, io)
-      file = Tempfile.open(%w[sf apex]){|f| f.write(io.read); f}
+      file = create_tmpfile_by_io(io)
 
       flags = {:"target-org" => target_org, :"file" => file.path}
       json = exec(:run, flags: flags, redirection: :null_stderr)

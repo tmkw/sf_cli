@@ -5,7 +5,7 @@ module SfCli::Sf::Data
     # Resume a bulk delete job you previously started with Bulk API 2.0 and return a bulk result object.
     #
     # @param job_id     [String]         job ID you want to resume<br>
-    # @param wait    [Integer]        max minutes to wait for the job complete the task.<br>
+    # @param wait       [Integer]        max minutes to wait for the job complete the task.<br>
     # @param target_org [Symbol, String] an alias of paticular org, or username can be used<br>
     #
     # @return [JobInfo, BulkResultV2] the job result, whose type is changed by situation

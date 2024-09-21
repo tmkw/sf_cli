@@ -3,9 +3,9 @@ require_relative './bulk_result_v2'
 module SfCli::Sf::Data
   module DeleteBulk
     # Delete records using Bulk API 2.0
-    # @param file       [String]         path of a CSV file, which is written record IDs to delete
+    # @param file       [String,#read]   (1)path of a CSV file, which is written record IDs to delete. (2) IO-like object, which has #read method
     # @param sobject    [Symbol, String] object type (ex. Account)
-    # @param wait    [Integer]        max minutes to wait for the job complete the task.
+    # @param wait       [Integer]        max minutes to wait for the job complete the task.
     # @param target_org [Symbol, String] an alias of paticular org, or username can be used
     #
     # @return [JobInfo, BulkResultV2] the job result, whose type is changed by situation
@@ -25,8 +25,10 @@ module SfCli::Sf::Data
     #
     #
     def delete_bulk(file:, sobject:, wait: nil, target_org: nil)
+      _file = create_tmpfile_by_io(file)
+      path  = _file&.path || file
       flags = {
-        :"file"    => file,
+        :"file"    => path,
         :"sobject"    => sobject,
         :"wait"      => wait,
         :"target-org" => target_org,
@@ -41,6 +43,8 @@ module SfCli::Sf::Data
         job_info: job_info,
         records:  ::SfCli::Sf::Data::BulkRecordsV2.new(**json['result']['records'])
       )
+    ensure
+      _file&.close!
     end
   end
 end

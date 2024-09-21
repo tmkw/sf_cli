@@ -3,6 +3,10 @@ RSpec.describe 'sf data delete bulk' do
   let(:object_type) { 'Account'  }
   let(:job_id) { '750J4000003ebwdIAA'  }
 
+  before do
+    allow_any_instance_of(Tempfile).to receive(:path).and_return('sf_tempfile')
+  end
+
   it 'starts a delete job' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
@@ -10,6 +14,26 @@ RSpec.describe 'sf data delete bulk' do
       .and_return(job_creatation_response)
 
     jobinfo = sf.data.delete_bulk file: filepath, sobject: object_type
+
+    expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
+    expect(jobinfo).to be_upload_completed
+    expect(jobinfo.id).to eq job_id
+  end
+
+  example 'Using StringIO instead of path' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with("sf data delete bulk --file sf_tempfile --sobject #{object_type} --json 2> /dev/null")
+      .and_return(job_creatation_response)
+
+    pseudo_file = StringIO.new <<~EOS
+                   Id,Name
+                   001J400000Ki61uIAB,foo
+                   001J400000Ki69ZIAR,bar
+                   001J400000Ki6A9IAJ,baz
+                  EOS
+
+    jobinfo = sf.data.delete_bulk file: pseudo_file, sobject: object_type
 
     expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
     expect(jobinfo).to be_upload_completed
