@@ -36,7 +36,7 @@ RSpec.describe 'sf data upsert bulk' do
       .with("sf data upsert bulk --file #{filepath} --sobject #{object_type} --external-id #{upsert_key_field} --wait 5 --json 2> /dev/null")
       .and_return(bulk_result_response)
 
-    bulk_result = sf.data.upsert_bulk file: filepath, sobject: object_type, external_id: upsert_key_field, timeout: 5 
+    bulk_result = sf.data.upsert_bulk file: filepath, sobject: object_type, external_id: upsert_key_field, wait: 5 
 
     expect(bulk_result.job_info).to be_instance_of SfCli::Sf::Data::JobInfo
     expect(bulk_result.job_info.id).to eq job_id

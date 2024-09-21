@@ -35,7 +35,7 @@ RSpec.describe 'sf data delete bulk' do
       .with("sf data delete bulk --file #{filepath} --sobject #{object_type} --wait 5 --json 2> /dev/null")
       .and_return(bulk_result_response)
 
-    bulk_result = sf.data.delete_bulk file: filepath, sobject: object_type, timeout: 5 
+    bulk_result = sf.data.delete_bulk file: filepath, sobject: object_type, wait: 5
 
     expect(bulk_result.job_info).to be_instance_of SfCli::Sf::Data::JobInfo
     expect(bulk_result.job_info.id).to eq job_id

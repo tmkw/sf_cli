@@ -6,7 +6,7 @@ module SfCli::Sf::Data
     # @param file        [String]        path of a CSV file to update records
     # @param sobject     [Symbol,String] object type(ex. Account)
     # @param external_id [String]        name of the external ID field.Otherwise it must be Id
-    # @param timeout     [Integer]       max minutes to wait for the job complete the task
+    # @param wait     [Integer]       max minutes to wait for the job complete the task
     # @param target_org [Symbol,String]  an alias of paticular org, or username can be used
     #
     # @return [JobInfo, BulkResultV2] the job result, whose type is changed by situation
@@ -20,16 +20,16 @@ module SfCli::Sf::Data
     #   sf.data.upsert_resume job_id: jobinfo.id
     #
     #   # Or, you can wait for the job completion with one try.
-    #   result = sf.data.upsert_bulk sobject: :TestCustomObject__c, file: 'upsert.csv', timeout: 5  # wait within 5 minutes
+    #   result = sf.data.upsert_bulk sobject: :TestCustomObject__c, file: 'upsert.csv', wait: 5  # wait within 5 minutes
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_upsert_bulk_unified command reference
     #
-    def upsert_bulk(file:, sobject:, external_id:, timeout: nil, target_org: nil)
+    def upsert_bulk(file:, sobject:, external_id:, wait: nil, target_org: nil)
       flags = {
         :"file"    => file,
         :"sobject"    => sobject,
         :"external-id"  => external_id,
-        :"wait"      => timeout,
+        :"wait"      => wait,
         :"target-org" => target_org,
       }
       action = __method__.to_s.tr('_', ' ')

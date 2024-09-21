@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe 'sf data query' do
   let(:job_id) { '750J4000002hj5JIAQ' }
 
-  it "queries with SOQL,  using bulk API (default timeout: 1 minute)" do
+  it "queries with SOQL,  using bulk API (default wait: 1 minute)" do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
       .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json --bulk 2> /dev/null')
@@ -24,7 +24,7 @@ RSpec.describe 'sf data query' do
       .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --wait 3 --json --bulk 2> /dev/null')
       .and_return(success_response)
 
-    done, rows = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, bulk: true, timeout: 3
+    done, rows = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, bulk: true, wait: 3
   end
 
   example 'in case of failure because of timeout, etc...' do

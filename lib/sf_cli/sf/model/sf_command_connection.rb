@@ -37,8 +37,8 @@ module SfCli
         #
         # For query details, see {SfCli::Sf::Data::Query sf data query}
         #
-        def exec_query(soql, format: nil, bulk: false, timeout: nil, model_class: nil)
-          sf_data.query(soql, target_org: target_org, format: format, bulk: bulk, timeout: timeout, model_class: model_class)
+        def exec_query(soql, format: nil, bulk: false, wait: nil, model_class: nil)
+          sf_data.query(soql, target_org: target_org, format: format, bulk: bulk, wait: wait, model_class: model_class)
         end
 
         # @private :nodoc: just for developers
