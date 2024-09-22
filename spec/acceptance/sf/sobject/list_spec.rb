@@ -23,6 +23,12 @@ RSpec.describe 'sf sobject list' do
     sf.sobject.list :all, target_org: :dev
   end
 
+  it "can get the list by paticular API version" do
+    allow_any_instance_of(SfCli::Sf::Sobject::Core).to receive(:`).with('sf sobject list --sobject all --api-version 61.0 --json 2> /dev/null').and_return(command_response custom_only: true)
+    sf.sobject.list :all, api_version: 61.0
+  end
+
+
   def command_response(custom_only: false)
     <<~JSON
       {

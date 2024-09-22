@@ -16,6 +16,14 @@ RSpec.describe 'sf apex run' do
     expect(result.logs).to include "Execute Anonymous: System.debug('abc');"
   end
 
+  example 'executing by particular API version' do
+    allow_any_instance_of(SfCli::Sf::Apex::Core).to receive(:`).with("sf apex run --file #{path} --api-version 61.0 --json 2> /dev/null").and_return(command_response)
+
+    result = sf.apex.run file: path, api_version: 61.0
+    expect(result.success).to be true
+    expect(result.logs).to include "Execute Anonymous: System.debug('abc');"
+  end
+
   example 'Using StringIO instead of path' do
     allow_any_instance_of(SfCli::Sf::Apex::Core).to receive(:`).with("sf apex run --file sf_apex_file --json 2> /dev/null").and_return(command_response)
 

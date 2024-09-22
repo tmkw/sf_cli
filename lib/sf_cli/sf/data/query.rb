@@ -9,7 +9,8 @@ module SfCli::Sf::Data
     # @param format      [Symbol,String] get the command's raw output. human, csv, json can be available
     # @param model_class [Class]         the object model class
     # @param bulk        [Boolean]       use Bulk API
-    # @param wait     [Integer]       max minutes to wait for the job complete in Bulk API mode
+    # @param wait        [Integer]       max minutes to wait for the job complete in Bulk API mode
+    # @param api_version [Numeric]       override the api version used for api requests made by this command
     #
     # @return [Array,[String,Array]] records or a tuple containing a flag and records
     #
@@ -38,12 +39,13 @@ module SfCli::Sf::Data
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_unified command reference
     #
-    def query(soql, target_org: nil, format: nil, bulk: false, wait: nil, model_class: nil)
+    def query(soql, target_org: nil, format: nil, bulk: false, wait: nil, api_version: nil, model_class: nil)
       flags    = {
         :"query"    => %("#{soql}"),
         :"target-org" => target_org,
         :"result-format" => format,
         :"wait" => (bulk ? wait : nil),
+        :"api-version" => api_version,
       }
       switches = {
         bulk: bulk,
@@ -61,6 +63,7 @@ module SfCli::Sf::Data
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param format      [Symbol,String] get the command's raw output. human, csv, json can be available
     # @param model_class [Class]         the object model class
+    # @param api_version [Numeric]       override the api version used for api requests made by this command
     #
     # @return [Array,[String,Array]] records or a tuple containing a flag and records
     #
@@ -80,11 +83,12 @@ module SfCli::Sf::Data
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_resume_unified command reference
     #
-    def query_resume(job_id:, target_org: nil, format: nil, model_class: nil)
+    def query_resume(job_id:, target_org: nil, format: nil, api_version: nil, model_class: nil)
       flags    = {
         :"bulk-query-id" => job_id,
         :"target-org" => target_org,
         :"result-format" => format,
+        :"api-version" => api_version,
       }
       raw_output = format ? true : false
       format = format || :json

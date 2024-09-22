@@ -27,6 +27,19 @@ RSpec.describe 'sf data resume' do
     expect(jobinfo.id).to eq job_id
   end
 
+  example 'using particular API version' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with("sf data resume --job-id #{job_id} --api-version 61.0 --json 2> /dev/null")
+      .and_return(job_info_response)
+
+    jobinfo = sf.data.resume job_id: job_id, api_version: 61.0
+
+    expect(jobinfo).to be_instance_of SfCli::Sf::Data::Resume::JobInfo
+    expect(jobinfo).to be_completed
+    expect(jobinfo.id).to eq job_id
+  end
+
   def job_info_response
     <<~JSON
       {

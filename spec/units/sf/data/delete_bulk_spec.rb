@@ -14,6 +14,7 @@ RSpec.describe 'SfCli::Sf::Data' do
           sobject: object_type,
           :"target-org"  => nil,
           :"wait"  => nil,
+          :"api-version"  => nil,
         },
         redirection: :null_stderr
       )
@@ -47,6 +48,7 @@ RSpec.describe 'SfCli::Sf::Data' do
             sobject: object_type,
             :"target-org"  => nil,
             :"wait"  => nil,
+            :"api-version"  => nil,
           },
           redirection: :null_stderr
         )
@@ -75,12 +77,36 @@ RSpec.describe 'SfCli::Sf::Data' do
           sobject: object_type,
           :"target-org"  => :dev,
           :"wait"  => nil,
+          :"api-version"  => nil,
         },
         redirection: :null_stderr
       )
       .and_return(job_creatation_response)
 
       jobinfo = data.delete_bulk file: filepath, sobject: object_type, target_org: :dev
+
+      expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
+      expect(jobinfo).to be_upload_completed
+      expect(jobinfo.id).to eq job_id
+
+      expect(data).to have_received :exec
+    end
+
+    example 'using particular API version' do
+      allow(data).to receive(:exec).with(
+        'delete bulk',
+        flags: {
+          file:    filepath,
+          sobject: object_type,
+          :"target-org"  => nil,
+          :"wait"  => nil,
+          :"api-version"  => 61.0,
+        },
+        redirection: :null_stderr
+      )
+      .and_return(job_creatation_response)
+
+      jobinfo = data.delete_bulk file: filepath, sobject: object_type, api_version: 61.0
 
       expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
       expect(jobinfo).to be_upload_completed
@@ -97,6 +123,7 @@ RSpec.describe 'SfCli::Sf::Data' do
           sobject: object_type,
           :"target-org"  => nil,
           :"wait"  => 5, # 5 minutes
+          :"api-version"  => nil,
         },
         redirection: :null_stderr
       )

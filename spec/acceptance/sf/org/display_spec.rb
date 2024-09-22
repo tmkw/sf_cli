@@ -15,10 +15,18 @@ RSpec.describe 'sf org display' do
     expect(connection_info.alias).to eq 'dev'
   end
 
-  it 'can get a paticular org information' do
+  example 'getting particular org information' do
     allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org display --target-org dev --json 2> /dev/null').and_return(command_response)
 
     connection_info = sf.org.display target_org: :dev
+
+    expect(connection_info.id).to eq 'foobazbar'
+  end
+
+  example 'getting by particular API version' do
+    allow_any_instance_of(SfCli::Sf::Org::Core).to receive(:`).with('sf org display --api-version 61.0 --json 2> /dev/null').and_return(command_response)
+
+    connection_info = sf.org.display api_version: 61.0
 
     expect(connection_info.id).to eq 'foobazbar'
   end
