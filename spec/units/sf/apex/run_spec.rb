@@ -31,7 +31,7 @@ RSpec.describe 'SfCli::Sf::Apex' do
       let(:string_io) { StringIO.new("System.debug('abc');") }
 
       before do
-        allow(Tempfile).to receive(:open).with(%w[sf apex]).and_yield(tempfile)
+        allow(Tempfile).to receive(:open).with(%w[sf]).and_yield(tempfile)
         allow(tempfile).to receive(:write).with("System.debug('abc');")
         allow(tempfile).to receive(:path).and_return(path)
         allow(tempfile).to receive(:close!)

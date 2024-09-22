@@ -50,7 +50,7 @@ Delete a record
   sf.data.delete_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}
 
 Using Bulk API 2.0
-  sf.data.upsert_bulk sobject: :TestCustomObject__c, file: 'upsert.csv', timeout: 5  # waiting for 5 minutes at maximum
+  sf.data.upsert_bulk sobject: :TestCustomObject__c, file: 'upsert.csv', wait: 5  # waiting for 5 minutes at maximum
 
 Run Apex
   sf.apex.run file: 'path/to/file'

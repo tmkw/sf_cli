@@ -45,7 +45,7 @@ RSpec.describe 'sf data upsert resume' do
       .with("sf data upsert resume --job-id #{job_id} --wait 5 --json 2> /dev/null")
       .and_return(bulk_result_response)
 
-    bulk_result = sf.data.upsert_resume job_id: job_id, timeout: 5
+    bulk_result = sf.data.upsert_resume job_id: job_id, wait: 5
 
     expect(bulk_result.job_info).to be_instance_of SfCli::Sf::Data::JobInfo
     expect(bulk_result.job_info.id).to eq job_id

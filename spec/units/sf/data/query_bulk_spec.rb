@@ -46,7 +46,7 @@ RSpec.describe 'SfCli::Sf::Data', :model do
 
         allow(result_adjuster).to receive(:get_return_value).and_return([true, [prepared_record]])
 
-        done, rows = data.query 'SELECT Id, Name From Account', bulk: true, timeout: 5
+        done, rows = data.query 'SELECT Id, Name From Account', bulk: true, wait: 5
 
         expect(done).to be true
         expect(rows).to contain_exactly(prepared_record)
