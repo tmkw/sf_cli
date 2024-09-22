@@ -3,7 +3,9 @@ require_relative './bulk_result_v2'
 module SfCli::Sf::Data
   module UpsertBulk
     # Update records using Bulk API 2.0
-    # @param file        [String,#read]  (1)path of a CSV file, which is written record IDs to delete. (2) IO-like object, which has #read method
+    # @param file [String,#read]
+    #   (1)path of a CSV file, which is written record IDs to delete.
+    #   (2) IO-like object, which has #read method
     # @param sobject     [Symbol,String] object type(ex. Account)
     # @param external_id [String]        name of the external ID field.Otherwise it must be Id
     # @param wait        [Integer]       max minutes to wait for the job complete the task
