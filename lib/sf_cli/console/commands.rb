@@ -25,7 +25,10 @@ module SfCli
         connection.target_org
       end
 
-      def apex(apex_code)
+      def apex(apex_code = nil, file: nil)
+        return sf.apex.run target_org: target_org, file: file unless file.nil?
+        return sf.apex.run target_org: target_org             if apex_code.nil?
+
         sf.apex.run target_org: target_org, file: StringIO.new(apex_code)
       end
 

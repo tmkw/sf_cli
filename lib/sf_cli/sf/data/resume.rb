@@ -49,8 +49,9 @@ module SfCli::Sf::Data
     end
 
     # View the status of a bulk job.
-    # @param job_id     [String]        job ID you want to resume
-    # @param target_org [Symbol,String] an alias of paticular org, or username can be used
+    # @param job_id      [String]        job ID you want to resume
+    # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
+    # @param api_version [Numeric]       override the api version used for api requests made by this command
     #
     # @return [JobInfo] job information
     #
@@ -73,10 +74,11 @@ module SfCli::Sf::Data
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_resume_unified command reference
     #
-    def resume(job_id:, target_org: nil)
+    def resume(job_id:, target_org: nil, api_version: nil)
       flags = {
         :"job-id"     => job_id,
         :"target-org" => target_org,
+        :"api-version" => api_version,
       }
       json = exec(__method__, flags: flags, redirection: :null_stderr)
 

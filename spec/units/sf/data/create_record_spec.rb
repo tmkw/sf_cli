@@ -12,6 +12,7 @@ RSpec.describe 'SfCli::Sf::Data' do
           sobject:      object_type,
           values:        %|"Name='bar hoge' Age=52"|,
           :"target-org" => nil,
+          :"api-version" => nil,
         },
         redirection: :null_stderr
       )
@@ -31,12 +32,34 @@ RSpec.describe 'SfCli::Sf::Data' do
             sobject:      object_type,
             values:        %|"Name='bar hoge' Age=52"|,
             :"target-org" => :dev,
+            :"api-version" => nil,
           },
           redirection: :null_stderr
         )
         .and_return(exec_output)
 
         id = data.create_record object_type, values: {Name: 'bar hoge', Age: 52}, target_org: :dev
+
+        expect(id).to eq new_record_id
+        expect(data).to have_received :exec
+      end
+    end
+
+    context 'using option: api_version' do
+      it "creates an record by particular API version" do
+        allow(data).to receive(:exec).with(
+          'create record',
+          flags: {
+            sobject:      object_type,
+            values:        %|"Name='bar hoge' Age=52"|,
+            :"target-org" => nil,
+            :"api-version" => 61.0,
+          },
+          redirection: :null_stderr
+        )
+        .and_return(exec_output)
+
+        id = data.create_record object_type, values: {Name: 'bar hoge', Age: 52}, api_version: 61.0
 
         expect(id).to eq new_record_id
         expect(data).to have_received :exec

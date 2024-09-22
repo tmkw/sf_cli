@@ -20,7 +20,20 @@ RSpec.describe 'sf data delete bulk' do
     expect(jobinfo.id).to eq job_id
   end
 
-  example 'Using StringIO instead of path' do
+  example 'using particular API version' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with("sf data delete bulk --file #{filepath} --sobject #{object_type} --api-version 61.0 --json 2> /dev/null")
+      .and_return(job_creatation_response)
+
+    jobinfo = sf.data.delete_bulk file: filepath, sobject: object_type, api_version: 61.0
+
+    expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
+    expect(jobinfo).to be_upload_completed
+    expect(jobinfo.id).to eq job_id
+  end
+
+  example 'using StringIO instead of path' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
       .with("sf data delete bulk --file sf_tempfile --sobject #{object_type} --json 2> /dev/null")

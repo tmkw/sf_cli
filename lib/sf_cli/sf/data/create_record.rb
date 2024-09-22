@@ -5,6 +5,7 @@ module SfCli::Sf::Data
     # @param object_type [Symbol, String] object type(ex. Account)
     # @param values      [Hash]           field values to be assigned
     # @param target_org  [Symbol, String] an alias of paticular org, or username can be used
+    # @param api_version [Numeric]        override the api version used for api requests made by this command
     #
     # @return [String] record ID
     #
@@ -12,12 +13,13 @@ module SfCli::Sf::Data
     #   # create a TheCustomObject record with name and age
     #   sf.data.create_record :TheCustomObject__c, values: {Name: "John Smith", Age: 33}
     #
-    def create_record(object_type, values: {}, target_org: nil)
+    def create_record(object_type, values: {}, target_org: nil, api_version: nil)
       field_values = field_value_pairs(values)
       flags = {
         :"sobject"    => object_type,
         :"values"      => (field_values.nil? ? nil : %|"#{field_values}"|),
         :"target-org" => target_org,
+        :"api-version" => api_version,
       }
       action = __method__.to_s.tr('_', ' ')
       json = exec(action, flags: flags, redirection: :null_stderr)

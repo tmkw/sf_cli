@@ -20,23 +20,22 @@ RSpec.describe 'sf data delete resume' do
     expect(bulk_result.records.unprocessedRecords).to be_empty
   end
 
-  example 'with accessing to non-default org' do
+  example 'with access to particular org' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
       .with("sf data delete resume --job-id #{job_id} --target-org dev --json 2> /dev/null")
       .and_return(bulk_result_response)
 
-    bulk_result = sf.data.delete_resume job_id: job_id, target_org: :dev
+    sf.data.delete_resume job_id: job_id, target_org: :dev
+  end
 
-    expect(bulk_result.job_info).to be_instance_of SfCli::Sf::Data::JobInfo
-    expect(bulk_result.job_info.id).to eq job_id
-    expect(bulk_result.job_info).to be_completed
-    expect(bulk_result.records.successfulResults).to contain_exactly(
-      {"sf__Id" => "a00J4000001HkmbIAC", "sf__Created" => "false", "Id" => "a00J4000001HkmbIAC", "Name" => "test custom object 03"},
-      {"sf__Id" => "a00J4000001HmEPIA0", "sf__Created" => "false", "Id" => "a00J4000001HmEPIA0", "Name" => "ROMANTIST3"}
-    )
-    expect(bulk_result.records.failedResults).to be_empty
-    expect(bulk_result.records.unprocessedRecords).to be_empty
+  example 'using particular API version' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with("sf data delete resume --job-id #{job_id} --api-version 61.0 --json 2> /dev/null")
+      .and_return(bulk_result_response)
+
+    sf.data.delete_resume job_id: job_id, api_version: 61.0
   end
 
   example 'with timeout setting' do

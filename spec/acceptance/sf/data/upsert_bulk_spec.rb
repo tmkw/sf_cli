@@ -54,6 +54,19 @@ RSpec.describe 'sf data upsert bulk' do
     expect(jobinfo.id).to eq job_id
   end
 
+  example 'updates by particular API version' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with("sf data upsert bulk --file #{filepath} --sobject #{object_type} --external-id #{upsert_key_field} --api-version 61.0 --json 2> /dev/null")
+      .and_return(job_creatation_response)
+
+    jobinfo = sf.data.upsert_bulk file: filepath, sobject: object_type, external_id: upsert_key_field, api_version: 61.0
+
+    expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
+    expect(jobinfo).to be_upload_completed
+    expect(jobinfo.id).to eq job_id
+  end
+
   example 'start and wait for the upsert job' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)

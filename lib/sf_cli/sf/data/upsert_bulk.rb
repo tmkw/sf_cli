@@ -10,6 +10,7 @@ module SfCli::Sf::Data
     # @param external_id [String]        name of the external ID field.Otherwise it must be Id
     # @param wait        [Integer]       max minutes to wait for the job complete the task
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
+    # @param api_version [Numeric]       override the api version used for api requests made by this command
     #
     # @return [JobInfo, BulkResultV2] the job result, whose type is changed by situation
     #
@@ -26,7 +27,7 @@ module SfCli::Sf::Data
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_upsert_bulk_unified command reference
     #
-    def upsert_bulk(file:, sobject:, external_id:, wait: nil, target_org: nil)
+    def upsert_bulk(file:, sobject:, external_id:, wait: nil, target_org: nil, api_version: nil)
       _file = create_tmpfile_by_io(file)
       path  = _file&.path || file
       flags = {
@@ -35,6 +36,7 @@ module SfCli::Sf::Data
         :"external-id" => external_id,
         :"wait"        => wait,
         :"target-org"  => target_org,
+        :"api-version"  => api_version,
       }
       action = __method__.to_s.tr('_', ' ')
       json = exec(action, flags: flags, redirection: :null_stderr)

@@ -3,18 +3,23 @@ RSpec.describe 'SfCli::Sf::Data' do
 
   describe '#resume'do
     let(:job_id) { '750J4000003ebwdIAA' }
+    let(:target_org) { nil }
+    let(:api_version) { nil }
 
-    it 'retrieves a job information' do
+    before do
       allow(data).to receive(:exec).with(
         :resume,
         flags: {
-          :"job-id" => job_id,
-          :"target-org" => nil,
+          :"job-id"      => job_id,
+          :"target-org"  => target_org,
+          :"api-version" => api_version,
         },
         redirection: :null_stderr
       )
       .and_return(job_info_response)
+    end
 
+    it 'retrieves a job information' do
       jobinfo = data.resume job_id: job_id
 
       expect(jobinfo).to be_instance_of SfCli::Sf::Data::Resume::JobInfo
@@ -24,24 +29,22 @@ RSpec.describe 'SfCli::Sf::Data' do
       expect(data).to have_received :exec
     end
 
-    example 'with accessing to non-default org' do
-      allow(data).to receive(:exec).with(
-        :resume,
-        flags: {
-          :"job-id" => job_id,
-          :"target-org" => nil,
-        },
-        redirection: :null_stderr
-      )
-      .and_return(job_info_response)
+    context 'using option: tareget_org' do
+      let(:target_org){ :dev }
 
-      jobinfo = data.resume job_id: job_id
+      it 'get the jobinfo of particular org' do
+        data.resume job_id: job_id, target_org: target_org
+        expect(data).to have_received :exec
+      end
+    end
 
-      expect(jobinfo).to be_instance_of SfCli::Sf::Data::Resume::JobInfo
-      expect(jobinfo).to be_completed
-      expect(jobinfo.id).to eq job_id
+    context 'using option: api_version' do
+      let(:api_version){ 61.0 }
 
-      expect(data).to have_received :exec
+      it 'get the jobinfo of particular org' do
+        data.resume job_id: job_id, api_version: api_version
+        expect(data).to have_received :exec
+      end
     end
   end
 
