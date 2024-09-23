@@ -5,6 +5,7 @@ module SfCli::Sf::Org
     #
     # Returns the org's connection information
     # @param target_org [Symbol,String] an alias of paticular org, or username can be used
+    # @param api_version [Numeric]      override the api version used for api requests made by this command
     #
     # @note this function returns the org information including security sensitive things such as access token, username and so on.
     # @return [ConnectionInfo] the org's connection information
@@ -24,8 +25,8 @@ module SfCli::Sf::Org
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_display_unified command reference
     #
-    def display(target_org: nil)
-      flags    = {:"target-org" => target_org}
+    def display(target_org: nil, api_version: nil)
+      flags    = {:"target-org" => target_org, :"api-version" => api_version}
       json = exec(__method__, flags: flags, redirection: :null_stderr)
 
       ConnectionInfo.new(

@@ -3,7 +3,10 @@ RSpec.describe 'SfCli::Sf::Sobject' do
 
   describe '#describe' do
     it "returns the schema infromation of an Object" do
-      allow(sobject).to receive(:exec).with(:describe, flags: {:"target-org" => nil, sobject: 'Account'}, redirection: :null_stderr).and_return(exec_output)
+      allow(sobject)
+        .to receive(:exec)
+        .with(:describe, flags: {:"target-org" => nil, sobject: 'Account', :"api-version" => nil}, redirection: :null_stderr)
+        .and_return(exec_output)
 
       schema = sobject.describe 'Account'
 
@@ -14,9 +17,26 @@ RSpec.describe 'SfCli::Sf::Sobject' do
     end
 
     context 'using option: target_org' do
-    it 'can retrieve a object information in a paticular org, not default one' do
-        allow(sobject).to receive(:exec).with(:describe, flags: {:"target-org" => :dev, sobject: 'Account'}, redirection: :null_stderr).and_return(exec_output)
+      it 'can retrieve a object information in a paticular org, not default one' do
+        allow(sobject)
+          .to receive(:exec)
+          .with(:describe, flags: {:"target-org" => :dev, sobject: 'Account', :"api-version" => nil}, redirection: :null_stderr)
+          .and_return(exec_output)
+
         sobject.describe 'Account', target_org: :dev
+
+        expect(sobject).to have_received :exec
+      end
+    end
+
+    context 'using option: api_version' do
+      it 'can retrieve a object information in a paticular org, not default one' do
+        allow(sobject)
+          .to receive(:exec)
+          .with(:describe, flags: {:"target-org" => nil, sobject: 'Account', :"api-version" => 61.0}, redirection: :null_stderr)
+          .and_return(exec_output)
+
+        sobject.describe 'Account', api_version: 61.0
 
         expect(sobject).to have_received :exec
       end

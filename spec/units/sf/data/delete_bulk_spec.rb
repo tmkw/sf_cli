@@ -14,6 +14,7 @@ RSpec.describe 'SfCli::Sf::Data' do
           sobject: object_type,
           :"target-org"  => nil,
           :"wait"  => nil,
+          :"api-version"  => nil,
         },
         redirection: :null_stderr
       )
@@ -28,6 +29,46 @@ RSpec.describe 'SfCli::Sf::Data' do
       expect(data).to have_received :exec
     end
 
+    context 'Using StringIO instead of file path' do
+      let(:filepath) { '/tmp/file' }
+      let(:tempfile) { instance_double('Tempfile') }
+      let(:string_io) { instance_double('StringIO', read: 'csv contents') }
+
+      before do
+        allow(data).to receive(:create_tmpfile_by_io).with(string_io).and_return(tempfile)
+        allow(tempfile).to receive(:path).and_return(filepath)
+        allow(tempfile).to receive(:close!)
+      end
+
+      before do
+        allow(data).to receive(:exec).with(
+          'delete bulk',
+          flags: {
+            file:    filepath,
+            sobject: object_type,
+            :"target-org"  => nil,
+            :"wait"  => nil,
+            :"api-version"  => nil,
+          },
+          redirection: :null_stderr
+        )
+        .and_return(job_creatation_response)
+      end
+
+      it 'starts a delete job' do
+        jobinfo = data.delete_bulk file: string_io, sobject: object_type
+
+        expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
+        expect(jobinfo).to be_upload_completed
+        expect(jobinfo.id).to eq job_id
+
+        expect(data).to     have_received :exec
+        expect(data).to     have_received :create_tmpfile_by_io
+        expect(tempfile).to have_received :path
+        expect(tempfile).to have_received :close!
+      end
+    end
+
     example 'with accessing to non-default org' do
       allow(data).to receive(:exec).with(
         'delete bulk',
@@ -36,12 +77,36 @@ RSpec.describe 'SfCli::Sf::Data' do
           sobject: object_type,
           :"target-org"  => :dev,
           :"wait"  => nil,
+          :"api-version"  => nil,
         },
         redirection: :null_stderr
       )
       .and_return(job_creatation_response)
 
       jobinfo = data.delete_bulk file: filepath, sobject: object_type, target_org: :dev
+
+      expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
+      expect(jobinfo).to be_upload_completed
+      expect(jobinfo.id).to eq job_id
+
+      expect(data).to have_received :exec
+    end
+
+    example 'using particular API version' do
+      allow(data).to receive(:exec).with(
+        'delete bulk',
+        flags: {
+          file:    filepath,
+          sobject: object_type,
+          :"target-org"  => nil,
+          :"wait"  => nil,
+          :"api-version"  => 61.0,
+        },
+        redirection: :null_stderr
+      )
+      .and_return(job_creatation_response)
+
+      jobinfo = data.delete_bulk file: filepath, sobject: object_type, api_version: 61.0
 
       expect(jobinfo).to be_instance_of SfCli::Sf::Data::JobInfo
       expect(jobinfo).to be_upload_completed
@@ -58,12 +123,13 @@ RSpec.describe 'SfCli::Sf::Data' do
           sobject: object_type,
           :"target-org"  => nil,
           :"wait"  => 5, # 5 minutes
+          :"api-version"  => nil,
         },
         redirection: :null_stderr
       )
       .and_return(bulk_result_response)
 
-      bulk_result = data.delete_bulk file: filepath, sobject: object_type, timeout: 5
+      bulk_result = data.delete_bulk file: filepath, sobject: object_type, wait: 5
 
       expect(bulk_result.job_info).to be_instance_of SfCli::Sf::Data::JobInfo
       expect(bulk_result.job_info.id).to eq job_id

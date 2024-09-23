@@ -1,3 +1,16 @@
+## 0.0.9 - 2024-09-23
+- CHANGE: [BREAKING] change keyword argument `timeout` to `wait` according to the original commands' specification;
+    - `sf.data.query`
+    - `sf.data.delete_bulk`
+    - `sf.data.delete_resume`
+    - `sf.data.upsert_bulk`
+    - `sf.data.upsert_resume`
+- NEW: `#find_by` method for object model
+- NEW: `api_version` keyword argument is added to methods whose original commands have that option
+- CHANGE: `file` keyword argument accepts IO-like object such as StringIO:
+    - `sf.data.upsert_bulk`
+    - `sf.data.delete_bulk`
+
 ## 0.0.8 - 2024-09-21
 Maintenance Release: document enhancement
 

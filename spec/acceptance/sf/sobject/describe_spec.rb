@@ -16,6 +16,15 @@ RSpec.describe 'sf sobject describe' do
     sf.sobject.describe 'TestCustomObject__c', target_org: :dev
   end
 
+  it 'can retrieve a object information by paticular API version' do
+    allow_any_instance_of(SfCli::Sf::Sobject::Core)
+      .to receive(:`)
+      .with('sf sobject describe --sobject TestCustomObject__c --api-version 61.0 --json 2> /dev/null')
+      .and_return(command_response)
+
+    sf.sobject.describe 'TestCustomObject__c', api_version: 61.0
+  end
+
   def command_response
     <<~JSON
       {

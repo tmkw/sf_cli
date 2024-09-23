@@ -3,21 +3,30 @@ RSpec.describe 'SfCli::Sf::Data' do
 
   describe '#search'do
     let(:sosl) { 'FIND {TIM OR YOUNG OR OIL} IN Name Fields' }
+    let(:target_org) { nil }
+    let(:api_version) { nil }
+    let(:result_format) { nil }
+    let(:format) { :json }
+    let(:raw_output) { false }
+    let(:output) { exec_output }
 
-    it 'search objects using SOSL' do
+    before do
       allow(data).to receive(:exec).with(
         :search,
         flags: {
           :"query" => %|"#{sosl}"|,
-          :"target-org" => nil,
-          :"result-format" => nil,
+          :"target-org" => target_org,
+          :"result-format" => result_format,
+          :"api-version" => api_version,
         },
         redirection: :null_stderr,
-        raw_output: false,
-        format: :json
+        raw_output: raw_output,
+        format: format
       )
-      .and_return(exec_output)
+      .and_return(output)
+    end
 
+    it 'searches objects using SOSL' do
       result = data.search sosl
 
       expect(result.keys).to contain_exactly('Account', 'Contact', 'User')
@@ -28,65 +37,48 @@ RSpec.describe 'SfCli::Sf::Data' do
       expect(data).to have_received :exec
     end
 
-    example 'with accessing to non-default org' do
-      allow(data).to receive(:exec).with(
-        :search,
-        flags: {
-          :"query" => %|"#{sosl}"|,
-          :"target-org" => :dev,
-          :"result-format" => nil,
-        },
-        redirection: :null_stderr,
-        raw_output: false,
-        format: :json
-      )
-      .and_return(exec_output)
+    context 'using option: target_org' do
+      let(:target_org) { :dev }
 
-      result = data.search sosl, target_org: :dev
-
-      expect(result.keys).to contain_exactly('Account', 'Contact', 'User')
-      expect(result['Account']).to contain_exactly("0015j00001U2XvMAAV","0015j00001U2XvJAAV")
-      expect(result['Contact']).to contain_exactly("0035j00001HB84BAAT","0035j00001HB84AAAT")
-      expect(result['User']).to contain_exactly("0055j00000CcL2bAAF")
-
-      expect(data).to have_received :exec
+      it 'searches objects in particular org' do
+        data.search sosl, target_org: target_org
+        expect(data).to have_received :exec
+      end
     end
 
-    example 'csv file download' do
-      allow(data).to receive(:exec).with(
-        :search,
-        flags: {
-          :"query" => %|"#{sosl}"|,
-          :"target-org" => nil,
-          :"result-format" => :csv,
-        },
-        redirection: :null_stderr,
-        raw_output: true,
-        format: :csv
-      )
-      .and_return(anything)
+    context 'using option: api_version' do
+      let(:api_version) { 61.0 }
 
-      data.search sosl, format: :csv
+      it 'searches objects by particular API version' do
+        data.search sosl, api_version: api_version
+        expect(data).to have_received :exec
+      end
     end
 
-    example 'human readable format output' do
-      allow(data).to receive(:exec).with(
-        :search,
-        flags: {
-          :"query" => %|"#{sosl}"|,
-          :"target-org" => nil,
-          :"result-format" => :human,
-        },
-        redirection: :null_stderr,
-        raw_output: true,
-        format: :human
-      )
-      .and_return(human_format_output)
+    context 'using option: format => csv' do
+      let(:result_format) { :csv }
+      let(:format) { :csv }
+      let(:raw_output) { true }
+      let(:output) { anything }
 
-      result = data.search sosl, format: :human
-      expect(result).to eq human_format_output
+      it 'downloads csv files that contain result' do
+        data.search sosl, format: :csv
+      end
+    end
+
+    context 'using option: format => human' do
+      let(:result_format) { :human }
+      let(:format) { :human }
+      let(:raw_output) { true }
+      let(:output) { human_format_output }
+
+      it 'returns the result by human readable format' do
+        result = data.search sosl, format: :human
+        expect(result).to eq human_format_output
+      end
     end
   end
+
   def exec_output
     {
       "status" => 0,

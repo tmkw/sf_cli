@@ -9,7 +9,7 @@ RSpec.describe 'sf data query', :model do
     expect(rows).to contain_exactly({'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"})
   end
 
-  it "can convert each record into a paticular model object" do
+  example "converts each record into a paticular model object" do
     allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
 
     rows = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, model_class: Account
@@ -18,13 +18,22 @@ RSpec.describe 'sf data query', :model do
     expect(rows.first).to be_instance_of Account
   end
 
-  it 'can query againt a paticular org, not default one' do
+  example 'gets records in paticular org' do
     allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --target-org dev --json 2> /dev/null').and_return(command_response)
 
     sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, target_org: :dev
   end
 
-  it 'can returns the raw json output' do
+  example 'queries by particular API version' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --api-version 61.0 --json 2> /dev/null')
+      .and_return(command_response)
+
+    sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, api_version: 61.0
+  end
+
+  example 'returns the raw json output' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
       .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format json --json 2> /dev/null')
@@ -35,7 +44,7 @@ RSpec.describe 'sf data query', :model do
     expect(raw_output).to eq command_response
   end
 
-  it 'can returns the csv output' do
+  example 'returns the csv output' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
       .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format csv 2> /dev/null')

@@ -6,6 +6,7 @@ module SfCli::Sf::Data
     # @param record_id   [String]         Id of the object
     # @param where       [Hash]           conditions to identify a record
     # @param target_org  [Symbol, String] an alias of paticular org, or username can be used
+    # @param api_version [Numeric]        override the api version used for api requests made by this command
     #
     # @return [String] ID that is deleted.
     #
@@ -15,13 +16,14 @@ module SfCli::Sf::Data
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_delete_record_unified the command reference
     #
-    def delete_record(object_type, record_id: nil, where: nil, target_org: nil)
+    def delete_record(object_type, record_id: nil, where: nil, target_org: nil, api_version: nil)
       where_conditions = field_value_pairs(where)
       flags = {
         :"sobject"    => object_type,
         :"record-id"  => record_id,
         :"where"      => (where_conditions.nil? ? nil : %|"#{where_conditions}"|),
         :"target-org" => target_org,
+        :"api-version" => api_version,
       }
       action = __method__.to_s.tr('_', ' ')
       json = exec(action, flags: flags, redirection: :null_stderr)

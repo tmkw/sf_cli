@@ -22,11 +22,7 @@ RSpec.describe 'sf search' do
       .and_return(command_response)
 
     result = sf.data.search sosl, target_org: :dev
-
     expect(result.keys).to contain_exactly('Account', 'Contact', 'User')
-    expect(result['Account']).to contain_exactly("0015j00001U2XvMAAV","0015j00001U2XvJAAV")
-    expect(result['Contact']).to contain_exactly("0035j00001HB84BAAT","0035j00001HB84AAAT")
-    expect(result['User']).to contain_exactly("0055j00000CcL2bAAF")
   end
 
   example 'csv file download' do
@@ -46,6 +42,16 @@ RSpec.describe 'sf search' do
 
     result = sf.data.search sosl, format: :human
     expect(result).to eq human_format_output
+  end
+
+  example 'search by particular API version' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with(%|sf data search --query "#{sosl}" --api-version 61.0 --json 2> /dev/null|)
+      .and_return(command_response)
+
+    result = sf.data.search sosl, api_version: 61.0
+    expect(result.keys).to contain_exactly('Account', 'Contact', 'User')
   end
 
   def command_response

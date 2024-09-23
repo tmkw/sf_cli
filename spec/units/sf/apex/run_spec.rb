@@ -3,6 +3,7 @@ require 'tempfile'
 
 RSpec.describe 'SfCli::Sf::Apex' do
   let(:apex) { SfCli::Sf::Apex::Core.new }
+  let(:api_version) { nil }
 
   describe '#run' do
     let(:path) {'path/to/file'}
@@ -10,7 +11,7 @@ RSpec.describe 'SfCli::Sf::Apex' do
     before do
       allow(apex)
         .to receive(:exec)
-        .with(:run, flags: {:"target-org" => nil, file: path}, redirection: :null_stderr)
+        .with(:run, flags: {:"target-org" => nil, file: path, :"api-version" => api_version}, redirection: :null_stderr)
         .and_return(exec_output)
     end
 
@@ -25,13 +26,21 @@ RSpec.describe 'SfCli::Sf::Apex' do
       expect(result.logs).to include "Execute Anonymous: System.debug('abc');"
     end
 
+    context 'Using option: api_version' do
+      let(:api_version) { 61.0 }
+      it 'returns the execution result' do
+        result = apex.run file: path, api_version: 61.0
+        expect(result.success).to be true
+      end
+    end
+
     context 'Using StringIO instead of file path' do
       let(:path) { '/tmp/file' }
       let(:tempfile) { instance_double('Tempfile') }
       let(:string_io) { StringIO.new("System.debug('abc');") }
 
       before do
-        allow(Tempfile).to receive(:open).with(%w[sf apex]).and_yield(tempfile)
+        allow(Tempfile).to receive(:open).with(%w[sf]).and_yield(tempfile)
         allow(tempfile).to receive(:write).with("System.debug('abc');")
         allow(tempfile).to receive(:path).and_return(path)
         allow(tempfile).to receive(:close!)
@@ -40,7 +49,8 @@ RSpec.describe 'SfCli::Sf::Apex' do
       it "execute apex code by reading StringIO" do
         apex.run file: string_io
 
-        expect(apex).to have_received :exec
+        expect(apex).to     have_received :exec
+        expect(Tempfile).to have_received :open
         expect(tempfile).to have_received :path
         expect(tempfile).to have_received :close!
       end

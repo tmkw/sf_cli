@@ -235,7 +235,7 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/model.rb', line 10</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_connection'><span class='object_link'><a href="../Console/Commands.html#connection-instance_method" title="SfCli::Console::Commands#connection (method)">connection</a></span></span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_connection'>connection</span>
   <span class='cvar'>@@connection</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -300,8 +300,8 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/model.rb', line 22</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate'><span class='object_link'><a href="../Console/Commands.html#generate-instance_method" title="SfCli::Console::Commands#generate (method)">generate</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_object_names'>object_names</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_generator'>generator</span> <span class='op'>=</span> <span class='const'>Generator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_connection'><span class='object_link'><a href="../Console/Commands.html#connection-instance_method" title="SfCli::Console::Commands#connection (method)">connection</a></span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_generate'>generate</span><span class='lparen'>(</span><span class='id identifier rubyid_object_names'>object_names</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_generator'>generator</span> <span class='op'>=</span> <span class='const'>Generator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_connection'>connection</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_object_names'>object_names</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_object_name'>object_name</span><span class='op'>|</span>
     <span class='id identifier rubyid_generator'>generator</span><span class='period'>.</span><span class='id identifier rubyid_generate'>generate</span><span class='lparen'>(</span><span class='id identifier rubyid_object_name'>object_name</span><span class='rparen'>)</span>
@@ -358,7 +358,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 21 05:42:54 2024 by
+  Generated on Mon Sep 23 15:05:08 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

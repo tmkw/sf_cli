@@ -1,9 +1,10 @@
 module SfCli::Sf::Data
   module Search
     # Search objects using SOSL.
-    # @param sosl       [String]        SOSL
-    # @param target_org [Symbol,String] an alias of paticular org, or username can be used
-    # @param format     [Symbol,String] get the command's raw output. human, csv, json can be available.
+    # @param sosl        [String]        SOSL
+    # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
+    # @param format      [Symbol,String] get the command's raw output. human, csv, json can be available.
+    # @param api_version [Numeric]       override the api version used for api requests made by this command
     #
     # @return [Hash] the search result
     # @note if you choose csv as format, csv files are downloaded in current directory
@@ -25,11 +26,12 @@ module SfCli::Sf::Data
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_search_unified command reference
     #
-    def search(sosl, target_org: nil, format: nil)
+    def search(sosl, target_org: nil, format: nil, api_version: nil)
       flags = {
         :"query"         => %|"#{sosl}"|,
         :"target-org"    => target_org,
         :"result-format" => format,
+        :"api-version" => api_version,
       }
       raw_output = format ? true : false
       format = format&.to_sym || :json

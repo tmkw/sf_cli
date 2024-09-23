@@ -1,4 +1,5 @@
 require 'json'
+require 'tempfile'
 
 module SfCli
   module Sf
@@ -76,6 +77,12 @@ module SfCli
             else
               ' 2> /dev/null'
             end
+        end
+
+        def create_tmpfile_by_io(io)
+          return nil unless io.respond_to? :read
+
+          Tempfile.open(%w[sf]){|f| f.write(io.read); f}
         end
       end
     end

@@ -18,6 +18,24 @@ RSpec.describe 'sf data query resume' do
     )
   end
 
+  example 'retrieves from particular org' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with("sf data query resume --bulk-query-id #{job_id} --target-org dev --json 2> /dev/null")
+      .and_return(success_response)
+
+    sf.data.query_resume job_id: job_id, target_org: :dev
+  end
+
+  example 'retrieves by particular API version' do
+    allow_any_instance_of(SfCli::Sf::Data::Core)
+      .to receive(:`)
+      .with("sf data query resume --bulk-query-id #{job_id} --api-version 61.0 --json 2> /dev/null")
+      .and_return(success_response)
+
+    sf.data.query_resume job_id: job_id, api_version: 61.0
+  end
+
   example 'in case of failure because of timeout, etc...' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)

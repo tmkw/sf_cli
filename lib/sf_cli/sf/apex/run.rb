@@ -1,5 +1,4 @@
 require 'tempfile'
-require 'stringio'
 
 module SfCli::Sf::Apex
   module Run
@@ -10,10 +9,11 @@ module SfCli::Sf::Apex
     #
     # @param target_org [Symbol,String]
     #   an alias of paticular org, or username can be used.
-    #
-    # @param file [String,StringIO]
+    # @param file [String,#read]
     #   (1) path to a local file that contains Apex code. 
-    #   (2) StringIO object
+    #   (2) object that has #read method
+    # @param api_version [Numeric]
+    #   override the api version used for api requests made by this command
     #
     # @return [ApexResult] Apex execution result.
     #
@@ -53,46 +53,33 @@ module SfCli::Sf::Apex
     #       "Execute Anonymous: System.debug(acc.Name);",
     #      ....]
     #
-    def run(target_org: nil, file: nil)
-      return run_interactive(target_org) if file.nil?
-      return run_by_io(target_org, file) if file.is_a? StringIO
-
-      return unless file.is_a? String
-
-      flags = {:"target-org" => target_org, :"file" => file}
+    def run(target_org: nil, file: nil, api_version: nil)
+      _file = crate_tmpfile(file)
+      path = _file&.path || file
+      flags = {:"target-org" => target_org, :"file" => path, :"api-version" => api_version}
 
       json = exec(__method__, flags: flags, redirection: :null_stderr)
       ApexResult.new(json['result'])
+    ensure
+      _file&.close!
     end
 
     private
 
-    def run_by_io(target_org, io)
-      file = Tempfile.open(%w[sf apex]){|f| f.write(io.read); f}
-
-      flags = {:"target-org" => target_org, :"file" => file.path}
-      json = exec(:run, flags: flags, redirection: :null_stderr)
-      ApexResult.new(json['result'])
-    ensure
-      file&.close!
+    def crate_tmpfile(path_or_io)
+      return create_tmpfile_by_user_input if path_or_io.nil?
+      create_tmpfile_by_io(path_or_io)
     end
 
-    def run_interactive(target_org)
-      file = Tempfile.open(%w[sf apex]) do |f|
-               s = $stdin.gets
-               while s
-                 f.puts(s)
-                 s = $stdin.gets
-               end
-               f
-             end
-
-      flags = {:"target-org" => target_org, :"file" => file.path}
-
-      json = exec(:run, flags: flags, redirection: :null_stderr)
-      ApexResult.new(json['result'])
-    ensure
-      file&.close!
+    def create_tmpfile_by_user_input
+      Tempfile.open(%w[sf apex]) do |f|
+        s = $stdin.gets
+        while s
+          f.puts(s)
+          s = $stdin.gets
+        end
+        f
+      end
     end
 
     class ApexResult

@@ -3,70 +3,81 @@ RSpec.describe 'SfCli::Sf::Data', :model do
 
   describe '#query_resume' do
     let(:job_id) { '750J4000002hj5JIAQ' }
-    let(:result_adjuster) { instance_double('SfCli::Sf::Data::Query::BulkResultAdjuster') }
-    let(:prepared_record) { {'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"} }
+    let(:api_version) { nil }
+    let(:target_org) { nil }
+    let(:result_format) { nil }
+    let(:format) { :json }
+    let(:raw_output) { false }
+    let(:output) { success_output }
+    let(:model_class) { nil }
+    let(:query_result) { [true, [record]]}
+    let(:result_adjuster) { instance_double('SfCli::Sf::Data::Query::RegularResultAdjuster') }
+    let(:record) { {'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"} }
 
-    it 'retrieves records with a job id' do
-      allow(SfCli::Sf::Data::Query::BulkResultAdjuster).to receive(:new).with(success_output, nil).and_return(result_adjuster)
+    before do
       allow(data).to receive(:exec).with(
         'query resume',
-        flags: {:"target-org" => nil, :"bulk-query-id" => job_id,  :"result-format" => nil},
+        flags: {:"target-org" => target_org, :"bulk-query-id" => job_id,  :"result-format" => result_format, :"api-version" => api_version},
         redirection: :null_stderr,
-        raw_output: false,
-        format: :json
+        raw_output: raw_output,
+        format: format
       )
-      .and_return(success_output)
+      .and_return(output)
+      allow(SfCli::Sf::Data::Query::BulkResultAdjuster).to receive(:new).with(output, model_class).and_return(result_adjuster)
+      allow(SfCli::Sf::Data::Query::RawOutputResultAdjuster).to receive(:new).with(output).and_return(result_adjuster)
+      allow(result_adjuster).to receive(:get_return_value).and_return(query_result)
+    end
 
-      allow(result_adjuster).to receive(:get_return_value).and_return([true, [prepared_record]])
-
+    it 'retrieves records with a job id' do
       done, rows = data.query_resume job_id: job_id
 
       expect(done).to be true
-      expect(rows).to contain_exactly(prepared_record)
+      expect(rows).to contain_exactly(record)
       expect(data).to have_received :exec
       expect(result_adjuster).to have_received :get_return_value
     end
 
-    example 'in case of failure, because query is in progress, etc...' do
-      allow(SfCli::Sf::Data::Query::BulkResultAdjuster).to receive(:new).with(failure_output, nil).and_return(result_adjuster)
-      allow(data).to receive(:exec).with(
-        'query resume',
-        flags: {:"target-org" => nil, :"bulk-query-id" => job_id,  :"result-format" => nil},
-        redirection: :null_stderr,
-        raw_output: false,
-        format: :json
-      )
-      .and_return(failure_output)
-      allow(result_adjuster).to receive(:get_return_value).and_return([false, job_id])
+    context 'using option: target_org' do
+      let(:target_org){ :dev }
 
-      done, id = data.query_resume job_id: job_id
+      it 'retrieves records of particular org' do
+        data.query_resume job_id: job_id, target_org: target_org
+        expect(data).to have_received :exec
+      end
+    end
 
-      expect(done).to be false
-      expect(id).to eq job_id
-      expect(data).to have_received :exec
-      expect(result_adjuster).to have_received :get_return_value
+    context 'using option: api_version' do
+      let(:api_version){ 61.0 }
+
+      it 'retrieves records by particular API version' do
+        data.query_resume job_id: job_id, api_version: api_version
+        expect(data).to have_received :exec
+      end
+    end
+
+    context 'in case of failure, because query is in progress, etc...' do
+      let(:output) { failure_output }
+      let(:query_result) { [false, job_id] }
+
+      it 'returns [false, job_id]' do
+        done, id = data.query_resume job_id: job_id
+
+        expect(done).to be false
+        expect(id).to eq job_id
+        expect(data).to have_received :exec
+        expect(result_adjuster).to have_received :get_return_value
+      end
     end
 
     context 'in case of using model class' do
-      let(:prepared_record) { Account.new('Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products") }
+      let(:model_class) { Account }
+      let(:record) { Account.new('Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products") }
 
       it 'converts records from hash object to model object' do
-        allow(SfCli::Sf::Data::Query::BulkResultAdjuster).to receive(:new).with(success_output, Account).and_return(result_adjuster)
-        allow(data).to receive(:exec).with(
-          'query resume',
-          flags: {:"target-org" => nil, :"bulk-query-id" => job_id,  :"result-format" => nil},
-          redirection: :null_stderr,
-          raw_output: false,
-          format: :json
-        )
-        .and_return(success_output)
-
-        allow(result_adjuster).to receive(:get_return_value).and_return([true, [prepared_record]])
-
         done, rows = data.query_resume job_id: job_id, model_class: Account
 
         expect(done).to be true
-        expect(rows).to contain_exactly(prepared_record)
+        expect(rows).to contain_exactly(record)
         expect(rows[0]).to be_instance_of Account
         expect(rows[0].Name).to eq "Aethna Home Products"
         expect(data).to have_received :exec
@@ -75,55 +86,28 @@ RSpec.describe 'SfCli::Sf::Data', :model do
     end
 
     context "in case of records including child-parent relationship" do
-      let(:prepared_record) { {'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products", 'Account' => {'Name' => 'Hoge Fuga'}} }
-
-      before do
-        allow(SfCli::Sf::Data::Query::BulkResultAdjuster)
-          .to receive(:new)
-          .with(output_including_child_parent_relationship, nil)
-          .and_return(result_adjuster)
-      end
+      let(:output) { output_including_child_parent_relationship }
+      let(:record) { {'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products", 'Account' => {'Name' => 'Hoge Fuga'}} }
 
       it 'returns records including the parent relation fields' do
-        allow(data).to receive(:exec).with(
-          'query resume',
-          flags: {:"target-org" => nil, :"bulk-query-id" => job_id,  :"result-format" => nil},
-          redirection: :null_stderr,
-          raw_output: false,
-          format: :json
-        )
-        .and_return(output_including_child_parent_relationship)
-
-        allow(result_adjuster).to receive(:get_return_value).and_return([true, [prepared_record]])
-
         done, rows = data.query_resume job_id: job_id
 
         expect(done).to be true
-        expect(rows).to contain_exactly(prepared_record)
+        expect(rows).to contain_exactly(record)
         expect(data).to have_received :exec
         expect(result_adjuster).to have_received :get_return_value
       end
     end
 
     context "in case of download csv format data" do
+      let(:format) { :csv }
+      let(:raw_output) { true }
+      let(:result_format) { :csv }
+      let(:output) { csv_output }
       let(:result_adjuster) { instance_double('SfCli::Sf::Data::Query::RawOutputResultAdjuster') }
-
-      before do
-        allow(SfCli::Sf::Data::Query::RawOutputResultAdjuster).to receive(:new).with(csv_output).and_return(result_adjuster)
-      end
+      let(:query_result) { csv_output }
 
       it "returns csv output" do
-        allow(data).to receive(:exec).with(
-          'query resume',
-          flags: {:"target-org" => nil, :"bulk-query-id" => job_id,  :"result-format" => :csv},
-          redirection: :null_stderr,
-          raw_output: true,
-          format: :csv
-        )
-        .and_return(csv_output)
-
-        allow(result_adjuster).to receive(:get_return_value).and_return(csv_output)
-
         csv  = data.query_resume job_id: job_id, format: :csv
 
         expect(csv).to eq csv_output

@@ -117,11 +117,11 @@ RSpec.describe 'SfCli::Sf::Model::SfCommandConnection' do
     let(:timeout) { 5  }
 
     before do
-      allow(sf_data).to receive(:query).with(soql, target_org: org, format: fmt, bulk: bulk, timeout: timeout, model_class: klass).and_return(query_result)
+      allow(sf_data).to receive(:query).with(soql, target_org: org, format: fmt, bulk: bulk, wait: timeout, model_class: klass).and_return(query_result)
     end
 
     it 'execute `sf data query`' do
-      expect(connection.exec_query(soql, format: fmt, bulk: bulk, timeout: timeout, model_class: klass)).to be query_result
+      expect(connection.exec_query(soql, format: fmt, bulk: bulk, wait: timeout, model_class: klass)).to be query_result
       expect(sf_data).to have_received :query
     end
   end

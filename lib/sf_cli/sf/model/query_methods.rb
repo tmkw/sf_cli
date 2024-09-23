@@ -26,6 +26,11 @@ module SfCli
             connection.find(name.to_sym, id, Object.const_get(name.to_sym))
           end
 
+          def find_by(*find_condition)
+            qc = QueryCondition.new(connection, self.name, self.field_names)
+            qc.where(*find_condition).take
+          end
+
           def limit(num)
             qc = QueryCondition.new(connection, self.name, self.field_names)
             qc.limit(num)
