@@ -21,17 +21,8 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
   end
 
   describe '#pluck' do
-    let(:row1) { QueryContditionTestClass.new(a: 'abc', b: 'def') }
-    let(:row2) { QueryContditionTestClass.new(a: 'uvw', b: 'xyz') }
-    let(:rows) { [row1, row2] }
-
-    before do
-      allow(query_condition).to receive(:all).and_return(rows)
-    end
-
-    it "returns a values of paticular field" do
-      expect(query_condition.pluck(:a)).to eq ['abc', 'uvw']
-      expect(query_condition).to have_received :all
+    it_should_behave_like 'QueryCondition#pluck' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
     end
   end
 
