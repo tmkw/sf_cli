@@ -19,68 +19,17 @@ module SfCli
           end
 
           def where(*expr)
-            return self if expr&.empty?
-            return self if expr.map{|o| (o == '' || o == {} || o == []) ? nil : o}.compact.size.zero?
-            return self unless [Hash, Symbol, String].any?{|klass| expr.first.instance_of? klass}
+            return self unless valid_expr?(expr)
 
-            if expr.size > 1
-              return self if expr.size < 3
+            conditions.append to_string_expr(expr)
+            self
+          end
 
-              value = case expr[2].class.name.to_sym
-                      when :String
-                        %|'#{expr[2]}'|
-                      when :Time
-                        expr[2].to_datetime
-                      when :Array
-                        candidates = expr[2].map do |o|
-                            case o.class.name.to_sym
-                            when :String
-                              %|'#{o}'|
-                            when :Time
-                              o.to_datetime
-                            else
-                              o
-                            end
-                          end
-                        %|IN (#{candidates.join(', ')})|
-                      else
-                        expr[2]
-                      end
-              conditions << %|#{expr[0]} #{expr[1]} #{value}|
+          def not(*expr)
+            return self unless valid_expr?(expr)
 
-              return self
-            end
-
-            if expr[0].instance_of? String
-              conditions << expr[0]
-              return self
-            end
-
-            new_conditions =
-              expr[0].map do |k,v| 
-                case v.class.name.to_sym
-                when :String
-                  %|#{k} = '#{v}'|
-                when :Time
-                  %|#{k} = #{v.to_datetime}|
-                when :Array
-                  candidates = v.map do |o|
-                      case o.class.name.to_sym
-                      when :String
-                        %|'#{o}'|
-                      when :Time
-                        %|#{o.to_datetime}|
-                      else
-                        o
-                      end
-                    end
-                  %|#{k} IN (#{candidates.join(', ')})|
-                else
-                  "#{k} = #{v}"
-                end
-              end
-            conditions.append new_conditions
-            return self
+            conditions.append %|NOT(#{to_string_expr(expr)})|
+            self
           end
 
           def select(*expr)
@@ -131,9 +80,78 @@ module SfCli
             limit(1).all.first
           end
 
+          private
+
           def select_fields
             (fields.empty? ? all_field_names : fields).join(', ')
           end 
+
+          def to_string_expr(expr)
+            return str_by_ternary_expr(expr) if expr.size > 1
+            return expr[0] if expr[0].instance_of? String
+
+            strs_by_hash_expr(expr)
+          end
+
+          def str_by_ternary_expr(expr)
+            return self if expr.size < 3
+
+            value = case expr[2].class.name.to_sym
+                    when :String
+                      %|'#{expr[2]}'|
+                    when :Time
+                      expr[2].to_datetime
+                    when :Array
+                      candidates = expr[2].map do |o|
+                          case o.class.name.to_sym
+                          when :String
+                            %|'#{o}'|
+                          when :Time
+                            o.to_datetime
+                          else
+                            o
+                          end
+                        end
+                      %|IN (#{candidates.join(', ')})|
+                    else
+                      expr[2]
+                    end
+            %|#{expr[0]} #{expr[1]} #{value}|
+          end
+
+          def valid_expr?(expr)
+            return false if expr&.empty?
+            return false if expr.map{|o| (o == '' || o == {} || o == []) ? nil : o}.compact.size.zero?
+            return false unless [Hash, Symbol, String].any?{|klass| expr.first.instance_of? klass}
+
+            true
+          end
+
+          def strs_by_hash_expr(expr)
+            expr[0].map do |k,v|
+              case v.class.name.to_sym
+              when :String
+                %|#{k} = '#{v}'|
+              when :Time
+                %|#{k} = #{v.to_datetime}|
+              when :Array
+                candidates = v.map do |o|
+                    case o.class.name.to_sym
+                    when :String
+                      %|'#{o}'|
+                    when :Time
+                      %|#{o.to_datetime}|
+                    else
+                      o
+                    end
+                  end
+                %|#{k} IN (#{candidates.join(', ')})|
+              else
+                "#{k} = #{v}"
+              end
+            end
+            .join(' AND ')
+          end
         end
       end
     end
