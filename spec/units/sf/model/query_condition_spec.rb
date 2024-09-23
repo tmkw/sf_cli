@@ -3,13 +3,19 @@ require_relative '../../../support/shared_examples/query_condition_example'
 RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
   QueryContditionTestClass = Struct.new(:a, :b)
 
-  let(:query_condition) { SfCli::Sf::Model::QueryMethods::QueryCondition.new(connection, klass.name, field_names) }
+  let(:klass) { QueryContditionTestClass }
   let(:field_names) { [anything, anything] }
   let(:connection) { double('Some kind of Connection') }
-  let(:klass) { QueryContditionTestClass }
+  let(:query_condition) { SfCli::Sf::Model::QueryMethods::QueryCondition.new(connection, klass.name, field_names) }
 
   describe '#all' do
     it_should_behave_like 'QueryCondition#all' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
+    end
+  end
+
+  describe '#to_csv' do
+    it_should_behave_like 'QueryCondition#to_csv' do
       let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
     end
   end

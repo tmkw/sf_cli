@@ -65,8 +65,8 @@ module SfCli
         end
 
         # @private :nodoc: just for developers
-        def query(soql, klass)
-          sf_data.query soql, target_org: target_org, model_class: klass
+        def query(soql, klass, format = nil)
+          sf_data.query soql, target_org: target_org, format: format, model_class: klass
         end
 
         # @private :nodoc: just for developers

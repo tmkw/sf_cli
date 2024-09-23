@@ -225,4 +225,27 @@ RSpec.shared_examples 'defining model Query methods' do
       expect(query_condition).to have_received :take
     end
   end
+
+  describe '.to_csv' do
+    let(:csv) { 'CSV contents' }
+
+    before do
+      ClassDefininitionTest113 = instance_eval(definition.to_s)
+      ClassDefininitionTest113.connection = connection
+
+      allow(SfCli::Sf::Model::QueryMethods::QueryCondition)
+        .to receive(:new)
+        .with(connection, 'ClassDefininitionTest113', ClassDefininitionTest113.field_names)
+        .and_return(query_condition)
+
+      allow(query_condition).to receive(:to_csv).and_return(csv)
+    end
+
+    it 'returns a rows of the model class object' do
+      expect(ClassDefininitionTest113.to_csv).to be csv
+
+      expect(SfCli::Sf::Model::QueryMethods::QueryCondition).to have_received :new
+      expect(query_condition).to have_received :to_csv
+    end
+  end
 end

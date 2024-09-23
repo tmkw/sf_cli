@@ -101,13 +101,24 @@ RSpec.describe 'SfCli::Sf::Model::SfCommandConnection' do
   end
 
   describe '#query' do
+    let(:format) { nil }
+
     before do
-      allow(sf_data).to receive(:query).with(soql, target_org: org, model_class: klass).and_return(query_result)
+      allow(sf_data).to receive(:query).with(soql, target_org: org, model_class: klass, format: format).and_return(query_result)
     end
 
     it 'execute `sf data query`' do
       expect(connection.query(soql, klass)).to be query_result
       expect(sf_data).to have_received :query
+    end
+
+    context 'when format is specified' do
+      let(:format) { :csv }
+
+      it 'execute `sf data query` with format option' do
+        expect(connection.query(soql, klass, :csv)).to be query_result
+        expect(sf_data).to have_received :query
+      end
     end
   end
 
