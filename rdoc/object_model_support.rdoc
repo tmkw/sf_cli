@@ -42,12 +42,12 @@ Query and Get a record
   contact # => #<Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen">
   contact.Name # Akin Kristen
 
-  # these 2 example are the same meaning
-  Contact.select(Name).where(Name: 'John Smith', LastModifiedDate: :Yesterday).take
-  Contact.select(Name).where(Name: 'John Smith').where(LastModifiedDate: :Yesterday).take
+  Contact.select(:Name).where(Name: 'John Smith', LastModifiedDate: :Yesterday).take
+  Contact.select(:Name).where(Name: 'John Smith').where(LastModifiedDate: :Yesterday).take # same as above
 
 Query and Get records
-  contacts = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).all # get all records that is modified yesterday
+  contacts = Contact.where(LastModifiedDate: :Yesterday).all     # get all contacts who are modified yesterday
+  accounts = Account.where.not(LastModifiedDate: :Yesterday).all # get all accounts that are *not* modified yesterday
 
 Query and Get CSV data
   csv = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).to_csv
@@ -63,10 +63,6 @@ Parent-Children Relationship
   account.Name             # Aethna Home Products
   rows.Contacts            # [#<Contact @Name="Akin Kristen">]
   rows.Contacts.first.Name # Akin Kristen
-
-Get all fields in a record
-  # just by not using 'select' method
-  contact = Contact.find(record_id) # <Contact @Id="...", @Name="...", other fields...>
 
 Time keywords such as 'yesterday' or 'LAST_N_DAYS:N' with symbol style
   Contact.select(:Name).where(LastModifiedDate: :Yesterday).take       # "SELECT Id, Name FROM Contact WHERE LastModifiedDate = Yesterday"
