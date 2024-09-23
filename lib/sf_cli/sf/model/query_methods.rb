@@ -48,6 +48,11 @@ module SfCli
             qc.all
           end
 
+          def to_csv
+            qc = QueryCondition.new(connection, self.name, self.field_names)
+            qc.to_csv
+          end
+
           def pluck(field_name)
             qc = QueryCondition.new(connection, self.name, self.field_names)
             qc.pluck(field_name)

@@ -49,6 +49,9 @@ Query and Get a record
 Query and Get records
   contacts = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).all # get all records that is modified yesterday
 
+Query and Get CSV data
+  csv = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).to_csv
+
 Child-Parent Relationship
   contact = Contact.select(:Id, :Name, "Account.Name").where(Name: 'Akin Kristen').take
   contact # <Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen", @Account= #<Account @Name="Aethna Home Products">>
