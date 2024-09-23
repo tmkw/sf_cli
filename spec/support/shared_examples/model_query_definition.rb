@@ -190,14 +190,39 @@ RSpec.shared_examples 'defining model Query methods' do
 
   describe '.find' do
     before do
-      ClassDefininitionTest101 = instance_eval(definition.to_s)
-      ClassDefininitionTest101.connection = connection
-      allow(connection).to receive(:find).with(:ClassDefininitionTest101, id, ClassDefininitionTest101).and_return(model_instance)
+      ClassDefininitionTest111 = instance_eval(definition.to_s)
+      ClassDefininitionTest111.connection = connection
+      allow(connection).to receive(:find).with(:ClassDefininitionTest111, id, ClassDefininitionTest111).and_return(model_instance)
     end
 
     it 'get a record of the model' do
-      expect(ClassDefininitionTest101.find id).to eq model_instance
+      expect(ClassDefininitionTest111.find id).to eq model_instance
       expect(connection).to have_received :find
+    end
+  end
+
+  describe '.find_by' do
+    let(:result) { instance_double('ClassDefininitionTest112') }
+
+    before do
+      ClassDefininitionTest112 = instance_eval(definition.to_s)
+      ClassDefininitionTest112.connection = connection
+
+      allow(SfCli::Sf::Model::QueryMethods::QueryCondition)
+        .to receive(:new)
+        .with(connection, 'ClassDefininitionTest112', ClassDefininitionTest112.field_names)
+        .and_return(query_condition)
+
+      allow(query_condition).to receive(:where).with({Name: 'John Smith', Age: 33}).and_return(query_condition)
+      allow(query_condition).to receive(:take).and_return(result)
+    end
+
+    it 'get a record according to search conditions' do
+      expect(ClassDefininitionTest112.find_by Name: 'John Smith', Age: 33).to be result
+
+      expect(SfCli::Sf::Model::QueryMethods::QueryCondition).to have_received :new
+      expect(query_condition).to have_received :where
+      expect(query_condition).to have_received :take
     end
   end
 end
