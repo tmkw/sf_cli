@@ -111,7 +111,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#resume-instance_method" title="#resume (instance method)">#<strong>resume</strong>(job_id:, target_org: nil)  &#x21d2; JobInfo </a>
+      <a href="#resume-instance_method" title="#resume (instance method)">#<strong>resume</strong>(job_id:, target_org: nil, api_version: nil)  &#x21d2; JobInfo </a>
     
 
     
@@ -144,7 +144,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="resume-instance_method">
   
-    #<strong>resume</strong>(job_id:, target_org: nil)  &#x21d2; <tt><span class='object_link'><a href="Resume/JobInfo.html" title="SfCli::Sf::Data::Resume::JobInfo (class)">JobInfo</a></span></tt> 
+    #<strong>resume</strong>(job_id:, target_org: nil, api_version: nil)  &#x21d2; <tt><span class='object_link'><a href="Resume/JobInfo.html" title="SfCli::Sf::Data::Resume::JobInfo (class)">JobInfo</a></span></tt> 
   
 
   
@@ -221,6 +221,24 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>api_version</span>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>override the api version used for api requests made by this command</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -255,7 +273,6 @@
       <pre class="lines">
 
 
-76
 77
 78
 79
@@ -264,15 +281,18 @@
 82
 83
 84
-85</pre>
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/data/resume.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/data/resume.rb', line 77</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_resume'>resume</span><span class='lparen'>(</span><span class='label'>job_id:</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_resume'>resume</span><span class='lparen'>(</span><span class='label'>job_id:</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>api_version:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flags'>flags</span> <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='symbol'>:&quot;job-id&quot;</span>     <span class='op'>=&gt;</span> <span class='id identifier rubyid_job_id'>job_id</span><span class='comma'>,</span>
-    <span class='symbol'>:&quot;target-org&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'><span class='object_link'><a href="../../Console/Commands.html#target_org-instance_method" title="SfCli::Console::Commands#target_org (method)">target_org</a></span></span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;target-org&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'>target_org</span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;api-version&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_version'>api_version</span><span class='comma'>,</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_json'>json</span> <span class='op'>=</span> <span class='id identifier rubyid_exec'>exec</span><span class='lparen'>(</span><span class='id identifier rubyid___method__'>__method__</span><span class='comma'>,</span> <span class='label'>flags:</span> <span class='id identifier rubyid_flags'>flags</span><span class='comma'>,</span> <span class='label'>redirection:</span> <span class='symbol'>:null_stderr</span><span class='rparen'>)</span>
 
@@ -289,7 +309,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 21 05:42:54 2024 by
+  Generated on Mon Sep 23 15:05:08 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

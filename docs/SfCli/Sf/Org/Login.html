@@ -276,7 +276,7 @@ sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com</cod
 <span class='kw'>def</span> <span class='id identifier rubyid_login_access_token'>login_access_token</span><span class='lparen'>(</span><span class='label'>instance_url:</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flags'>flags</span> <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='symbol'>:&quot;instance-url&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_instance_url'>instance_url</span><span class='comma'>,</span>
-    <span class='symbol'>:&quot;alias&quot;</span>        <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'><span class='object_link'><a href="../../Console/Commands.html#target_org-instance_method" title="SfCli::Console::Commands#target_org (method)">target_org</a></span></span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;alias&quot;</span>        <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'>target_org</span><span class='comma'>,</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_switches'>switches</span> <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='symbol'>:&quot;no-prompt&quot;</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
@@ -404,7 +404,7 @@ sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com</cod
 
 <span class='kw'>def</span> <span class='id identifier rubyid_login_web'>login_web</span><span class='lparen'>(</span><span class='label'>target_org:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>instance_url:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>browser:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flags'>flags</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-    <span class='symbol'>:&quot;alias&quot;</span>        <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'><span class='object_link'><a href="../../Console/Commands.html#target_org-instance_method" title="SfCli::Console::Commands#target_org (method)">target_org</a></span></span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;alias&quot;</span>        <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'>target_org</span><span class='comma'>,</span>
     <span class='symbol'>:&quot;instance-url&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_instance_url'>instance_url</span><span class='comma'>,</span>
     <span class='symbol'>:&quot;browser&quot;</span>      <span class='op'>=&gt;</span> <span class='id identifier rubyid_browser'>browser</span><span class='comma'>,</span>
   <span class='rbrace'>}</span>
@@ -421,7 +421,7 @@ sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com</cod
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 21 05:42:54 2024 by
+  Generated on Mon Sep 23 15:05:08 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>
