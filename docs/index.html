@@ -142,7 +142,7 @@
 
 <p>Using Bulk API 2.0</p>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_sf'><span class='object_link'><a href="top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_upsert_bulk'>upsert_bulk</span> <span class='label'>sobject:</span> <span class='symbol'>:TestCustomObject__c</span><span class='comma'>,</span> <span class='label'>file:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upsert.csv</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>timeout:</span> <span class='int'>5</span>  <span class='comment'># waiting for 5 minutes at maximum
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_sf'><span class='object_link'><a href="top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_upsert_bulk'>upsert_bulk</span> <span class='label'>sobject:</span> <span class='symbol'>:TestCustomObject__c</span><span class='comma'>,</span> <span class='label'>file:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>upsert.csv</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>wait:</span> <span class='int'>5</span>  <span class='comment'># waiting for 5 minutes at maximum
 </span></code></pre>
 
 <p>Run Apex</p>
@@ -151,7 +151,7 @@
 <span class='id identifier rubyid_sf'><span class='object_link'><a href="top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_apex'>apex</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='label'>file:</span> <span class='const'>StringIO</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>System.debug(&#39;Hello World&#39;)</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<h2 id="label-Object+Model+Support+-28experimental-29">Object Model Support (experimental)</h2>
+<h2 id="label-Object+Model+Support">Object Model Support</h2>
 
 <p>With sf command:</p>
 
@@ -168,7 +168,7 @@
 </div></div>
 
       <div id="footer">
-  Generated on Sat Sep 21 05:42:54 2024 by
+  Generated on Mon Sep 23 15:05:08 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

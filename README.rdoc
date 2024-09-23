@@ -55,7 +55,7 @@ Using Bulk API 2.0
 Run Apex
   sf.apex.run file: 'path/to/file'
   sf.apex.run file: StringIO.new("System.debug('Hello World')")
-== Object Model Support (experimental)
+== Object Model Support
 With sf command:
   rows = sf.data.query "SELECT Id, Name FROM Contact WHERE Name = 'Akin Kristen'", model_class: Contact
   rows.first      # <Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen">

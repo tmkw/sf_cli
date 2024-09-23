@@ -58,6 +58,33 @@
       </div>
 
       <div id="content"><div id='filecontents'>
+<h2 id="label-0.0.9+-+2024-09-23">0.0.9 - 2024-09-23</h2>
+<ul><li>
+<p>CHANGE: [BREAKING] change keyword argument <code>timeout</code> to <code>wait</code> according to the original commands’ specification;</p>
+<ul><li>
+<p><code>sf.data.query</code></p>
+</li><li>
+<p><code>sf.data.delete_bulk</code></p>
+</li><li>
+<p><code>sf.data.delete_resume</code></p>
+</li><li>
+<p><code>sf.data.upsert_bulk</code></p>
+</li><li>
+<p><code>sf.data.upsert_resume</code></p>
+</li></ul>
+</li><li>
+<p>NEW: <code>#find_by</code> method for object model</p>
+</li><li>
+<p>NEW: <code>api_version</code> keyword argument is added to methods whose original commands have that option</p>
+</li><li>
+<p>CHANGE: <code>file</code> keyword argument accepts IO-like object such as StringIO:</p>
+<ul><li>
+<p><code>sf.data.upsert_bulk</code></p>
+</li><li>
+<p><code>sf.data.delete_bulk</code></p>
+</li></ul>
+</li></ul>
+
 <h2 id="label-0.0.8+-+2024-09-21">0.0.8 - 2024-09-21</h2>
 
 <p>Maintenance Release: document enhancement</p>
@@ -173,7 +200,7 @@
 </div></div>
 
       <div id="footer">
-  Generated on Sat Sep 21 05:42:54 2024 by
+  Generated on Mon Sep 23 15:05:08 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

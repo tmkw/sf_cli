@@ -101,7 +101,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#delete_resume-instance_method" title="#delete_resume (instance method)">#<strong>delete_resume</strong>(job_id:, timeout: nil, target_org: nil)  &#x21d2; JobInfo, BulkResultV2 </a>
+      <a href="#delete_resume-instance_method" title="#delete_resume (instance method)">#<strong>delete_resume</strong>(job_id:, wait: nil, target_org: nil, api_version: nil)  &#x21d2; JobInfo, BulkResultV2 </a>
     
 
     
@@ -134,7 +134,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="delete_resume-instance_method">
   
-    #<strong>delete_resume</strong>(job_id:, timeout: nil, target_org: nil)  &#x21d2; <tt><span class='object_link'><a href="JobInfo.html" title="SfCli::Sf::Data::JobInfo (class)">JobInfo</a></span></tt>, <tt><span class='object_link'><a href="BulkResultV2.html" title="SfCli::Sf::Data::BulkResultV2 (class)">BulkResultV2</a></span></tt> 
+    #<strong>delete_resume</strong>(job_id:, wait: nil, target_org: nil, api_version: nil)  &#x21d2; <tt><span class='object_link'><a href="JobInfo.html" title="SfCli::Sf::Data::JobInfo (class)">JobInfo</a></span></tt>, <tt><span class='object_link'><a href="BulkResultV2.html" title="SfCli::Sf::Data::BulkResultV2 (class)">BulkResultV2</a></span></tt> 
   
 
   
@@ -160,7 +160,7 @@
 </span>
 <span class='comment'># the job has already started asynchronously.
 </span><span class='comment'># So you should check its progress.
-</span><span class='comment'># if you want to wait for the job complete the task, try &#39;timeout&#39; option.
+</span><span class='comment'># if you want to wait for the job complete the task, try &#39;wait&#39; option.
 </span><span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_sf'><span class='object_link'><a href="../../../top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_delete_resume'>delete_resume</span> <span class='label'>job_id:</span> <span class='id identifier rubyid_jobinfo'>jobinfo</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span>
 
 <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>yey!</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_job_info'>job_info</span><span class='period'>.</span><span class='id identifier rubyid_completed?'>completed?</span> <span class='comment'># the job has completed</span></code></pre>
@@ -187,7 +187,7 @@
   
     <li>
       
-        <span class='name'>timeout</span>
+        <span class='name'>wait</span>
       
       
         <span class='type'>(<tt>Integer</tt>)</span>
@@ -217,6 +217,24 @@
         &mdash;
         <div class='inline'>
 <p>an alias of paticular org, or username can be used<br></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>api_version</span>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>override the api version used for api requests made by this command</p>
 </div>
       
     </li>
@@ -255,7 +273,6 @@
       <pre class="lines">
 
 
-27
 28
 29
 30
@@ -271,16 +288,19 @@
 40
 41
 42
-43</pre>
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/data/delete_resume.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/data/delete_resume.rb', line 28</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_delete_resume'>delete_resume</span><span class='lparen'>(</span><span class='label'>job_id:</span><span class='comma'>,</span> <span class='label'>timeout:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_delete_resume'>delete_resume</span><span class='lparen'>(</span><span class='label'>job_id:</span><span class='comma'>,</span> <span class='label'>wait:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>api_version:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flags'>flags</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-    <span class='symbol'>:&quot;job-id&quot;</span>     <span class='op'>=&gt;</span> <span class='id identifier rubyid_job_id'>job_id</span><span class='comma'>,</span>
-    <span class='symbol'>:&quot;wait&quot;</span>       <span class='op'>=&gt;</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='comma'>,</span>
-    <span class='symbol'>:&quot;target-org&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'><span class='object_link'><a href="../../Console/Commands.html#target_org-instance_method" title="SfCli::Console::Commands#target_org (method)">target_org</a></span></span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;job-id&quot;</span>      <span class='op'>=&gt;</span> <span class='id identifier rubyid_job_id'>job_id</span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;wait&quot;</span>        <span class='op'>=&gt;</span> <span class='id identifier rubyid_wait'>wait</span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;target-org&quot;</span>  <span class='op'>=&gt;</span> <span class='id identifier rubyid_target_org'>target_org</span><span class='comma'>,</span>
+    <span class='symbol'>:&quot;api-version&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_version'>api_version</span><span class='comma'>,</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid___method__'>__method__</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>_</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_json'>json</span> <span class='op'>=</span> <span class='id identifier rubyid_exec'>exec</span><span class='lparen'>(</span><span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='label'>flags:</span> <span class='id identifier rubyid_flags'>flags</span><span class='comma'>,</span> <span class='label'>redirection:</span> <span class='symbol'>:null_stderr</span><span class='rparen'>)</span>
@@ -303,7 +323,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 21 05:42:54 2024 by
+  Generated on Mon Sep 23 15:05:08 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

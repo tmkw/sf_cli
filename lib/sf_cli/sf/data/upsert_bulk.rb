@@ -25,6 +25,15 @@ module SfCli::Sf::Data
     #   # Or, you can wait for the job completion with one try.
     #   result = sf.data.upsert_bulk sobject: :TestCustomObject__c, file: 'upsert.csv', wait: 5  # wait within 5 minutes
     #
+    #   # you can use IO-like object, which has #read, to `file` keyword:
+    #   require 'stringio'
+    #   csv = StringIO.new <<CSV
+    #     Id,Name
+    #     001J400000Ki61uIAB,John Smith
+    #     001J400000Ki3WRIAZ,Foo Baz Bar
+    #   CSV
+    #   jobinfo = sf.data.upsert_bulk sobject: :TestCustomObject__c, file: csv
+    #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_upsert_bulk_unified command reference
     #
     def upsert_bulk(file:, sobject:, external_id:, wait: nil, target_org: nil, api_version: nil)

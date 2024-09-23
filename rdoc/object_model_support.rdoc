@@ -27,8 +27,9 @@ Initialize and save a record
   c.save
 
 Find and update a record
-  # find by record ID and update
-  c2 = Contact.find(c.id)
+  c2 = Contact.find(c.id)                  # find by record ID
+  c2 = Contact.find_by(Name: "John Smith") # find by Name
+
   c2.Name = "Johnny Smith"
   c2.save # update
 
