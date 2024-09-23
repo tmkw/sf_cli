@@ -33,3 +33,22 @@ RSpec.shared_examples 'QueryCondition#to_csv' do
     expect(connection).to have_received :query
   end
 end
+
+RSpec.shared_examples 'QueryCondition#pluck' do
+  let(:query_condition) { SfCli::Sf::Model::QueryMethods::QueryCondition.new(connection, klass.name, field_names) }
+  let(:soql) { "SELECT Id, Name FROM Object" }
+  let(:rows) { [{'a' => 'abc', 'b' => 'def'}, {'a' => 'uvw', 'b' => 'xyz'}] }
+  let(:result) { ['abc', 'uvw'] }
+
+  before do
+    allow(query_condition).to receive(:to_soql).and_return(soql)
+    allow(connection).to receive(:query).with(soql, nil).and_return(rows)
+  end
+
+  it 'returns records that match the query condtions' do
+    expect(query_condition.pluck :a).to eq result
+
+    expect(query_condition).to have_received :to_soql
+    expect(connection).to have_received :query
+  end
+end

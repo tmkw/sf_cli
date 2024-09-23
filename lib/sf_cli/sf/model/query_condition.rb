@@ -124,7 +124,7 @@ module SfCli
           end
 
           def pluck(field_name)
-            all.map{|record| record.__send__(field_name.to_sym)}
+            connection.query(to_soql, nil).map{|record| record[field_name.to_s]}
           end
 
           def take
