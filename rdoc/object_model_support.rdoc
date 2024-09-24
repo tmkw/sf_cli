@@ -52,6 +52,11 @@ Query and Get records
 Query and Get CSV data
   csv = Contact.select(:Id, :Name).where(LastModifiedDate: :Yesterday).to_csv
 
+Aggregate functions
+  Account.where(BillingCountry: 'Japan').count      # count accounts whose billing country is Japan
+  User.where(country: 'USA').max(:LastModifiedDate) # get the latest LastModifiedDate of users in USA
+  Case.min(:LastCreatedDate)                        # get the date when the oldest case was created
+
 Child-Parent Relationship
   contact = Contact.select(:Id, :Name, "Account.Name").where(Name: 'Akin Kristen').take
   contact # <Contact: @Id="0035j00001RW3xbAAD", @Name="Akin Kristen", @Account= #<Account @Name="Aethna Home Products">>
@@ -80,5 +85,20 @@ Ternary style
 
 Get schema
   schema = Account.describe
-  schema.name # Account
-  schema.field_names # [Id, Name, ....]
+  schema.name                   # Account
+  schema.field_names            # [Id, Name, ....]
+  schema.fields.name_and_labels # returns all field name and label pairs
+=== Sometimes it's better to use raw SOQL when it gets complecated.
+  accounts =
+    SfCli::Sf::Model.connection.exec_query(
+      "SELECT Id, Name FROM Account WHERE Name like '%Hoge' OR (Age <= 30 AND BillingCity IN ['Tokyo', 'NewYork'])",
+      model_class: Account
+    )
+=== About Document
+Object Model feature is still experimental, so it's not mentioned in online document.
+But you can generate the complete version locally:
+  $ git clone git@github.com:tmkw/sf_cli.git  sf_cli
+  $ cd sf_cli
+  $ bundle config set with development
+  $ bundle install
+  $ yardoc

@@ -13,8 +13,8 @@ module SfCli::Sf::Sobject
     #   schema = sf.sobject.describe :Account
     #   schema.name  # Account
     #   schema.label # Account
-    #   schema.field_names # [:Id, :Name, ....]
-    #   schema.fields[:Name] # => {"aggregatable"=>true, "aiPredictionField"=>false, "autoNumber"=>false,...}
+    #   schema.field_names            # [:Id, :Name, ....]
+    #   schema.fields.name_and_labels # [['Id', 'Account Id'], ['Name', 'Account Name'], ...]
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_sobject_commands_unified.htm#cli_reference_sobject_describe_unified command reference
     #
