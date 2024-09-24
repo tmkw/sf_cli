@@ -116,14 +116,26 @@
 <span class='id identifier rubyid_contact'>contact</span> <span class='comment'># =&gt; #&lt;Contact: @Id=&quot;0035j00001RW3xbAAD&quot;, @Name=&quot;Akin Kristen&quot;&gt;
 </span><span class='id identifier rubyid_contact'>contact</span><span class='period'>.</span><span class='const'>Name</span> <span class='comment'># Akin Kristen
 </span>
-<span class='comment'># these 2 example are the same meaning
-</span><span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='const'>Name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>Name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>John Smith</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span>
-<span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='const'>Name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>Name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>John Smith</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span>
-</code></pre>
+<span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='symbol'>:Name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>Name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>John Smith</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span>
+<span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='symbol'>:Name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>Name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>John Smith</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span> <span class='comment'># same as above
+</span></code></pre>
 
 <p>Query and Get records</p>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_contacts'>contacts</span> <span class='op'>=</span> <span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='symbol'>:Id</span><span class='comma'>,</span> <span class='symbol'>:Name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span> <span class='comment'># get all records that is modified yesterday
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_contacts'>contacts</span> <span class='op'>=</span> <span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span>     <span class='comment'># get all contacts who are modified yesterday
+</span><span class='id identifier rubyid_accounts'>accounts</span> <span class='op'>=</span> <span class='const'>Account</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span> <span class='comment'># get all accounts that are *not* modified yesterday
+</span></code></pre>
+
+<p>Query and Get CSV data</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_csv'>csv</span> <span class='op'>=</span> <span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='symbol'>:Id</span><span class='comma'>,</span> <span class='symbol'>:Name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>LastModifiedDate:</span> <span class='symbol'>:Yesterday</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_csv'>to_csv</span>
+</code></pre>
+
+<p>Aggregate functions</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Account</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>BillingCountry:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Japan</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>      <span class='comment'># count accounts whose billing country is Japan
+</span><span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>country:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>USA</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='lparen'>(</span><span class='symbol'>:LastModifiedDate</span><span class='rparen'>)</span> <span class='comment'># get the latest LastModifiedDate of users in USA
+</span><span class='const'>Case</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span><span class='lparen'>(</span><span class='symbol'>:LastCreatedDate</span><span class='rparen'>)</span>                        <span class='comment'># get the date when the oldest case was created
 </span></code></pre>
 
 <p>Child-Parent Relationship</p>
@@ -140,12 +152,6 @@
 </span><span class='id identifier rubyid_account'>account</span><span class='period'>.</span><span class='const'>Name</span>             <span class='comment'># Aethna Home Products
 </span><span class='id identifier rubyid_rows'>rows</span><span class='period'>.</span><span class='const'>Contacts</span>            <span class='comment'># [#&lt;Contact @Name=&quot;Akin Kristen&quot;&gt;]
 </span><span class='id identifier rubyid_rows'>rows</span><span class='period'>.</span><span class='const'>Contacts</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='const'>Name</span> <span class='comment'># Akin Kristen
-</span></code></pre>
-
-<p>Get all fields in a record</p>
-
-<pre class="code ruby"><code class="ruby"><span class='comment'># just by not using &#39;select&#39; method
-</span><span class='id identifier rubyid_contact'>contact</span> <span class='op'>=</span> <span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_record_id'>record_id</span><span class='rparen'>)</span> <span class='comment'># &lt;Contact @Id=&quot;...&quot;, @Name=&quot;...&quot;, other fields...&gt;
 </span></code></pre>
 
 <p>Time keywords such as ‘yesterday’ or ‘LAST_N_DAYS:N’ with symbol style</p>
@@ -173,13 +179,34 @@
 <p>Get schema</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='const'>Account</span><span class='period'>.</span><span class='id identifier rubyid_describe'>describe</span>
-<span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='comment'># Account
-</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_field_names'>field_names</span> <span class='comment'># [Id, Name, ....]
+<span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>                   <span class='comment'># Account
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_field_names'>field_names</span>            <span class='comment'># [Id, Name, ....]
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_name_and_labels'>name_and_labels</span> <span class='comment'># returns all field name and label pairs
 </span></code></pre>
+
+<h3 id="label-Sometimes+it-27s+better+to+use+raw+SOQL+when+it+gets+complecated.">Sometimes it’s better to use raw SOQL when it gets complecated.</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_accounts'>accounts</span> <span class='op'>=</span>
+  <span class='const'><span class='object_link'><a href="SfCli.html" title="SfCli (module)">SfCli</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SfCli/Sf.html" title="SfCli::Sf (module)">Sf</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SfCli/Sf/Model.html" title="SfCli::Sf::Model (module)">Model</a></span></span><span class='period'>.</span><span class='id identifier rubyid_connection'><span class='object_link'><a href="SfCli/Sf/Model.html#connection-class_method" title="SfCli::Sf::Model.connection (method)">connection</a></span></span><span class='period'>.</span><span class='id identifier rubyid_exec_query'>exec_query</span><span class='lparen'>(</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SELECT Id, Name FROM Account WHERE Name like &#39;%Hoge&#39; OR (Age &lt;= 30 AND BillingCity IN [&#39;Tokyo&#39;, &#39;NewYork&#39;])</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='label'>class_name:</span> <span class='const'>Account</span>
+  <span class='rparen'>)</span>
+</code></pre>
+
+<h3 id="label-About+Document">About Document</h3>
+
+<p>Object Model feature is still experimental, so it’s not mentioned in online document. But you can generate the complete version locally:</p>
+
+<pre class="code ruby"><code class="ruby">$ git clone git@github.com:tmkw/sf_cli.git  sf_cli
+$ cd sf_cli
+$ bundle config set with development
+$ bundle install
+$ yardoc
+</code></pre>
 </div></div>
 
       <div id="footer">
-  Generated on Mon Sep 23 15:05:08 2024 by
+  Generated on Wed Sep 25 02:04:52 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>
