@@ -26,6 +26,24 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
     end
   end
 
+  describe '#count' do
+    it_should_behave_like 'QueryCondition#count' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
+    end
+  end
+
+  describe '#min' do
+    it_should_behave_like 'QueryCondition#min' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
+    end
+  end
+
+  describe '#max' do
+    it_should_behave_like 'QueryCondition#max' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
+    end
+  end
+
   describe '#take' do
     let(:row1) { QueryContditionTestClass.new(a: 'abc', b: 'def') }
     let(:row2) { QueryContditionTestClass.new(a: 'uvw', b: 'xyz') }

@@ -6,7 +6,16 @@ module SfCli
       module QueryMethods
         # @private :nodoc: just for developers
         class QueryCondition
-          attr_reader :connection, :object_name, :all_field_names, :fields, :conditions, :limit_num, :row_order
+          attr_reader :connection,
+                      :object_name,
+                      :all_field_names,
+                      :fields,
+                      :conditions,
+                      :limit_num,
+                      :row_order,
+                      :count_select,
+                      :max_select_field,
+                      :min_select_field
 
           def initialize(connection, object_name, field_names)
             @object_name = object_name
@@ -16,6 +25,9 @@ module SfCli
             @conditions = [] 
             @limit_num = nil
             @row_order = nil
+            @count_select = false
+            @max_select_field = nil
+            @min_select_field = nil
           end
 
           def where(*expr)
@@ -80,9 +92,28 @@ module SfCli
             limit(1).all.first
           end
 
+          def count
+            @count_select = true
+            connection.query(to_soql, nil).first['expr0']
+          end
+
+          def max(field_name)
+            @max_select_field = field_name
+            connection.query(to_soql, nil).first['expr0']
+          end
+
+          def min(field_name)
+            @min_select_field = field_name
+            connection.query(to_soql, nil).first['expr0']
+          end
+
           private
 
           def select_fields
+            return 'COUNT(Id)'                if count_select
+            return "MAX(#{max_select_field})" if max_select_field
+            return "MIN(#{min_select_field})" if min_select_field
+
             (fields.empty? ? all_field_names : fields).join(', ')
           end 
 
