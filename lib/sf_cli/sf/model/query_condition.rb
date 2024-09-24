@@ -6,7 +6,16 @@ module SfCli
       module QueryMethods
         # @private :nodoc: just for developers
         class QueryCondition
-          attr_reader :connection, :object_name, :all_field_names, :fields, :conditions, :limit_num, :row_order
+          attr_reader :connection,
+                      :object_name,
+                      :all_field_names,
+                      :fields,
+                      :conditions,
+                      :limit_num,
+                      :row_order,
+                      :count_select,
+                      :max_select_field,
+                      :min_select_field
 
           def initialize(connection, object_name, field_names)
             @object_name = object_name
@@ -16,71 +25,23 @@ module SfCli
             @conditions = [] 
             @limit_num = nil
             @row_order = nil
+            @count_select = false
+            @max_select_field = nil
+            @min_select_field = nil
           end
 
           def where(*expr)
-            return self if expr&.empty?
-            return self if expr.map{|o| (o == '' || o == {} || o == []) ? nil : o}.compact.size.zero?
-            return self unless [Hash, Symbol, String].any?{|klass| expr.first.instance_of? klass}
+            return self unless valid_expr?(expr)
 
-            if expr.size > 1
-              return self if expr.size < 3
+            conditions.append to_string_expr(expr)
+            self
+          end
 
-              value = case expr[2].class.name.to_sym
-                      when :String
-                        %|'#{expr[2]}'|
-                      when :Time
-                        expr[2].to_datetime
-                      when :Array
-                        candidates = expr[2].map do |o|
-                            case o.class.name.to_sym
-                            when :String
-                              %|'#{o}'|
-                            when :Time
-                              o.to_datetime
-                            else
-                              o
-                            end
-                          end
-                        %|IN (#{candidates.join(', ')})|
-                      else
-                        expr[2]
-                      end
-              conditions << %|#{expr[0]} #{expr[1]} #{value}|
+          def not(*expr)
+            return self unless valid_expr?(expr)
 
-              return self
-            end
-
-            if expr[0].instance_of? String
-              conditions << expr[0]
-              return self
-            end
-
-            new_conditions =
-              expr[0].map do |k,v| 
-                case v.class.name.to_sym
-                when :String
-                  %|#{k} = '#{v}'|
-                when :Time
-                  %|#{k} = #{v.to_datetime}|
-                when :Array
-                  candidates = v.map do |o|
-                      case o.class.name.to_sym
-                      when :String
-                        %|'#{o}'|
-                      when :Time
-                        %|#{o.to_datetime}|
-                      else
-                        o
-                      end
-                    end
-                  %|#{k} IN (#{candidates.join(', ')})|
-                else
-                  "#{k} = #{v}"
-                end
-              end
-            conditions.append new_conditions
-            return self
+            conditions.append %|NOT(#{to_string_expr(expr)})|
+            self
           end
 
           def select(*expr)
@@ -115,21 +76,113 @@ module SfCli
             [base, where, _order, limit].compact.join(' ')
           end
 
+          def to_csv
+            connection.query(to_soql, Object.const_get(object_name.to_sym), :csv)
+          end
+
           def all
             connection.query(to_soql, Object.const_get(object_name.to_sym))
           end
 
           def pluck(field_name)
-            all.map{|record| record.__send__(field_name.to_sym)}
+            connection.query(to_soql, nil).map{|record| record[field_name.to_s]}
           end
 
           def take
             limit(1).all.first
           end
 
+          def count
+            @count_select = true
+            connection.query(to_soql, nil).first['expr0']
+          end
+
+          def max(field_name)
+            @max_select_field = field_name
+            connection.query(to_soql, nil).first['expr0']
+          end
+
+          def min(field_name)
+            @min_select_field = field_name
+            connection.query(to_soql, nil).first['expr0']
+          end
+
+          private
+
           def select_fields
+            return 'COUNT(Id)'                if count_select
+            return "MAX(#{max_select_field})" if max_select_field
+            return "MIN(#{min_select_field})" if min_select_field
+
             (fields.empty? ? all_field_names : fields).join(', ')
           end 
+
+          def to_string_expr(expr)
+            return str_by_ternary_expr(expr) if expr.size > 1
+            return expr[0] if expr[0].instance_of? String
+
+            strs_by_hash_expr(expr)
+          end
+
+          def str_by_ternary_expr(expr)
+            return self if expr.size < 3
+
+            value = case expr[2].class.name.to_sym
+                    when :String
+                      %|'#{expr[2]}'|
+                    when :Time
+                      expr[2].to_datetime
+                    when :Array
+                      candidates = expr[2].map do |o|
+                          case o.class.name.to_sym
+                          when :String
+                            %|'#{o}'|
+                          when :Time
+                            o.to_datetime
+                          else
+                            o
+                          end
+                        end
+                      %|IN (#{candidates.join(', ')})|
+                    else
+                      expr[2]
+                    end
+            %|#{expr[0]} #{expr[1]} #{value}|
+          end
+
+          def valid_expr?(expr)
+            return false if expr&.empty?
+            return false if expr.map{|o| (o == '' || o == {} || o == []) ? nil : o}.compact.size.zero?
+            return false unless [Hash, Symbol, String].any?{|klass| expr.first.instance_of? klass}
+
+            true
+          end
+
+          def strs_by_hash_expr(expr)
+            expr[0].map do |k,v|
+              case v.class.name.to_sym
+              when :String
+                %|#{k} = '#{v}'|
+              when :Time
+                %|#{k} = #{v.to_datetime}|
+              when :Array
+                candidates = v.map do |o|
+                    case o.class.name.to_sym
+                    when :String
+                      %|'#{o}'|
+                    when :Time
+                      %|#{o.to_datetime}|
+                    else
+                      o
+                    end
+                  end
+                %|#{k} IN (#{candidates.join(', ')})|
+              else
+                "#{k} = #{v}"
+              end
+            end
+            .join(' AND ')
+          end
         end
       end
     end

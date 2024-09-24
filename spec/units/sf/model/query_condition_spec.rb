@@ -3,10 +3,10 @@ require_relative '../../../support/shared_examples/query_condition_example'
 RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
   QueryContditionTestClass = Struct.new(:a, :b)
 
-  let(:query_condition) { SfCli::Sf::Model::QueryMethods::QueryCondition.new(connection, klass.name, field_names) }
-  let(:field_names) { [anything, anything] }
-  let(:connection) { double('Some kind of Connection') }
   let(:klass) { QueryContditionTestClass }
+  let(:field_names) { [:a, :b] }
+  let(:connection) { double('Some kind of Connection') }
+  let(:query_condition) { SfCli::Sf::Model::QueryMethods::QueryCondition.new(connection, klass.name, field_names) }
 
   describe '#all' do
     it_should_behave_like 'QueryCondition#all' do
@@ -14,18 +14,33 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
     end
   end
 
-  describe '#pluck' do
-    let(:row1) { QueryContditionTestClass.new(a: 'abc', b: 'def') }
-    let(:row2) { QueryContditionTestClass.new(a: 'uvw', b: 'xyz') }
-    let(:rows) { [row1, row2] }
-
-    before do
-      allow(query_condition).to receive(:all).and_return(rows)
+  describe '#to_csv' do
+    it_should_behave_like 'QueryCondition#to_csv' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
     end
+  end
 
-    it "returns a values of paticular field" do
-      expect(query_condition.pluck(:a)).to eq ['abc', 'uvw']
-      expect(query_condition).to have_received :all
+  describe '#pluck' do
+    it_should_behave_like 'QueryCondition#pluck' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
+    end
+  end
+
+  describe '#count' do
+    it_should_behave_like 'QueryCondition#count' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
+    end
+  end
+
+  describe '#min' do
+    it_should_behave_like 'QueryCondition#min' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
+    end
+  end
+
+  describe '#max' do
+    it_should_behave_like 'QueryCondition#max' do
+      let(:connection) { instance_double('SfCli::Sf::Model::SfCommandConnection') }
     end
   end
 
@@ -49,12 +64,12 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
   describe '#where' do
     example 'Hash Style' do
       expect(query_condition.where(Name: 'Hoge Fuga')).to be query_condition
-      expect(query_condition.conditions).to contain_exactly(["Name = 'Hoge Fuga'"])
+      expect(query_condition.conditions).to contain_exactly("Name = 'Hoge Fuga'")
     end
 
     example 'Hash Style (2)' do
       expect(query_condition.where(Name: 'Hoge Fuga', Age: 32)).to be query_condition
-      expect(query_condition.conditions).to contain_exactly(["Name = 'Hoge Fuga'", "Age = 32"])
+      expect(query_condition.conditions).to contain_exactly("Name = 'Hoge Fuga' AND Age = 32")
     end
 
     example 'Raw SOQL Style' do
@@ -74,7 +89,7 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
         .where(:Name, :Like, '%Hoge%')
 
       expect(query_condition.conditions).to contain_exactly(
-        ["Name = 'Hoge Fuga'", "Age = 32"],
+        "Name = 'Hoge Fuga' AND Age = 32",
         "Name = 'Hoge Fuga' AND Age = 32",
         "Name Like '%Hoge%'"
       )
@@ -94,6 +109,41 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
         expect(query_condition.where(100)).to be query_condition
         expect(query_condition.conditions.size).to be 0
       end
+    end
+  end
+
+  describe '#not' do
+    example 'Hash Style' do
+      expect(query_condition.not(Name: 'Hoge Fuga')).to be query_condition
+      expect(query_condition.conditions).to contain_exactly("NOT(Name = 'Hoge Fuga')")
+    end
+
+    example 'Hash Style (2)' do
+      expect(query_condition.not(Name: 'Hoge Fuga', Age: 32)).to be query_condition
+      expect(query_condition.conditions).to contain_exactly("NOT(Name = 'Hoge Fuga' AND Age = 32)")
+    end
+
+    example 'Raw SOQL Style' do
+      expect(query_condition.not("Name = 'Hoge Fuga' AND Age = 32")).to be query_condition
+      expect(query_condition.conditions).to contain_exactly("NOT(Name = 'Hoge Fuga' AND Age = 32)")
+    end
+
+    example 'Ternary Style' do
+      expect(query_condition.not(:Name, :Like, '%Hoge%')).to be query_condition
+      expect(query_condition.conditions).to contain_exactly("NOT(Name Like '%Hoge%')")
+    end
+
+    it 'stacks conditions' do
+      query_condition
+        .not(Name: 'Hoge Fuga', Age: 32)
+        .not("Name = 'Hoge Fuga' AND Age = 32")
+        .not(:Name, :Like, '%Hoge%')
+
+      expect(query_condition.conditions).to contain_exactly(
+        "NOT(Name = 'Hoge Fuga' AND Age = 32)",
+        "NOT(Name = 'Hoge Fuga' AND Age = 32)",
+        "NOT(Name Like '%Hoge%')"
+      )
     end
   end
 
@@ -144,15 +194,27 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
     it 'constructs a soql' do
       query_condition
         .where(Name: 'John Smith', Age: 34)
+        .not(Name: 'Ben White', Age: 18)
         .where(Phone: '090-xxxx-xxxx')
+        .not(Phone: '080-xxxx-xxxx')
         .where(Country: ['Japan', 'USA', 'China'])
+        .not(Country: ['India', 'Thai', 'Russia'])
         .where("ContactId IN ('a','b')")
+        .not("ContactId IN ('c','d')")
         .where(:GroupName, :LIKE, '%abc%')
+        .not(:GroupName, :LIKE, '%xyz%')
         .where(:LastModifiedDate, :>=, :"LAST_N_DAYS:90")
+        .not(:LastModifiedDate, :>=, :YESTERDAY)
         .select(:Id, :Name, :"Account.Name", "(SELECT Name FROM Accounts)")
         .limit(30)
         .order(:Country, :Name)
-      expect(query_condition.to_soql).to eq "SELECT Id, Name, Account.Name, (SELECT Name FROM Accounts) FROM QueryContditionTestClass WHERE Name = 'John Smith' AND Age = 34 AND Phone = '090-xxxx-xxxx' AND Country IN ('Japan', 'USA', 'China') AND ContactId IN ('a','b') AND GroupName LIKE '%abc%' AND LastModifiedDate >= LAST_N_DAYS:90 ORDER BY Country, Name LIMIT 30"
+      expect(query_condition.to_soql).to eq "SELECT Id, Name, Account.Name, (SELECT Name FROM Accounts) FROM QueryContditionTestClass WHERE Name = 'John Smith' AND Age = 34 AND NOT(Name = 'Ben White' AND Age = 18) AND Phone = '090-xxxx-xxxx' AND NOT(Phone = '080-xxxx-xxxx') AND Country IN ('Japan', 'USA', 'China') AND NOT(Country IN ('India', 'Thai', 'Russia')) AND ContactId IN ('a','b') AND NOT(ContactId IN ('c','d')) AND GroupName LIKE '%abc%' AND NOT(GroupName LIKE '%xyz%') AND LastModifiedDate >= LAST_N_DAYS:90 AND NOT(LastModifiedDate >= YESTERDAY) ORDER BY Country, Name LIMIT 30"
+    end
+
+    context 'with no where condtions' do
+      it 'constructs a minimum soql' do
+        expect(query_condition.to_soql).to eq "SELECT a, b FROM QueryContditionTestClass"
+      end
     end
   end
 end

@@ -8,8 +8,3 @@ group :development do
   gem 'byebug'
   gem 'yard'
 end
-
-group :doc do
-  gem 'rake'
-  gem 'yard'
-end

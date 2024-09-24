@@ -157,8 +157,8 @@
       <pre class="example code"><code><span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='id identifier rubyid_sf'><span class='object_link'><a href="../../../top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_sobject'>sobject</span><span class='period'>.</span><span class='id identifier rubyid_describe'>describe</span> <span class='symbol'>:Account</span>
 <span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>  <span class='comment'># Account
 </span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_label'>label</span> <span class='comment'># Account
-</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_field_names'>field_names</span> <span class='comment'># [:Id, :Name, ....]
-</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_fields'>fields</span><span class='lbracket'>[</span><span class='symbol'>:Name</span><span class='rbracket'>]</span> <span class='comment'># =&gt; {&quot;aggregatable&quot;=&gt;true, &quot;aiPredictionField&quot;=&gt;false, &quot;autoNumber&quot;=&gt;false,...}</span></code></pre>
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_field_names'>field_names</span>            <span class='comment'># [:Id, :Name, ....]
+</span><span class='id identifier rubyid_schema'>schema</span><span class='period'>.</span><span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_name_and_labels'>name_and_labels</span> <span class='comment'># [[&#39;Id&#39;, &#39;Account Id&#39;], [&#39;Name&#39;, &#39;Account Name&#39;], ...]</span></code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -282,7 +282,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Sep 23 15:05:08 2024 by
+  Generated on Wed Sep 25 02:04:53 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

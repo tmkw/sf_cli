@@ -225,4 +225,96 @@ RSpec.shared_examples 'defining model Query methods' do
       expect(query_condition).to have_received :take
     end
   end
+
+  describe '.to_csv' do
+    let(:csv) { 'CSV contents' }
+
+    before do
+      ClassDefininitionTest113 = instance_eval(definition.to_s)
+      ClassDefininitionTest113.connection = connection
+
+      allow(SfCli::Sf::Model::QueryMethods::QueryCondition)
+        .to receive(:new)
+        .with(connection, 'ClassDefininitionTest113', ClassDefininitionTest113.field_names)
+        .and_return(query_condition)
+
+      allow(query_condition).to receive(:to_csv).and_return(csv)
+    end
+
+    it 'returns a rows of the model class object' do
+      expect(ClassDefininitionTest113.to_csv).to be csv
+
+      expect(SfCli::Sf::Model::QueryMethods::QueryCondition).to have_received :new
+      expect(query_condition).to have_received :to_csv
+    end
+  end
+
+  describe '.count' do
+    let(:num) { 5 }
+
+    before do
+      ClassDefininitionTest114 = instance_eval(definition.to_s)
+      ClassDefininitionTest114.connection = connection
+
+      allow(SfCli::Sf::Model::QueryMethods::QueryCondition)
+        .to receive(:new)
+        .with(connection, 'ClassDefininitionTest114', ClassDefininitionTest114.field_names)
+        .and_return(query_condition)
+
+      allow(query_condition).to receive(:count).and_return(num)
+    end
+
+    it 'returns number of all records' do
+      expect(ClassDefininitionTest114.count).to eq num
+
+      expect(SfCli::Sf::Model::QueryMethods::QueryCondition).to have_received :new
+      expect(query_condition).to have_received :count
+    end
+  end
+
+  describe '.min' do
+    let(:date) { '2024-09-24T08:23:44.000+0000' }
+
+    before do
+      ClassDefininitionTest115 = instance_eval(definition.to_s)
+      ClassDefininitionTest115.connection = connection
+
+      allow(SfCli::Sf::Model::QueryMethods::QueryCondition)
+        .to receive(:new)
+        .with(connection, 'ClassDefininitionTest115', ClassDefininitionTest115.field_names)
+        .and_return(query_condition)
+
+      allow(query_condition).to receive(:min).with(:LastModifiedDate).and_return(date)
+    end
+
+    it 'returns number of all records' do
+      expect(ClassDefininitionTest115.min(:LastModifiedDate)).to eq date
+
+      expect(SfCli::Sf::Model::QueryMethods::QueryCondition).to have_received :new
+      expect(query_condition).to have_received :min
+    end
+  end
+
+  describe '.max' do
+    let(:date) { '2024-09-24T08:23:44.000+0000' }
+
+    before do
+      ClassDefininitionTest116 = instance_eval(definition.to_s)
+      ClassDefininitionTest116.connection = connection
+
+      allow(SfCli::Sf::Model::QueryMethods::QueryCondition)
+        .to receive(:new)
+        .with(connection, 'ClassDefininitionTest116', ClassDefininitionTest116.field_names)
+        .and_return(query_condition)
+
+      allow(query_condition).to receive(:max).with(:LastModifiedDate).and_return(date)
+    end
+
+    it 'returns number of all records' do
+      expect(ClassDefininitionTest116.max(:LastModifiedDate)).to eq date
+
+      expect(SfCli::Sf::Model::QueryMethods::QueryCondition).to have_received :new
+      expect(query_condition).to have_received :max
+    end
+  end
 end

@@ -15,27 +15,34 @@ RSpec.describe 'SfCli::Sf::Sobject::Schema' do
     end
   end
 
+  describe '#fields' do
+    it 'contains all field data' do
+      expect(schema.fields).to contain_exactly(
+        an_instance_of(SfCli::Sf::Sobject::Schema::Field),
+        an_instance_of(SfCli::Sf::Sobject::Schema::Field)
+      )
+      expect(schema.fields.to_a.first.name).to eq 'Id'
+      expect(schema.fields.to_a.first.label).to eq 'Id Label'
+      expect(schema.fields.to_a.last.name).to eq 'Name'
+      expect(schema.fields.to_a.last.label).to eq 'Name Label'
+    end
+  end
+
   describe '#field_names' do
     it 'contains all field names' do
       expect(schema.field_names).to contain_exactly(:Id, :Name)
     end
   end
 
-  describe '#fields[]' do
-    it 'returns field information' do
-      expect(schema.fields[:Name]).to include(
-        "label"=>"Name",
-        "name"=>"Name",
-        "referenceTo"=>[],
-        "relationshipName"=>nil,
-        "type"=>"string"
-      )
+  describe '#field_labels' do
+    it 'contains all field names' do
+      expect(schema.field_labels).to contain_exactly('Id Label', 'Name Label')
     end
   end
 
-  describe '#all' do
-    it 'returns its schema definition' do
-      expect(schema.all).to eq schema_definition
+  describe '#to_h' do
+    it 'returns its schema definition as a Hash' do
+      expect(schema.to_h).to eq schema_definition
     end
   end
 
@@ -59,6 +66,17 @@ RSpec.describe 'SfCli::Sf::Sobject::Schema' do
     end
   end
 
+  describe 'Fields' do
+    describe '#name_and_labels' do
+      it do
+        expect(schema.fields.name_and_labels).to contain_exactly(
+          ["Id", "Id Label"],
+          ["Name", "Name Label"]
+        )
+      end
+    end
+  end
+
   def schema_definition
     {
       "name" => 'Hoge__c',
@@ -66,8 +84,8 @@ RSpec.describe 'SfCli::Sf::Sobject::Schema' do
       "custom" => true,
       "childRelationships" => [],
       "fields" => [
-        { "label"=>"ID",   "name"=>"Id",   "referenceTo"=>[], "relationshipName"=>nil, "type"=>"id" },
-        { "label"=>"Name", "name"=>"Name", "referenceTo"=>[], "relationshipName"=>nil, "type"=>"string" },
+        { "label"=>"Id Label",   "name"=>"Id",   "referenceTo"=>[], "relationshipName"=>nil, "type"=>"id" },
+        { "label"=>"Name Label", "name"=>"Name", "referenceTo"=>[], "relationshipName"=>nil, "type"=>"string" },
       ]
     }
   end
