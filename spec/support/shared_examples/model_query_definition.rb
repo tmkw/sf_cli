@@ -299,19 +299,19 @@ RSpec.shared_examples 'defining model Query methods' do
     let(:date) { '2024-09-24T08:23:44.000+0000' }
 
     before do
-      ClassDefininitionTest115 = instance_eval(definition.to_s)
-      ClassDefininitionTest115.connection = connection
+      ClassDefininitionTest116 = instance_eval(definition.to_s)
+      ClassDefininitionTest116.connection = connection
 
       allow(SfCli::Sf::Model::QueryMethods::QueryCondition)
         .to receive(:new)
-        .with(connection, 'ClassDefininitionTest115', ClassDefininitionTest115.field_names)
+        .with(connection, 'ClassDefininitionTest116', ClassDefininitionTest116.field_names)
         .and_return(query_condition)
 
       allow(query_condition).to receive(:max).with(:LastModifiedDate).and_return(date)
     end
 
     it 'returns number of all records' do
-      expect(ClassDefininitionTest115.max(:LastModifiedDate)).to eq date
+      expect(ClassDefininitionTest116.max(:LastModifiedDate)).to eq date
 
       expect(SfCli::Sf::Model::QueryMethods::QueryCondition).to have_received :new
       expect(query_condition).to have_received :max
