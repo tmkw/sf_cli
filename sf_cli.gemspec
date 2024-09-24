@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "sf_cli"
-  s.version     = "0.0.9"
+  s.version     = "0.0.10"
   s.summary     = "A library for Salesforce CLI in Ruby"
   s.description = "A class library for introducing Salesforce CLI to Ruby scripting. Currenty only sf command is the target of development."
   s.authors     = ["Takanobu Maekawa"]
