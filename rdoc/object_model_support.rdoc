@@ -95,9 +95,13 @@ Get schema
       model_class: Account
     )
 === About Document
-Object Model feature is still experimental, so it's not mentioned in online document.
-But you can generate the complete version locally:
-  $ git clone git@github.com:tmkw/sf_cli.git  sf_cli
+As of now, most of object model class libary is not mentioned in online document.
+The reason is:
+1. it is not main feature of sf_cli
+2. the auther thinks that most of things you should know is written in this document.
+
+But you can locally generate the complete document, which contains things related to object models:
+  $ git clone git@github.com:tmkw/sf_cli.git sf_cli
   $ cd sf_cli
   $ bundle config set with development
   $ bundle install
