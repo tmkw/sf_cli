@@ -63,3 +63,20 @@ With sf command:
 Doing the same thing independently:
   contact = Contact.select(:Id, :Name).where(Name: 'Akin Kristen').take
   contact.Name # Akin Kristen
+== Developer Console
+Developer console integrates both sf_cli's command methods and object model librry into IRB to make scripting easier in REPL.
+
+You can directly use sf_cli's command methods:
+  $ sf_cli
+  > sf.query "SELECT Id, Name FROM Case", target_org: :your_org
+
+Object Model is also available:
+  > use :your_org_name
+  > gen :Account, :Contact, :User  #=> generate 3 Object model classes
+  > acc = Account.find_by Name: 'Hoge Fuga'
+
+There are some other console commands:
+  > query "SELECT Id, Name, ... FROM BazBar__c" # just same as `sf data query` with human readable format
+  > apex "System.debug('abc');"                 # execute Apex code instantly
+
+Type `help` for the help of all console commands

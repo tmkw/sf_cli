@@ -1,11 +1,18 @@
+## 1.0.0 - 2024-09-27
+- NEW: `sf_cli` command that integrates both command and object model libraries into IRB.
+- NEW: (document) command coverage list is added in online document
+- Misc: starts semantic versioning
+
 ## 0.0.10 - 2024-09-25
 made only Object Model enhanncements.
+
 - NEW: `#to_csv`to get query result by csv format
 - NEW: `#not` in query methods
 - NEW: aggregate functions such as `#count`, `#min` and `#max`
 - CHANGE: re-design Schema class
-- misc:
-  - refactor #pluck for performance enhancement
+- Misc:
+    - refactor `#pluck` for performance enhancement
+
 ## 0.0.9 - 2024-09-23
 - CHANGE: [BREAKING] change keyword argument `timeout` to `wait` according to the original commands' specification;
     - `sf.data.query`
