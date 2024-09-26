@@ -8,27 +8,30 @@ module SfCli
   module Console
     #
     # Developer Console commands
-    # @example
-    #  $ bundle exec rake irb[your_target_org]
-    #  irb(main):001> gen :Account, :Contact  # generate Account and Contact class
-    #  => [:Account, :Contact]
-    #
-    #  irb(main):002> Account.describe.label
-    #  => "Account"
-    #
-    #  irb(main):003> apex "System.debug('abc');" # execute Apex code
-    #  => returns the result
     #
     module Commands
-      def use(_target_org)
-        target_org = _target_org.to_sym == :default ? nil : _target_org
+      def use(target_org)
         org_info = sf.org.display target_org: target_org
         conn = SfCli::Sf::Model::SfCommandConnection.new target_org: target_org, instance_url: org_info.instance_url
+        conn.open unless org_info.connected?
+
         SfCli::Sf::Model.set_connection conn
+
+        available_models.each do |model|
+          Object.const_get(model).connection = conn
+        end
+
+        true
+      end
+
+      def available_models
+        @available_models ||= []
       end
 
       def generate(*object_types)
         SfCli::Sf::Model.generate object_types
+        available_models.append(*object_types).flatten
+        object_types
       end
 
       def connection
@@ -45,8 +48,63 @@ module SfCli
         sf.apex.run target_org: target_org, file: StringIO.new(apex_code)
       end
 
+      def query(soql)
+        conf.inspect_mode = false
+        puts sf.data.query(soql, format: :human, target_org: target_org)
+        conf.inspect_mode = true
+      end
+
       alias :gen  :generate
       alias :conn :connection
+
+      def help(command = nil)
+        conf.inspect_mode = false
+        puts <<~HELP
+          Available commands:
+            use   --- set current org.
+            gen   --- generate Object model classes
+            query --- Query by SOQL with human readable format
+            apex  --- run Apex code
+            conn  --- show current connection setting
+
+          Syntax:
+            [use]
+              use target-org
+
+              parameters:
+                targat-org --- Username or alias of the org you are going to use. If you are not sure about them, check by `sf org list`.
+
+            [gen]
+              gen object-name, object-name, ...
+              generate object-name, object-name, ...
+
+              parameters:
+                object-name --- Comma separated Names. Symbol or String can be OK. At least 1 object name is required.
+
+              example:
+                gen :Account, :Contact, :User
+
+            [query]
+              query SOQL
+
+                parameters:
+                  SOQL --- soql
+
+            [apex]
+              apex apex_code
+
+              parameters:
+                apex code --- Apex code you want to execute
+
+              example:
+                apex "System.debug('abc');"
+
+            [conn]
+                conn
+                connection
+        HELP
+        conf.inspect_mode = true
+      end
     end
   end
 end
