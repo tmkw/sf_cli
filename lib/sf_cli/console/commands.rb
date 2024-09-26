@@ -57,7 +57,7 @@ module SfCli
       alias :gen  :generate
       alias :conn :connection
 
-      def help(command = nil)
+      def help
         conf.inspect_mode = false
         puts <<~HELP
           Available commands:
