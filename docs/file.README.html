@@ -165,10 +165,35 @@
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_contact'>contact</span> <span class='op'>=</span> <span class='const'>Contact</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='symbol'>:Id</span><span class='comma'>,</span> <span class='symbol'>:Name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>Name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Akin Kristen</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span>
 <span class='id identifier rubyid_contact'>contact</span><span class='period'>.</span><span class='const'>Name</span> <span class='comment'># Akin Kristen
 </span></code></pre>
+
+<h2 id="label-Developer+Console">Developer Console</h2>
+
+<p>Developer console integrates both sf_cli’s command methods and object model librry into IRB to make scripting easier in REPL.</p>
+
+<p>You can directly use sf_cli’s command methods:</p>
+
+<pre class="code ruby"><code class="ruby">$ sf_cli
+&gt; sf.query &quot;SELECT Id, Name FROM Case&quot;, target_org: :your_org
+</code></pre>
+
+<p>Object Model is also available:</p>
+
+<pre class="code ruby"><code class="ruby">&gt; use :your_org_name
+&gt; gen :Account, :Contact, :User  #=&gt; generate 3 Object model classes
+&gt; acc = Account.find_by Name: &#39;Hoge Fuga&#39;
+</code></pre>
+
+<p>There are some other console commands:</p>
+
+<pre class="code ruby"><code class="ruby">&gt; query &quot;SELECT Id, Name, ... FROM BazBar__c&quot; # just same as `sf data query` with human readable format
+&gt; apex &quot;System.debug(&#39;abc&#39;);&quot;                 # execute Apex code instantly
+</code></pre>
+
+<p>Type ‘help` for the help of all console commands</p>
 </div></div>
 
       <div id="footer">
-  Generated on Wed Sep 25 02:04:52 2024 by
+  Generated on Fri Sep 27 00:52:43 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

@@ -1,6 +1,10 @@
 module SfCli::Sf::Org
   module Display
-    ConnectionInfo = Struct.new(:id, :access_token, :alias, :instance_url, :user_name, :api_version, :status)
+    ConnectionInfo = Struct.new(:id, :access_token, :alias, :instance_url, :user_name, :api_version, :status) do
+        def connected?
+          status == 'Connected'
+        end
+      end
 
     #
     # Returns the org's connection information

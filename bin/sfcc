@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'rake'
-
-Rake.application.init
-Rake.application.define_task(Rake::Task, :default) { system('irb -r sf_cli/sf/console') }
-Rake.application.top_level
