@@ -38,6 +38,15 @@ RSpec.describe 'SfCli::Sf::Org' do
         expect(org).to have_received :exec
       end
     end
+
+    context 'using option: output_file' do
+      let(:path) { 'path/to/file' }
+
+      it 'can get a paticular org information' do
+        org.list_metadata_types output_file: path
+        expect(org).to have_received :exec
+      end
+    end
   end
 
   def exec_output
