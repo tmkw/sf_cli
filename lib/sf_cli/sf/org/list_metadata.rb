@@ -3,6 +3,7 @@ module SfCli::Sf::Org
     #
     # Returns the metadata types that are enabled for your org.
     # @param metadata    [Symbol,String] name of metadata type
+    # @param folder      [Symbol,String] folder associated with the component such as Report, EmailTemplate, Dashboard and Document
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
     # @param output_file [String]        pathname of the file in which to write the results
@@ -14,14 +15,15 @@ module SfCli::Sf::Org
     #  list.names                        #=> ["CommunitiesLandingController","SiteLoginControllerTest", ...]
     #  list.get :MyProfilePageController #=> <Metadata: full_name="MyProfilePageController" ...>
     #
-    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata-types_unified
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata_unified command reference
     #
-    def list_metadata(metadata, target_org: nil, api_version: nil, output_file: nil)
+    def list_metadata(metadata, folder: nil, target_org: nil, api_version: nil, output_file: nil)
       flags    = {
         :"metadata-type" => metadata,
-        :"target-org" => target_org,
-        :"api-version" => api_version,
-        :"output-file" => output_file,
+        :"folder"        => folder,
+        :"target-org"    => target_org,
+        :"api-version"   => api_version,
+        :"output-file"   => output_file,
       }
       action = __method__.to_s.tr('_', ' ')
       json = exec(action, flags: flags, redirection: :null_stderr)

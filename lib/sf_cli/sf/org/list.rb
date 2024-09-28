@@ -46,7 +46,7 @@ module SfCli::Sf::Org
     #   org_config.first.default?            # check if the org is default or not
     #   org_config.first.default_devhub?     # check if the org is devhub default or not
     #
-    # For more command details, see {the command reference}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_unified]
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_unified command reference
     #
     def list
       flags = {

@@ -12,7 +12,7 @@ module SfCli::Sf::Org
     #  result = sf.org.list_metadata_types target_org: :dev
     #  result.metadata_objects.names #=> ["InstalledPackage","CustomLabels", ...]
     #
-    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata-types_unified
+    # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata-types_unified command reference
     #
     def list_metadata_types(target_org: nil, api_version: nil, output_file: nil)
       flags    = {

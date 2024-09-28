@@ -14,6 +14,13 @@ RSpec.describe 'sf org list metadata' do
     subject { sf.org.list_metadata :ApexClass}
   end
 
+  context 'specfying folder:' do
+    it_should_behave_like 'sf org list metadata' do
+      let(:command_options) { '--folder folder_name ' }
+      subject { sf.org.list_metadata :ApexClass, folder: :folder_name  }
+    end
+  end
+
   context 'specfying target-org:' do
     it_should_behave_like 'sf org list metadata' do
       let(:command_options) { '--target-org dev ' }
