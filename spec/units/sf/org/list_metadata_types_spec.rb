@@ -13,7 +13,7 @@ RSpec.describe 'SfCli::Sf::Org' do
         .and_return(exec_output)
     end
 
-    it "lists the metadata types in the org" do
+    it "lists metadata types in the org" do
       result = org.list_metadata_types
       expect(result.metadata_objects.count).to be 1
       expect(result.metadata_objects.names).to eq ['InstalledPackage']
@@ -24,7 +24,7 @@ RSpec.describe 'SfCli::Sf::Org' do
     context 'using option: target_org' do
       let(:target_org) { :dev }
 
-      it "lists the metadata types in the org" do
+      it "lists the metadata types in particular org" do
         org.list_metadata_types target_org: :dev
         expect(org).to have_received :exec
       end
@@ -33,7 +33,7 @@ RSpec.describe 'SfCli::Sf::Org' do
     context 'using option: api_version' do
       let(:api_version) { 61.0 }
 
-      it 'can get a paticular org information' do
+      it 'lists the metadata types by paticular API version' do
         org.list_metadata_types api_version: 61.0
         expect(org).to have_received :exec
       end
@@ -42,7 +42,7 @@ RSpec.describe 'SfCli::Sf::Org' do
     context 'using option: output_file' do
       let(:path) { 'path/to/file' }
 
-      it 'can get a paticular org information' do
+      it 'saves the result in a file' do
         org.list_metadata_types output_file: path
         expect(org).to have_received :exec
       end
