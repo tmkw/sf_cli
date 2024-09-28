@@ -3,6 +3,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
   describe '#list_metadata' do
     let(:metadata_type ) { :ApexClass }
+    let(:folder_name ) { nil }
     let(:target_org ) { nil }
     let(:api_version) { nil }
     let(:path) { nil }
@@ -14,6 +15,7 @@ RSpec.describe 'SfCli::Sf::Org' do
           'list metadata',
           flags: {
             :"metadata-type" => metadata_type,
+            :"folder" => folder_name,
             :"target-org" => target_org,
             :"api-version" => api_version,
             :"output-file" => path
@@ -34,6 +36,15 @@ RSpec.describe 'SfCli::Sf::Org' do
       expect(metadata.type).to eq      "ApexClass"
 
       expect(org).to have_received :exec
+    end
+
+    context 'using option: folder' do
+      let(:folder_name) { :folder_name }
+
+      it "lists metadata in the folder" do
+        org.list_metadata metadata_type, folder: folder_name
+        expect(org).to have_received :exec
+      end
     end
 
     context 'using option: target_org' do
