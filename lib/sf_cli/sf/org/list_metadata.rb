@@ -13,7 +13,7 @@ module SfCli::Sf::Org
     # @example
     #  list = sf.org.list_metadata :ApexClass
     #  list.names                        #=> ["CommunitiesLandingController","SiteLoginControllerTest", ...]
-    #  list.get :MyProfilePageController #=> <Metadata: full_name="MyProfilePageController" ...>
+    #  list.find :MyProfilePageController #=> <Metadata: full_name="MyProfilePageController" ...>
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata_unified command reference
     #

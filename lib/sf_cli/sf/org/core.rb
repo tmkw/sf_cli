@@ -4,6 +4,7 @@ require_relative './display'
 require_relative './list'
 require_relative './list_metadata_types'
 require_relative './list_metadata'
+require_relative './list_limits'
 
 module SfCli
   module Sf
@@ -21,6 +22,7 @@ module SfCli
         include List
         include ListMetadataTypes
         include ListMetadata
+        include ListLimits
       end
     end
   end
