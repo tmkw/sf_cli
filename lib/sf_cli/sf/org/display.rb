@@ -8,8 +8,8 @@ module SfCli::Sf::Org
 
     #
     # Returns the org's connection information
-    # @param target_org [Symbol,String] an alias of paticular org, or username can be used
-    # @param api_version [Numeric]      override the api version used for api requests made by this command
+    # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
+    # @param api_version [Numeric]       override the api version used for api requests made by this command
     #
     # @note this function returns the org information including security sensitive things such as access token, username and so on.
     # @return [ConnectionInfo] the org's connection information
