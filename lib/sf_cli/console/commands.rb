@@ -54,6 +54,12 @@ module SfCli
         conf.inspect_mode = true
       end
 
+      def orgs
+        conf.inspect_mode = false
+        system 'sf org list'
+        conf.inspect_mode = true
+      end
+
       alias :gen  :generate
       alias :conn :connection
 
@@ -66,6 +72,7 @@ module SfCli
             query --- Query by SOQL with human readable format
             apex  --- run Apex code
             conn  --- show current connection setting
+            orgs  --- show the list of org
 
           Syntax:
             [use]
@@ -73,6 +80,9 @@ module SfCli
 
               parameters:
                 targat-org --- Username or alias of the org you are going to use. If you are not sure about them, check by `sf org list`.
+
+              example:
+                use :your_org_alias
 
             [gen]
               gen object-name, object-name, ...
@@ -88,13 +98,16 @@ module SfCli
               query SOQL
 
                 parameters:
-                  SOQL --- soql
+                  SOQL --- soql.You must quote it like "SELECT ...."
+
+              example:
+                query "SELECT Id, Name FROM Account LIMIT 3"
 
             [apex]
               apex apex_code
 
               parameters:
-                apex code --- Apex code you want to execute
+                apex code --- Apex code you want to execute.You must quote the code.
 
               example:
                 apex "System.debug('abc');"
@@ -102,6 +115,9 @@ module SfCli
             [conn]
                 conn
                 connection
+
+            [orgs]
+                orgs
         HELP
         conf.inspect_mode = true
       end
