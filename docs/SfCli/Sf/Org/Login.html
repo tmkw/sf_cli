@@ -170,27 +170,31 @@
   <div class="note notetag">
     <strong>Note:</strong>
     <div class='inline'>
-<p>This method doesn’t support user interactive mode, so <strong>SF_ACCESS_TOKEN</strong> environment variable must be set before call this method.</p>
+<p>This method doesn’t support user interactive mode, so <strong>SF_ACCESS_TOKEN</strong> environment variable must be set before calling this method.</p>
 </div>
   </div>
 
 
 <p>Login to the org by access token.</p>
-<dl class="rdoc-list note-list"><dt>How to set env variable outside of Ruby
-<dd><dl class="rdoc-list note-list"><dt>In Unix/mac
-<dd>
-<p>$ SF_ACCESS_TOKEN=‘xxxxxxxxxx’ $ ruby app_using_sfcli.rb</p>
-</dd></dl>
+
+<p>If you don’t set <strong>SF_ACCESS_TOKEN</strong> in the code, you have to set it outside of the script:</p>
+
+<p>In Unix/mac</p>
+
+<pre class="code ruby"><code class="ruby">$ SF_ACCESS_TOKEN=&#39;xxxxxxxxxx&#39;
+$ ruby app_using_sfcli.rb
+</code></pre>
 
 <p>OR</p>
 
 <pre class="code ruby"><code class="ruby">$ SF_ACCESS_TOKEN=&#39;xxxxxxxxxx&#39; ruby app_using_sfcli.rb
 </code></pre>
-<dl class="rdoc-list note-list"><dt>In Windows
-<dd>
-<p>$ set SF_ACCESS_TOKEN=xxxxxxxxxx $ ruby app_using_sfcli.rb</p>
-</dd></dl>
-</dd></dl>
+
+<p>In Windows</p>
+
+<pre class="code ruby"><code class="ruby">&gt; set SF_ACCESS_TOKEN=xxxxxxxxxx
+&gt; ruby app_using_sfcli.rb
+</code></pre>
 
 
   </div>
@@ -201,8 +205,8 @@
     <h4 class="tag_title">Examples:</h4>
     
       
-      <pre class="example code"><code>ENV[&#39;SF_ACCESS_TOKEN&#39;] = &#39;xxxxxxxxxx&#39;
-sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com</code></pre>
+      <pre class="example code"><code><span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SF_ACCESS_TOKEN</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>xxxxxxxxxx</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_sf'><span class='object_link'><a href="../../../top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_org'>org</span><span class='period'>.</span><span class='id identifier rubyid_login_access_token'>login_access_token</span> <span class='label'>instance_url:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>https://hoge.bar.baz.salesforce.com</span><span class='tstring_end'>&#39;</span></span></code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -258,9 +262,6 @@ sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com</cod
       <pre class="lines">
 
 
-46
-47
-48
 49
 50
 51
@@ -268,10 +269,13 @@ sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com</cod
 53
 54
 55
-56</pre>
+56
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/org/login.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/org/login.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_login_access_token'>login_access_token</span><span class='lparen'>(</span><span class='label'>instance_url:</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flags'>flags</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -421,7 +425,7 @@ sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com</cod
 </div>
 
       <div id="footer">
-  Generated on Fri Sep 27 00:52:43 2024 by
+  Generated on Sun Sep 29 22:31:56 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

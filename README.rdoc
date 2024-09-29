@@ -79,4 +79,4 @@ There are some other console commands:
   > query "SELECT Id, Name, ... FROM BazBar__c" # just same as `sf data query` with human readable format
   > apex "System.debug('abc');"                 # execute Apex code instantly
 
-Type `help` for the help of all console commands
+Type *help* to know all console commands

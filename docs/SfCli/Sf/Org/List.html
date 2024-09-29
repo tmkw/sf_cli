@@ -111,7 +111,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#list-instance_method" title="#list (instance method)">#<strong>list</strong>  &#x21d2; OrgConfig </a>
+      <a href="#list-instance_method" title="#list (instance method)">#<strong>list</strong>  &#x21d2; Array </a>
     
 
     
@@ -144,7 +144,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="list-instance_method">
   
-    #<strong>list</strong>  &#x21d2; <tt><span class='object_link'><a href="List/OrgConfig.html" title="SfCli::Sf::Org::List::OrgConfig (class)">OrgConfig</a></span></tt> 
+    #<strong>list</strong>  &#x21d2; <tt>Array</tt> 
   
 
   
@@ -163,8 +163,6 @@
 
 <p>List orgs you’ve created or authenticated to</p>
 
-<p>For more command details, see <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_unified">the command reference</a></p>
-
 
   </div>
 </div>
@@ -174,16 +172,16 @@
     <h4 class="tag_title">Examples:</h4>
     
       
-      <pre class="example code"><code><span class='id identifier rubyid_org_config_list'>org_config_list</span> <span class='op'>=</span> <span class='id identifier rubyid_sf'><span class='object_link'><a href="../../../top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_org'>org</span><span class='period'>.</span><span class='id identifier rubyid_list'>list</span>        <span class='comment'># returns a list of OrgConfig
+      <pre class="example code"><code><span class='id identifier rubyid_org_configs'>org_configs</span> <span class='op'>=</span> <span class='id identifier rubyid_sf'><span class='object_link'><a href="../../../top-level-namespace.html#sf-instance_method" title="#sf (method)">sf</a></span></span><span class='period'>.</span><span class='id identifier rubyid_org'>org</span><span class='period'>.</span><span class='id identifier rubyid_list'>list</span>        <span class='comment'># returns a list of OrgConfig
 </span>
-<span class='id identifier rubyid_org_config'>org_config</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_accesstoken'>accesstoken</span>         <span class='comment'># returns the access token
-</span><span class='id identifier rubyid_org_config'>org_config</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_instance_url'>instance_url</span>        <span class='comment'># returns the org&#39;s url
+<span class='id identifier rubyid_org_configs'>org_configs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_accesstoken'>accesstoken</span>         <span class='comment'># returns the access token
+</span><span class='id identifier rubyid_org_configs'>org_configs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_instance_url'>instance_url</span>        <span class='comment'># returns the org&#39;s url
 </span>
-<span class='id identifier rubyid_org_config'>org_config</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_conncected?'>conncected?</span>         <span class='comment'># check the connection status
-</span><span class='id identifier rubyid_org_config'>org_config</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_devhub?'>devhub?</span>             <span class='comment'># check if the org is devhub or not
-</span><span class='id identifier rubyid_org_config'>org_config</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_scratch?'>scratch?</span>            <span class='comment'># check if the org is scratch or not
-</span><span class='id identifier rubyid_org_config'>org_config</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_default?'>default?</span>            <span class='comment'># check if the org is default or not
-</span><span class='id identifier rubyid_org_config'>org_config</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_default_devhub?'>default_devhub?</span>     <span class='comment'># check if the org is devhub default or not</span></code></pre>
+<span class='id identifier rubyid_org_configs'>org_configs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_conncected?'>conncected?</span>         <span class='comment'># check the connection status
+</span><span class='id identifier rubyid_org_configs'>org_configs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_devhub?'>devhub?</span>             <span class='comment'># check if the org is devhub or not
+</span><span class='id identifier rubyid_org_configs'>org_configs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_scratch?'>scratch?</span>            <span class='comment'># check if the org is scratch or not
+</span><span class='id identifier rubyid_org_configs'>org_configs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_default?'>default?</span>            <span class='comment'># check if the org is default or not
+</span><span class='id identifier rubyid_org_configs'>org_configs</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_default_devhub?'>default_devhub?</span>     <span class='comment'># check if the org is devhub default or not</span></code></pre>
     
   </div>
 
@@ -193,18 +191,25 @@
     <li>
       
       
-        <span class='type'>(<tt><span class='object_link'><a href="List/OrgConfig.html" title="SfCli::Sf::Org::List::OrgConfig (class)">OrgConfig</a></span></tt>)</span>
+        <span class='type'>(<tt>Array</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>the org configulation</p>
+<p>the org configulations</p>
 </div>
       
     </li>
   
 </ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_unified" target="_parent" title="command reference">command reference</a></li>
+    
+  </ul>
 
 </div><table class="source_code">
   <tr>
@@ -254,7 +259,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Sep 27 00:52:43 2024 by
+  Generated on Sun Sep 29 22:31:56 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>
