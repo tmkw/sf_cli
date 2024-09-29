@@ -21,27 +21,30 @@ module SfCli::Sf::Org
       exec(action, flags: flags)
     end
 
+    # @note This method doesn't support user interactive mode, so *SF_ACCESS_TOKEN* environment variable must be set before calling this method.
     # Login to the org by access token.
-    # @note This method doesn't support user interactive mode, so *SF_ACCESS_TOKEN* environment variable must be set before call this method.
+    #
+    # If you don't set *SF_ACCESS_TOKEN* in the code, you have to set it outside of the script:
+    #
+    # In Unix/mac
+    #   $ SF_ACCESS_TOKEN='xxxxxxxxxx'
+    #   $ ruby app_using_sfcli.rb
+    # OR
+    #   $ SF_ACCESS_TOKEN='xxxxxxxxxx' ruby app_using_sfcli.rb
+    #
+    # In Windows
+    #   > set SF_ACCESS_TOKEN=xxxxxxxxxx
+    #   > ruby app_using_sfcli.rb
     #
     # @param target_org   [Symbol,String] an alias of paticular org, or username can be used
     # @param instance_url [String]        URL of the instance that the org lives on.
     #
     # @example
-    #  ENV['SF_ACCESS_TOKEN'] = 'xxxxxxxxxx'
-    #  sf.org.login_access_token instance_url: https://hoge.bar.baz.salesforce.com
-    #
-    # How to set env variable outside of Ruby::
-    #   In Unix/mac::
-    #     $ SF_ACCESS_TOKEN='xxxxxxxxxx'
-    #     $ ruby app_using_sfcli.rb
-    #   OR
-    #     $ SF_ACCESS_TOKEN='xxxxxxxxxx' ruby app_using_sfcli.rb
-    #   In Windows::
-    #     $ set SF_ACCESS_TOKEN=xxxxxxxxxx
-    #     $ ruby app_using_sfcli.rb
+    #   ENV['SF_ACCESS_TOKEN'] = 'xxxxxxxxxx'
+    #   sf.org.login_access_token instance_url: 'https://hoge.bar.baz.salesforce.com'
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_login_access-token_unified command reference
+    #
     #
     def login_access_token(instance_url:, target_org: nil)
       flags = {

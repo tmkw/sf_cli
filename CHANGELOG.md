@@ -1,3 +1,9 @@
+## 1.1.0 - 2024-09-29
+- NEW: add some command supports
+  - `sf.org.list_metadata_types`
+  - `sf.org.list_metadata`
+  - `sf.org.list_limits`
+- NEW: add a console command; `orgs`
 ## 1.0.0 - 2024-09-27
 - NEW: `sf_cli` command that integrates both command and object model libraries into IRB.
 - NEW: (document) command coverage list is added in online document
