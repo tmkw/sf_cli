@@ -395,8 +395,18 @@ module SfCli
             field["permissionable"]
           end
 
+          PicklistValue = Data.define(:active, :default_value, :label, :valid_for, :value)
+
           def picklist_values
-            field["picklistValues"]
+            field["picklistValues"].map do |value|
+              PicklistValue.new(
+                active:        value['active'],
+                default_value: value['defaultValue'],
+                label:         value['label'],
+                valid_for:     value['validFor'],
+                value:         value['value'],
+              )
+            end
           end
 
           def polymorphic_foreign_key?
