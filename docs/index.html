@@ -172,7 +172,7 @@
 
 <p>You can directly use sf_cli’s command methods:</p>
 
-<pre class="code ruby"><code class="ruby">$ sf_cli
+<pre class="code ruby"><code class="ruby">$ sf_cli -i
 &gt; sf.query &quot;SELECT Id, Name FROM Case&quot;, target_org: :your_org
 </code></pre>
 
@@ -190,10 +190,29 @@
 </code></pre>
 
 <p>Type <strong>help</strong> to know all console commands</p>
+
+<h2 id="label-Utility">Utility</h2>
+
+<p>sf_cli command also have other functions. As of 1.2.0, it can generate Salesforce DX project.</p>
+
+<p>Create a project directory and files including manifest file</p>
+
+<pre class="code ruby"><code class="ruby">$ sf_cli -g project YOUR_PROJECT_NAME
+</code></pre>
+
+<p>Same as above, but the manifest file is built based on the org</p>
+
+<pre class="code ruby"><code class="ruby">$ sf_cli -g project YOUR_PROJECT_NAME -o YOUR_TARGET_ORG
+</code></pre>
+
+<p>Build project and manifest then retreave metadata such as Apex code at once</p>
+
+<pre class="code ruby"><code class="ruby">$ sf_cli -g project YOUR_PROJECT_NAME -o YOUR_TARGET_ORG -r
+</code></pre>
 </div></div>
 
       <div id="footer">
-  Generated on Sun Sep 29 22:31:56 2024 by
+  Generated on Wed Oct  2 01:04:42 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

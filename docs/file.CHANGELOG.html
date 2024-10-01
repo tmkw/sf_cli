@@ -58,6 +58,28 @@
       </div>
 
       <div id="content"><div id='filecontents'>
+<h2 id="label-1.2.0+-+2024-10-02">1.2.0 - 2024-10-02</h2>
+<ul><li>
+<p>CHANGE: <code>sf project</code> commands come back to supported. The following methods got back.</p>
+<ul><li>
+<p><code>sf.project.generate</code></p>
+</li><li>
+<p><code>sf.project.generate_manifest</code></p>
+</li></ul>
+</li><li>
+<p>NEW: new command support</p>
+<ul><li>
+<p><code>sf.project.retrieve_start</code></p>
+</li></ul>
+</li><li>
+<p>CHANGE: <code>sf_cli</code> command interface changed.</p>
+<ul><li>
+<p>for using irb, type <code>sf_cli -i</code></p>
+</li></ul>
+</li><li>
+<p>NEW: to generate a project, type <code>sf_cli -g project PROJECT_NAME</code>. By typing <code>sf -g project PROJECT_NAME -o ORG_ALIAS -r</code>, you can also generate manifest file based on the target org and retrieve metadata at once.</p>
+</li></ul>
+
 <h2 id="label-1.1.0+-+2024-09-29">1.1.0 - 2024-09-29</h2>
 <ul><li>
 <p>NEW: add some command supports</p>
@@ -69,9 +91,10 @@
 <p><code>sf.org.list_limits</code></p>
 </li><li>
 <p>NEW: add a console command; <code>orgs</code></p>
+</li></ul>
 
 <h2 id="label-1.0.0+-+2024-09-27">1.0.0 - 2024-09-27</h2>
-</li><li>
+<ul><li>
 <p>NEW: <code>sf_cli</code> command that integrates both command and object model libraries into IRB.</p>
 </li><li>
 <p>NEW: (document) command coverage list is added in online document</p>
@@ -239,7 +262,7 @@
 </div></div>
 
       <div id="footer">
-  Generated on Sun Sep 29 22:31:56 2024 by
+  Generated on Wed Oct  2 01:04:42 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>
