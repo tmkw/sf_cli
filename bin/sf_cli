@@ -1,7 +1,35 @@
 #!/usr/bin/env ruby
 
-require 'rake'
+require 'optparse'
+require 'sf_cli'
+require 'sf_cli/version'
 
-Rake.application.init
-Rake.application.define_task(Rake::Task, :default) { system('irb -r sf_cli/console') }
-Rake.application.top_level
+def generate_project(project_name, params)
+  base_dir        = Dir.pwd
+  target_org      = params[:"target-org"]
+  retrieve_source = params[:retrieve]
+
+  sf.project.generate project_name, manifest: true
+
+  Dir.chdir project_name
+
+  sf.project.generate_manifest from_org: target_org, output_dir: 'manifest'          if target_org
+  sf.project.retrieve_start manifest: 'manifest/package.xml', target_org: target_org if retrieve_source
+ensure
+  Dir.chdir base_dir
+end
+
+params = {}
+opt = OptionParser.new
+Version = SfCli::VERSION
+
+opt.on('-i', '--irb', 'Start irb session that integrates sf_cli and object model library.') { system 'irb -r sf_cli/console' }
+opt.on('-g OBJECT', '--generate', 'Generate OBJECT. As of now, only project is available as OBJECT.')
+opt.on('-o TARGET_ORG', '--target-org', 'Username or alias of the target org. When specified with "-g model", the manifest file is created based on the org')
+opt.on('-r', '--retrieve', 'Retrieve source files.When specified with "-g model", source files is loaded according to the manifest file.')
+
+opt.parse!(ARGV, into: params)
+
+if params[:generate] == 'project'
+  generate_project(ARGV[0], params)
+end

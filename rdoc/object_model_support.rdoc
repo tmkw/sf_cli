@@ -65,13 +65,13 @@ Child-Parent Relationship
 Parent-Children Relationship
   account = Account.select(:Id, :Name, "(SELECT Name FROM Contacts)").take
   account # <Account @Contacts=[#<Contact @Name="Akin Kristen">], @Id="0015j00001dsDuhAAE", @Name="Aethna Home Products">
-  account.Name             # Aethna Home Products
-  rows.Contacts            # [#<Contact @Name="Akin Kristen">]
-  rows.Contacts.first.Name # Akin Kristen
+  account.Name                # Aethna Home Products
+  account.Contacts            # [#<Contact @Name="Akin Kristen">]
+  account.Contacts.first.Name # Akin Kristen
 
 Time keywords such as 'yesterday' or 'LAST_N_DAYS:N' with symbol style
-  Contact.select(:Name).where(LastModifiedDate: :Yesterday).take       # "SELECT Id, Name FROM Contact WHERE LastModifiedDate = Yesterday"
-  Contact.select(:Name).where(LastModifiedDate: :"LAST_N_DAYS:5").take # "SELECT Id, Name FROM Contact WHERE LastModifiedDate = LAST_N_DAYS:5"
+  Contact.select(:Name).where(LastModifiedDate: :Yesterday).take       # "SELECT Id, Name FROM Contact WHERE LastModifiedDate = Yesterday" LIMIT 1
+  Contact.select(:Name).where(LastModifiedDate: :"LAST_N_DAYS:5").take # "SELECT Id, Name FROM Contact WHERE LastModifiedDate = LAST_N_DAYS:5" LIMIT 1
 
 Array for 'IN' keyword
   Contact.select(:Name).where(Name: ['Jonny Good', 'John Smith']).all # same as "SELECT Name FROM Contact WHERE Name IN ('Jonny Good', 'John Smith')"
@@ -95,10 +95,10 @@ Get schema
       model_class: Account
     )
 === About Document
-As of now, most of object model class libary is not mentioned in online document.
+As of now, object model class libary, which is related to generate and define model classes, is not mentioned in class reference documents.
 The reason is:
-1. it is not main feature of sf_cli
-2. the auther thinks that most of things you should know is written in this document.
+1. It is not main feature of sf_cli
+2. The auther thinks most of things you should know is written in this page.
 
 But you can locally generate the complete document, which contains things related to object models:
   $ git clone git@github.com:tmkw/sf_cli.git sf_cli

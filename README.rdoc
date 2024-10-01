@@ -67,7 +67,7 @@ Doing the same thing independently:
 Developer console integrates both sf_cli's command methods and object model librry into IRB to make scripting easier in REPL.
 
 You can directly use sf_cli's command methods:
-  $ sf_cli
+  $ sf_cli -i
   > sf.query "SELECT Id, Name FROM Case", target_org: :your_org
 
 Object Model is also available:
@@ -80,3 +80,15 @@ There are some other console commands:
   > apex "System.debug('abc');"                 # execute Apex code instantly
 
 Type *help* to know all console commands
+
+== Utility
+sf_cli command also have other functions. As of 1.2.0, it can generate Salesforce DX project.
+
+Create a project directory and files including manifest file
+  $ sf_cli -g project YOUR_PROJECT_NAME
+
+Same as above, but the manifest file is built based on the org
+  $ sf_cli -g project YOUR_PROJECT_NAME -o YOUR_TARGET_ORG
+
+Build project and manifest then retreave metadata such as Apex code at once
+  $ sf_cli -g project YOUR_PROJECT_NAME -o YOUR_TARGET_ORG -r

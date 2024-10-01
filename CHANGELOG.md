@@ -1,9 +1,20 @@
+## 1.2.0 - 2024-10-02
+- CHANGE: `sf project` commands come back to supported. The following methods got back.
+    - `sf.project.generate`
+    - `sf.project.generate_manifest`
+- NEW: new command support
+    - `sf.project.retrieve_start`
+- CHANGE: `sf_cli` command interface changed.
+    - for using irb, type `sf_cli -i`
+- NEW: to generate a project, type `sf_cli -g project PROJECT_NAME`. By typing `sf -g project PROJECT_NAME -o ORG_ALIAS -r`, you can also generate manifest file based on the target org and retrieve metadata at once.
+
 ## 1.1.0 - 2024-09-29
 - NEW: add some command supports
   - `sf.org.list_metadata_types`
   - `sf.org.list_metadata`
   - `sf.org.list_limits`
 - NEW: add a console command; `orgs`
+
 ## 1.0.0 - 2024-09-27
 - NEW: `sf_cli` command that integrates both command and object model libraries into IRB.
 - NEW: (document) command coverage list is added in online document
