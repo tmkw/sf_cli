@@ -1,6 +1,7 @@
 require_relative '../core/base'
 require_relative './generate'
 require_relative './generate_manifest'
+require_relative './retrieve_start'
 
 module SfCli
   module Sf
@@ -15,6 +16,7 @@ module SfCli
         include ::SfCli::Sf::Core::Base
         include Generate
         include GenerateManifest
+        include RetrieveStart
       end
     end
   end
