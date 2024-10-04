@@ -42,6 +42,22 @@ module SfCli
           schema
         end
 
+        def action_overrides
+          schema["actionOverrides"]
+        end
+
+        def activateable?
+          schema["activateable"]
+        end
+
+        def associateEntityType
+          schema["associateEntityType"]
+        end
+
+        def associateParentEntity
+          schema["associateParentEntity"]
+        end
+
         def compact_layoutable?
           schema["compactLayoutable"]
         end
