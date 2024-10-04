@@ -8,13 +8,15 @@ def generate_project(project_name, params)
   base_dir        = Dir.pwd
   target_org      = params[:"target-org"]
   retrieve_source = params[:retrieve]
+  editor          = params[:editor]
 
   sf.project.generate project_name, manifest: true
 
   Dir.chdir project_name
 
-  sf.project.generate_manifest from_org: target_org, output_dir: 'manifest'          if target_org
+  sf.project.generate_manifest from_org: target_org, output_dir: 'manifest' if target_org
   sf.project.retrieve_start manifest: 'manifest/package.xml', target_org: target_org if retrieve_source
+  system 'code .' if editor
 ensure
   Dir.chdir base_dir
 end
@@ -25,11 +27,14 @@ Version = SfCli::VERSION
 
 opt.on('-i', '--irb', 'Start irb session that integrates sf_cli and object model library.') { system 'irb -r sf_cli/console' }
 opt.on('-g OBJECT', '--generate', 'Generate OBJECT. As of now, only project is available as OBJECT.')
-opt.on('-o TARGET_ORG', '--target-org', 'Username or alias of the target org. When specified with "-g model", the manifest file is created based on the org')
-opt.on('-r', '--retrieve', 'Retrieve source files.When specified with "-g model", source files is loaded according to the manifest file.')
+opt.on('-o TARGET_ORG', '--target-org', 'Username or alias of the target org. When specified with "-g project", the manifest file is created based on the org')
+opt.on('-r', '--retrieve', 'Retrieve source files.When specified with "-g project", source files is loaded according to the manifest file.')
+opt.on('-e', '--editor', 'Open VS Code for current directory. When specified with "-g project", it opens the project directory')
 
 opt.parse!(ARGV, into: params)
 
 if params[:generate] == 'project'
   generate_project(ARGV[0], params)
+elsif params[:editor]
+  system 'code .'
 end

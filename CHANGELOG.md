@@ -1,3 +1,8 @@
+## 1.2.1 - 2024-10-05
+- NEW -e option to sf_cli command to open vscode
+- FIX add some methods, which was lacked, to Schema class (SfCli::Sf::Sobject::Schema)
+- MISC document enhancement
+
 ## 1.2.0 - 2024-10-02
 - CHANGE: `sf project` commands come back to supported. The following methods got back.
     - `sf.project.generate`

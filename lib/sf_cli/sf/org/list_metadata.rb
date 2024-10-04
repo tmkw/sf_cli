@@ -1,7 +1,7 @@
 module SfCli::Sf::Org
   module ListMetadata
     #
-    # Returns the metadata types that are enabled for your org.
+    # List the metadata components and properties of a specified type
     # @param metadata    [Symbol,String] name of metadata type
     # @param folder      [Symbol,String] folder associated with the component such as Report, EmailTemplate, Dashboard and Document
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used

@@ -1,7 +1,7 @@
 module SfCli::Sf::Org
   module ListLimits
     #
-    # Returns the metadata types that are enabled for your org.
+    # List the limits in your org
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
     #

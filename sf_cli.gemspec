@@ -10,7 +10,6 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/tmkw/sf_cli"
   s.license     = 'MIT'
   s.required_ruby_version = '>= 3.3.3'
-  s.extra_rdoc_files = ['README.rdoc']
   s.requirements = 'Salesforce CLI ( >= 2.56.7): https://developer.salesforce.com/tools/salesforcecli'
   s.metadata = {
     "homepage_url" => "https://github.com/tmkw/sf_cli"
