@@ -1,6 +1,6 @@
 module SfCli::Sf::Sobject
   module List
-    # Returns a list of Salesforce object name
+    # List all Salesforce objects of a specified category.
     # @param object_type [Symbol,String] 'all' or 'custom'
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command

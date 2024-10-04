@@ -1,6 +1,6 @@
 module SfCli::Sf::Project
   module GenerateManifest
-    # Generate the manifest file of a Salesforce DX project
+    # Create a project manifest that lists the metadata components you want to deploy or retrieve
     # @param metadata    [Array]   an array that consists of metadata type like CustomObject, Layout and so on.  (default: [])
     # @param api_version [Integer] API version (default: nil)
     # @param output_dir  [String]  manifest's output directory in the project directory. You can use relative path from the project root (default: nil)

@@ -1,0 +1,26 @@
+= Utilities
+== Developer Console
+Developer console integrates both sf_cli's command methods and object model librry into IRB to make scripting easier in REPL.
+  $ sf_cli -i
+  > sf.query "SELECT Id, Name FROM Case", target_org: :your_org
+
+Object Model is also available:
+  > use :your_org_name
+  > gen :Account, :Contact, :User  #=> generate 3 Object model classes
+  > acc = Account.find_by Name: 'Hoge Fuga'
+
+There are some other console commands:
+  > query "SELECT Id, Name, ... FROM BazBar__c" # just same as `sf data query` with human readable format
+  > apex "System.debug('abc');"                 # execute Apex code instantly
+
+Type *help* to know all console commands
+
+== Project generation
+With *-g* option, sf_cli command creates a project directory and files including manifest file
+  $ sf_cli -g project YOUR_PROJECT_NAME
+Basically same as above, but also the manifest file is built based on the org
+  $ sf_cli -g project YOUR_PROJECT_NAME -o YOUR_TARGET_ORG
+Retreave metadata such as Apex classes after project building
+  $ sf_cli -g project YOUR_PROJECT_NAME -o YOUR_TARGET_ORG -r
+Open VSCode after project building
+  $ sf_cli -g project YOUR_PROJECT_NAME -e

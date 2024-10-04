@@ -1,6 +1,6 @@
 module SfCli::Sf::Org
   module Login
-    # Login to the org by the browser.
+    # Log in to a Salesforce org using the web server flow
     # @param target_org   [Symbol,String] an alias of paticular org, or username can be used
     # @param instance_url [String]        URL of the instance that the org lives on.
     # @param browser      [Symbol,String] browser in which to open the org.

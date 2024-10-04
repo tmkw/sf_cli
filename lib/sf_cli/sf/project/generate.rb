@@ -3,7 +3,7 @@ module SfCli::Sf::Project
     Result = Struct.new(:output_dir, :files, :raw_output, :warnings)
 
     #
-    # Generate a Salesforce project
+    # Generate a Salesforce DX project
     # @param name       [Symbol,String] project name
     # @param template   [Symbol,String] project template name
     # @param output_dir [String]        output directory

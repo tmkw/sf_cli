@@ -1,0 +1,97 @@
+= Salesforce CLI library for Ruby
+https://badge.fury.io/rb/sf_cli.png
+
+This is a class library for introducing {Salesforce CLI}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm] to Ruby scripting.<br>
+It is designed to be similar usability to the original command.<br>
+Currently only *sf* command is the target of development.
+
+[official document] https://tmkw.github.io/sf_cli/
+[rubygems]          https://rubygems.org/gems/sf_cli
+
+== prerequisite
+{Salesforce CLI}[https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_top.htm] must be installed.<br>
+As of as of September in 2024, ver.2.56.7 is the development target.
+
+== install
+Rubygem::
+  the simplest way:
+    $ gem install sf_cli
+Bundler::
+  in Gemfile:
+    gem 'sf_cli'
+  then,
+    $ bundle install
+== Loading the module
+  require 'sf_cli'
+== Main features
+Login to a org
+  sf.org.login_web
+Get Object schema 
+  sf.sobject.describe :Account
+Get a record
+  sf.data.get_record :Account, record_id: 'xxxxxxx'
+  sf.data.get_record :Account, where: {Name: 'Jonny B.Good', Country: 'USA'}
+Execute SOQL
+  sf.data.query "SELECT Id, Name FROM Account LIMIT 1" # => [{Id: "abc", Name: "account name"}]
+Create a record
+  sf.data.create_record :TheCustomObject__c, values: {Name: "John Smith", Age: 33}
+Update a record
+  sf.data.update_record :Account, record_id: 'xxxxxxx', values: {Name: 'New Account Name'}
+  sf.data.update_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}, values: {Phone: 'xxxxx', bar: 2000}
+Delete a record
+  sf.data.delete_record :Hoge__c, record_id: 'xxxxxxx'
+  sf.data.delete_record :Hoge__c, where: {Name: 'Jonny B.Good', Country: 'USA'}
+Using Bulk API 2.0
+  sf.data.upsert_bulk sobject: :TestCustomObject__c, file: 'upsert.csv', wait: 5  # waiting for 5 minutes at maximum
+Run Apex
+  sf.apex.run file: 'path/to/file'
+  sf.apex.run file: StringIO.new("System.debug('Hello World')")
+== Supported sf commands
+[{SfCli::Sf::Apex::Run#run sf apex run}]
+  run apex code
+[{SfCli::Sf::Data::CreateRecord#create_record sf data create record}]
+  Create a record
+[{SfCli::Sf::Data::DeleteBulk#delete_bulk sf data delete bulk}]
+  Delete records using Bulk API 2.0
+[{SfCli::Sf::Data::DeleteRecord#delete_record sf data delete record}]
+  Delete a record
+[{SfCli::Sf::Data::DeleteResume#delete_resume sf data delete resume}]
+  Resume a bulk delete job you previously started with Bulk API 2.0
+[{SfCli::Sf::Data::GetRecord#get_record sf data get record}]
+  Get a record
+[{SfCli::Sf::Data::Query#query sf data query}]
+  Get records by SOQL
+[{SfCli::Sf::Data::Resume#resume sf data resume}]
+  View the status of a bulk job
+[{SfCli::Sf::Data::Search#search sf data search}]
+  Search objects using SOSL
+[{SfCli::Sf::Data::UpdateRecord#update_record sf data update record}]
+  Update a record
+[{SfCli::Sf::Data::UpsertBulk#upsert_bulk sf data upsert bulk}]
+  Update records using Bulk API 2.0
+[{SfCli::Sf::Data::UpsertResume#upsert_resume sf data upsert resume}]
+  Resume a bulk upsert job you previously started with Bulk API 2.0
+[{SfCli::Sf::Org::Display#display sf org display}]
+  Get a org’s connection information
+[{SfCli::Sf::Org::List#list sf org list}]
+  List orgs you’ve created or authenticated to
+[{SfCli::Sf::Org::ListLimits#list_limits sf org list limits}]
+  List the limits in your org
+[{SfCli::Sf::Org::ListMetadata#list_metadata sf org list metadata}]
+  List the metadata components and properties of a specified type
+[{SfCli::Sf::Org::ListMetadataTypes#list_metadata_types sf org list metadata-types}]
+  List the metadata types that are enabled for your org.
+[{SfCli::Sf::Org::Login#login_web sf org login web}]
+  Log in to a Salesforce org using the web server flow
+[{SfCli::Sf::Org::Login#login_access_token sf org login access-token}]
+  Authorize an org using an existing Salesforce access token
+[{SfCli::Sf::Project::Generate#generate sf project generate}]
+  Generate a Salesforce DX project
+[{SfCli::Sf::Project::GenerateManifest#generate_manifest sf project generate manifest}]
+  Create a project manifest that lists the metadata components you want to deploy or retrieve
+[{SfCli::Sf::Project::RetrieveStart#retrieve_start sf project retrieve start}]
+  Retrieve metadata from an org to your local project
+[{SfCli::Sf::Sobject::Describe#describe sf sobject describe}]
+  Get a a Salesforce object schema
+[{SfCli::Sf::Sobject::List#list sf sobject list}]
+  List all Salesforce objects of a specified category. 
