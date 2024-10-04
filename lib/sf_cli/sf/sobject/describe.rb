@@ -2,7 +2,7 @@ require_relative './schema'
 
 module SfCli::Sf::Sobject
   module Describe
-    # Returns a schema object containing the Salesforce object schema
+    # Get a Salesforce object schema
     # @param object_type [Symbol,String] object type(ex: Account)
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
