@@ -1,7 +1,7 @@
 sf_cli-*.gem
+vendor
 tmp/*
 doc
 *.swp
 .byebug_history
-.bundle
 .yardoc
