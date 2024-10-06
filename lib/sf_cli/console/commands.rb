@@ -1,5 +1,6 @@
 require 'sf_cli'
 require 'sf_cli/sf/model'
+require 'sf_cli/sf/model/query_condition'
 require 'sf_cli/sf/model/sf_command_connection'
 require 'stringio'
 
@@ -48,7 +49,8 @@ module SfCli
         sf.apex.run target_org: target_org, file: StringIO.new(apex_code)
       end
 
-      def query(soql)
+      def query(_soql)
+        soql = _soql.is_a?(SfCli::Sf::Model::QueryMethods::QueryCondition) ? _soql.to_soql : _soql
         conf.inspect_mode = false
         puts sf.data.query(soql, format: :human, target_org: target_org)
         conf.inspect_mode = true
