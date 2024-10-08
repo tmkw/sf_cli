@@ -235,7 +235,7 @@ module SfCli
 
             find do |field|
               attr_val = field.__send__(attr_name.to_sym)
-              attr_val == val
+              attr_val == val.to_s
             end
           end
 

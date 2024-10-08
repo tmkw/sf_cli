@@ -75,6 +75,22 @@ RSpec.describe 'SfCli::Sf::Sobject::Schema' do
         )
       end
     end
+
+    describe '#find_by' do
+      it 'finds a field metadata by name' do
+        field = schema.fields.find_by name: :Name
+        expect(field.label).to eq 'Name Label'
+        expect(field.name).to eq 'Name'
+        expect(field.type).to eq 'string'
+      end
+
+      example 'finding by label' do
+        field = schema.fields.find_by label: "Id Label"
+        expect(field.label).to eq 'Id Label'
+        expect(field.name).to eq 'Id'
+        expect(field.type).to eq 'id'
+      end
+    end
   end
 
   def schema_definition
