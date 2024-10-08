@@ -114,12 +114,12 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
 
     context 'with nil' do
       it 'translates it to null' do
-        expect(query_condition.where(Name: nil)).to be query_condition
-        expect(query_condition.conditions).to contain_exactly("Name = null")
+        expect(query_condition.where(Name: nil, Age: [10, 11, nil])).to be query_condition
+        expect(query_condition.conditions).to contain_exactly("Name = null AND Age IN (10, 11, null)")
       end
       example 'in ternary style' do
-        expect(query_condition.where(:Name, :"=", nil)).to be query_condition
-        expect(query_condition.conditions).to contain_exactly("Name = null")
+        expect(query_condition.where(:Name, :"=", nil).where(:Age, :IN, [10, 11, nil])).to be query_condition
+        expect(query_condition.conditions).to contain_exactly("Name = null", "Age IN (10, 11, null)")
       end
     end
   end

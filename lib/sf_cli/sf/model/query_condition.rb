@@ -141,11 +141,13 @@ module SfCli
                             %|'#{o}'|
                           when :Time
                             o.to_datetime
+                          when :NilClass
+                            :null
                           else
                             o
                           end
                         end
-                      %|IN (#{candidates.join(', ')})|
+                      %|(#{candidates.join(', ')})|
                     else
                       expr[2]
                     end
@@ -176,6 +178,8 @@ module SfCli
                       %|'#{o}'|
                     when :Time
                       %|#{o.to_datetime}|
+                    when :NilClass
+                      :null
                     else
                       o
                     end
