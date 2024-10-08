@@ -1,3 +1,4 @@
+require 'sf_cli/sf/model'
 require_relative '../../../support/shared_examples/query_condition_example'
 
 RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
@@ -110,27 +111,38 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
         expect(query_condition.conditions.size).to be 0
       end
     end
+
+    context 'with nil' do
+      it 'translates it to null' do
+        expect(query_condition.where(Name: nil)).to be query_condition
+        expect(query_condition.conditions).to contain_exactly("Name = null")
+      end
+      example 'in ternary style' do
+        expect(query_condition.where(:Name, :"=", nil)).to be query_condition
+        expect(query_condition.conditions).to contain_exactly("Name = null")
+      end
+    end
   end
 
   describe '#not' do
     example 'Hash Style' do
       expect(query_condition.not(Name: 'Hoge Fuga')).to be query_condition
-      expect(query_condition.conditions).to contain_exactly("NOT(Name = 'Hoge Fuga')")
+      expect(query_condition.conditions).to contain_exactly("(NOT(Name = 'Hoge Fuga'))")
     end
 
     example 'Hash Style (2)' do
       expect(query_condition.not(Name: 'Hoge Fuga', Age: 32)).to be query_condition
-      expect(query_condition.conditions).to contain_exactly("NOT(Name = 'Hoge Fuga' AND Age = 32)")
+      expect(query_condition.conditions).to contain_exactly("(NOT(Name = 'Hoge Fuga' AND Age = 32))")
     end
 
     example 'Raw SOQL Style' do
       expect(query_condition.not("Name = 'Hoge Fuga' AND Age = 32")).to be query_condition
-      expect(query_condition.conditions).to contain_exactly("NOT(Name = 'Hoge Fuga' AND Age = 32)")
+      expect(query_condition.conditions).to contain_exactly("(NOT(Name = 'Hoge Fuga' AND Age = 32))")
     end
 
     example 'Ternary Style' do
       expect(query_condition.not(:Name, :Like, '%Hoge%')).to be query_condition
-      expect(query_condition.conditions).to contain_exactly("NOT(Name Like '%Hoge%')")
+      expect(query_condition.conditions).to contain_exactly("(NOT(Name Like '%Hoge%'))")
     end
 
     it 'stacks conditions' do
@@ -140,9 +152,9 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
         .not(:Name, :Like, '%Hoge%')
 
       expect(query_condition.conditions).to contain_exactly(
-        "NOT(Name = 'Hoge Fuga' AND Age = 32)",
-        "NOT(Name = 'Hoge Fuga' AND Age = 32)",
-        "NOT(Name Like '%Hoge%')"
+        "(NOT(Name = 'Hoge Fuga' AND Age = 32))",
+        "(NOT(Name = 'Hoge Fuga' AND Age = 32))",
+        "(NOT(Name Like '%Hoge%'))"
       )
     end
   end
@@ -208,7 +220,7 @@ RSpec.describe 'SfCli::Sf::Model::QueryMethods::QueryCondition' do
         .select(:Id, :Name, :"Account.Name", "(SELECT Name FROM Accounts)")
         .limit(30)
         .order(:Country, :Name)
-      expect(query_condition.to_soql).to eq "SELECT Id, Name, Account.Name, (SELECT Name FROM Accounts) FROM QueryContditionTestClass WHERE Name = 'John Smith' AND Age = 34 AND NOT(Name = 'Ben White' AND Age = 18) AND Phone = '090-xxxx-xxxx' AND NOT(Phone = '080-xxxx-xxxx') AND Country IN ('Japan', 'USA', 'China') AND NOT(Country IN ('India', 'Thai', 'Russia')) AND ContactId IN ('a','b') AND NOT(ContactId IN ('c','d')) AND GroupName LIKE '%abc%' AND NOT(GroupName LIKE '%xyz%') AND LastModifiedDate >= LAST_N_DAYS:90 AND NOT(LastModifiedDate >= YESTERDAY) ORDER BY Country, Name LIMIT 30"
+      expect(query_condition.to_soql).to eq "SELECT Id, Name, Account.Name, (SELECT Name FROM Accounts) FROM QueryContditionTestClass WHERE Name = 'John Smith' AND Age = 34 AND (NOT(Name = 'Ben White' AND Age = 18)) AND Phone = '090-xxxx-xxxx' AND (NOT(Phone = '080-xxxx-xxxx')) AND Country IN ('Japan', 'USA', 'China') AND (NOT(Country IN ('India', 'Thai', 'Russia'))) AND ContactId IN ('a','b') AND (NOT(ContactId IN ('c','d'))) AND GroupName LIKE '%abc%' AND (NOT(GroupName LIKE '%xyz%')) AND LastModifiedDate >= LAST_N_DAYS:90 AND (NOT(LastModifiedDate >= YESTERDAY)) ORDER BY Country, Name LIMIT 30"
     end
 
     context 'with no where condtions' do

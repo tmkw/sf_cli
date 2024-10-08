@@ -40,7 +40,7 @@ module SfCli
           def not(*expr)
             return self unless valid_expr?(expr)
 
-            conditions.append %|NOT(#{to_string_expr(expr)})|
+            conditions.append %|(NOT(#{to_string_expr(expr)}))|
             self
           end
 
@@ -132,6 +132,8 @@ module SfCli
                       %|'#{expr[2]}'|
                     when :Time
                       expr[2].to_datetime
+                    when :NilClass
+                      :null
                     when :Array
                       candidates = expr[2].map do |o|
                           case o.class.name.to_sym
@@ -165,6 +167,8 @@ module SfCli
                 %|#{k} = '#{v}'|
               when :Time
                 %|#{k} = #{v.to_datetime}|
+              when :NilClass
+                %|#{k} = null|
               when :Array
                 candidates = v.map do |o|
                     case o.class.name.to_sym
