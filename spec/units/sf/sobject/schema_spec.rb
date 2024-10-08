@@ -66,6 +66,25 @@ RSpec.describe 'SfCli::Sf::Sobject::Schema' do
     end
   end
 
+  describe 'relations' do
+    let(:schema){ SfCli::Sf::Sobject::Schema.new(schema_definition_with_relation_mix) }
+
+    describe '#names' do
+      it 'enumerates all relationship names' do
+        expect(schema.relations.names).to contain_exactly(:Children, :Parent)
+      end
+    end
+
+    describe '#find' do
+      it 'finds relation data by name' do
+        relation = schema.relations.find :Parent
+        expect(relation.name).to eq :Parent
+        expect(relation.field).to eq :ParentId
+        expect(relation.class_name).to eq :ParentClassDefininitionTest1
+      end
+    end
+  end
+
   describe 'Fields' do
     describe '#name_and_labels' do
       it do
@@ -73,6 +92,22 @@ RSpec.describe 'SfCli::Sf::Sobject::Schema' do
           ["Id", "Id Label"],
           ["Name", "Name Label"]
         )
+      end
+    end
+
+    describe '#find_by' do
+      it 'finds a field metadata by name' do
+        field = schema.fields.find_by name: :Name
+        expect(field.label).to eq 'Name Label'
+        expect(field.name).to eq 'Name'
+        expect(field.type).to eq 'string'
+      end
+
+      example 'finding by label' do
+        field = schema.fields.find_by label: "Id Label"
+        expect(field.label).to eq 'Id Label'
+        expect(field.name).to eq 'Id'
+        expect(field.type).to eq 'id'
       end
     end
   end
@@ -122,6 +157,30 @@ RSpec.describe 'SfCli::Sf::Sobject::Schema' do
       "fields" => [
         { "label"=>"ID",   "name"=>"Id",   "referenceTo"=>[], "relationshipName"=>nil, "type"=>"id" },
         { "label"=>"Name", "name"=>"Name", "referenceTo"=>[], "relationshipName"=>nil, "type"=>"string" },
+      ]
+    }
+  end
+
+  def schema_definition_with_relation_mix
+    {
+      "name" => 'Hoge__c',
+      "custom" => true,
+      "childRelationships" => [
+        {
+          "childSObject"=>"AIInsightValue",
+          "field"=>"SobjectLookupValueId",
+          "relationshipName"=>nil,
+        },
+        {
+          "childSObject"=>"ChildClassDefininitionTest1",
+          "field"=>"TargetId",
+          "relationshipName"=>"Children",
+        }
+      ],
+      "fields" => [
+        { "label"=>"ID",   "name"=>"Id",   "referenceTo"=>[], "relationshipName"=>nil, "type"=>"id" },
+        { "label"=>"Name", "name"=>"Name", "referenceTo"=>[], "relationshipName"=>nil, "type"=>"string" },
+        { "label"=>"Name", "name"=>"ParentId", "referenceTo"=>["ParentClassDefininitionTest1"], "relationshipName"=>"Parent", "type"=>"string" },
       ]
     }
   end

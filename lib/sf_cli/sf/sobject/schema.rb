@@ -19,23 +19,29 @@ module SfCli
         end
 
         def field_names
-          @field_names ||= fields.map{|f| f.name.to_sym}
+          @field_names ||= fields.map{|f| f.name.to_sym}.sort
         end
 
         def field_labels
-          @field_labels ||= fields.map{|f| f.label}
+          @field_labels ||= fields.map{|f| f.label}.sort
         end
 
         def children_relations
-          schema['childRelationships']
-            .select{|r| r['relationshipName'].nil? == false}
-            .map{|r| {name: r['relationshipName'].to_sym, field: r['field'].to_sym, class_name: r['childSObject'].to_sym}}
+          @children_relations ||=
+            schema['childRelationships']
+              .select{|r| r['relationshipName'].nil? == false}
+              .map{|r| {name: r['relationshipName'].to_sym, field: r['field'].to_sym, class_name: r['childSObject'].to_sym}}
         end
 
         def parent_relations
-          fields
-            .select{|f| !(f.relationship_name.nil? || f.reference_to.nil?) && f.reference_to.size > 0}
-            .map{|f| {name: f.relationship_name.to_sym, field: f.name.to_sym, class_name: f.reference_to.first.to_sym} }
+          @parent_relations ||=
+            fields
+              .select{|f| !(f.relationship_name.nil? || f.reference_to.nil?) && f.reference_to.size > 0}
+              .map{|f| {name: f.relationship_name.to_sym, field: f.name.to_sym, class_name: f.reference_to.first.to_sym} }
+        end
+
+        def relations
+          @relations ||= Relations.new(children_relations + parent_relations)
         end
 
         def to_h
@@ -212,6 +218,35 @@ module SfCli
           @schema
         end
 
+        Relation = Struct.new(:name, :field, :class_name)
+
+        class Relations
+          include Enumerable
+
+          def initialize(relations)
+            @relations = relations.map{|r| Relation.new(name: r[:name], field: r[:field], class_name: r[:class_name])}
+          end
+
+          def each(&block)
+            relations.each(&block)
+          end
+
+          def names
+            map(&:name).sort
+          end
+
+          def find(name)
+            relations.find{|r| r.name == name.to_sym}
+          end
+
+          private
+
+          def relations
+            @relations
+          end
+        end
+
+
         class Fields
           include Enumerable
 
@@ -235,7 +270,7 @@ module SfCli
 
             find do |field|
               attr_val = field.__send__(attr_name.to_sym)
-              attr_val == val
+              attr_val == val.to_s
             end
           end
 
