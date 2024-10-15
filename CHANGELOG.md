@@ -1,3 +1,13 @@
+## ANNOUNCE:
+Object Model Support and Console CLI features will be dropped at sf_cli 1.3.
+They will be replaced by other gems.
+
+## 1.2.2 - 2024-10-16
+- NEW `sf.data.query` can have block
+- FIX Object Model support functions
+    - SQOL mistranslations of #not
+    - nil was mistranslated in #where
+
 ## 1.2.1 - 2024-10-05
 - NEW -e option to sf_cli command to open vscode
 - FIX add some methods, which was lacked, to Schema class (SfCli::Sf::Sobject::Schema)
