@@ -9,6 +9,16 @@ RSpec.describe 'sf data query', :model do
     expect(rows).to contain_exactly({'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"})
   end
 
+  example "working with block" do
+    allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
+
+    rows = sf.data.query(%|SELECT Id, Name FROM Account LIMIT 1|) do |record|
+      record['Name'] += " Returns!"
+    end
+
+    expect(rows).to contain_exactly({'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products Returns!"})
+  end
+
   example "converts each record into a paticular model object" do
     allow_any_instance_of(SfCli::Sf::Data::Core).to receive(:`).with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --json 2> /dev/null').and_return(command_response)
 

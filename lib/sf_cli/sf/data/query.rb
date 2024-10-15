@@ -17,6 +17,10 @@ module SfCli::Sf::Data
     # @example
     #   sf.data.query 'SELECT Id, Name FROM Account LIMIT 1' # => [{Id: "abc", Name: "account name"}]
     #
+    #   accounts = sf.data.query('SELECT Id, Name From Account') do |record|
+    #                record['Name'] += " Changed!" # can manipulate the record in block
+    #              end
+    #
     #   Account = Struct.new(:Id, :Name)
     #   sf.data.query('SELECT Id, Name From Account Limit 3', model_class: Account)  # returns an array of Account struct object
     #
@@ -39,7 +43,7 @@ module SfCli::Sf::Data
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_data_commands_unified.htm#cli_reference_data_query_unified command reference
     #
-    def query(soql, target_org: nil, format: nil, bulk: false, wait: nil, api_version: nil, model_class: nil)
+    def query(soql, target_org: nil, format: nil, bulk: false, wait: nil, api_version: nil, model_class: nil, &block)
       flags    = {
         :"query"    => %("#{soql}"),
         :"target-org" => target_org,
@@ -53,9 +57,15 @@ module SfCli::Sf::Data
       raw_output = format ? true : false
       format = format&.to_sym || :json
 
-      result = exec(__method__, flags: flags, switches: switches, redirection: :null_stderr, raw_output: raw_output, format: format)
+      exec_result = exec(__method__, flags: flags, switches: switches, redirection: :null_stderr, raw_output: raw_output, format: format)
 
-      return_result(result, raw_output, bulk, model_class)
+      results = return_result(exec_result, raw_output, bulk, model_class)
+
+      return results if raw_output
+
+      results.each(&block) if block_given?
+
+      results
     end
 
     # Resume a bulk query job, which you previously started, and get records

@@ -37,6 +37,12 @@ RSpec.describe 'SfCli::Sf::Data' do
       expect(result_adjuster).to have_received :get_return_value
     end
 
+    example "query and yield" do
+      expect{ |block|
+        data.query(soql, &block)
+      }.to yield_successive_args(record)
+    end
+
     context 'using option: csv format' do
       let(:format) { :csv }
       let(:raw_output) { true }
