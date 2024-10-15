@@ -1,1 +1,1 @@
---output-dir docs lib/**/*.rb --main rdoc/README.rdoc - CHANGELOG.md rdoc/*.rdoc rdoc/*.html
+--output-dir docs lib/**/*.rb --main rdoc/README.rdoc - CHANGELOG.md MIT-LICENSE rdoc/*.rdoc rdoc/*.html
