@@ -7,6 +7,7 @@ module SfCli::Sf::Org
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
     # @param output_file [String]        pathname of the file in which to write the results
+    # @param format      [Symbol,String] output format. json or human is available. (default: json)
     #
     # @return [MetadataList] the list of metadata, which contains its name, its source file path and so on
     #
@@ -17,7 +18,7 @@ module SfCli::Sf::Org
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata_unified command reference
     #
-    def list_metadata(metadata, folder: nil, target_org: nil, api_version: nil, output_file: nil)
+    def list_metadata(metadata, folder: nil, target_org: nil, api_version: nil, output_file: nil, format: :json)
       flags    = {
         :"metadata-type" => metadata,
         :"folder"        => folder,
@@ -26,9 +27,10 @@ module SfCli::Sf::Org
         :"output-file"   => output_file,
       }
       action = __method__.to_s.tr('_', ' ')
-      json = exec(action, flags: flags, redirection: :null_stderr)
+      output = org_exec(action, flags: flags, redirection: :null_stderr, format: format)
+      return output if format.to_sym == :human
 
-      MetadataList.new(json['result'])
+      MetadataList.new(output['result'])
     end
 
     Metadata = Data.define(

@@ -3,11 +3,12 @@ RSpec.describe 'SfCli::Sf::Org' do
 
   describe '#list'do
     before do
-      allow(org).to receive(:exec).with(
+      allow(org).to receive(:org_exec).with(
         :list,
         flags: {
         },
-        redirection: :null_stderr
+        redirection: :null_stderr,
+        format:      :json
       )
       .and_return(list_response)
     end
@@ -15,7 +16,7 @@ RSpec.describe 'SfCli::Sf::Org' do
     it "lists the org the user is related to" do
       org_list = org.list
       expect(org_list.size).to be 5
-      expect(org).to have_received :exec
+      expect(org).to have_received :org_exec
     end
 
     it "lists the org, which each org is unique" do

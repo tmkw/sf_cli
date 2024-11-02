@@ -7,14 +7,15 @@ RSpec.describe 'SfCli::Sf::Org' do
 
     before do
       allow(org)
-        .to receive(:exec)
+        .to receive(:org_exec)
         .with(
           'list limits',
           flags: {
             :"target-org" => target_org,
             :"api-version" => api_version,
           },
-          redirection: :null_stderr)
+          redirection: :null_stderr,
+          format: :json)
         .and_return(exec_output)
     end
 
@@ -28,7 +29,7 @@ RSpec.describe 'SfCli::Sf::Org' do
       expect(limit.max).to eq 1500
       expect(limit.remaining).to eq 1498
 
-      expect(org).to have_received :exec
+      expect(org).to have_received :org_exec
     end
 
     context 'using option: target_org' do
@@ -36,7 +37,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it "lists limits in particular org" do
         org.list_limits target_org: :dev
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
 
@@ -45,7 +46,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it 'lists limits by paticular API version' do
         org.list_limits api_version: 61.0
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
   end

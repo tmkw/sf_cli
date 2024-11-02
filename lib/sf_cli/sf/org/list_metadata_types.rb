@@ -5,6 +5,7 @@ module SfCli::Sf::Org
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
     # @param output_file [String]        pathname of the file in which to write the results
+    # @param format      [Symbol,String] output format. json or human is available. (default: json)
     #
     # @return [Result] the command's output
     #
@@ -14,20 +15,21 @@ module SfCli::Sf::Org
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata-types_unified command reference
     #
-    def list_metadata_types(target_org: nil, api_version: nil, output_file: nil)
+    def list_metadata_types(target_org: nil, api_version: nil, output_file: nil, format: :json)
       flags    = {
         :"target-org" => target_org,
         :"api-version" => api_version,
         :"output-file" => output_file,
       }
       action = __method__.to_s.tr('_', '-').sub('-', ' ')
-      json = exec(action, flags: flags, redirection: :null_stderr)
+      output = org_exec(action, flags: flags, redirection: :null_stderr, format: format)
+      return output if format.to_sym == :human
 
       Result.new(
-        metadata_objects:       MetadataObjects.new(json['result']['metadataObjects']),
-        organization_namespace: json['result']['organizationNamespace'],
-        partial_save_allowed:   json['result']['partialSaveAllowed'],
-        test_required:          json['result']['testRequired']
+        metadata_objects:       MetadataObjects.new(output['result']['metadataObjects']),
+        organization_namespace: output['result']['organizationNamespace'],
+        partial_save_allowed:   output['result']['partialSaveAllowed'],
+        test_required:          output['result']['testRequired']
       )
     end
 

@@ -10,7 +10,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
     before do
       allow(org)
-        .to receive(:exec)
+        .to receive(:org_exec)
         .with(
           'list metadata',
           flags: {
@@ -20,7 +20,8 @@ RSpec.describe 'SfCli::Sf::Org' do
             :"api-version" => api_version,
             :"output-file" => path
           },
-          redirection: :null_stderr)
+          redirection: :null_stderr,
+          format: :json)
         .and_return(exec_output)
     end
 
@@ -35,7 +36,7 @@ RSpec.describe 'SfCli::Sf::Org' do
       expect(metadata.full_name).to eq "CommunitiesSelfRegController"
       expect(metadata.type).to eq      "ApexClass"
 
-      expect(org).to have_received :exec
+      expect(org).to have_received :org_exec
     end
 
     context 'using option: folder' do
@@ -43,7 +44,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it "lists metadata in the folder" do
         org.list_metadata metadata_type, folder: folder_name
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
 
@@ -52,7 +53,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it "lists metadata in particular org" do
         org.list_metadata metadata_type, target_org: :dev
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
 
@@ -61,7 +62,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it 'lists metadata by paticular API version' do
         org.list_metadata metadata_type, api_version: 61.0
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
 
@@ -70,7 +71,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it 'saves the result to a file' do
         org.list_metadata metadata_type, output_file: path
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
   end

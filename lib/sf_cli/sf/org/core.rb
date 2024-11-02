@@ -1,4 +1,4 @@
-require_relative '../core/base'
+require_relative '../core/org_base'
 require_relative './login'
 require_relative './display'
 require_relative './list'
@@ -16,7 +16,7 @@ module SfCli
     module Org
       # @private :nodoc: just for developers
       class Core
-        include ::SfCli::Sf::Core::Base
+        include ::SfCli::Sf::Core::OrgBase
         include Login
         include Display
         include List
