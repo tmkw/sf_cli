@@ -55,9 +55,10 @@ module SfCli::Sf::Data
         bulk: bulk,
       }
       raw_output = format ? true : false
+      redirect_type = raw_output ? nil : :null_stderr
       format = format&.to_sym || :json
 
-      exec_result = exec(__method__, flags: flags, switches: switches, redirection: :null_stderr, raw_output: raw_output, format: format)
+      exec_result = exec(__method__, flags: flags, switches: switches, redirection: redirect_type, raw_output: raw_output, format: format)
 
       results = return_result(exec_result, raw_output, bulk, model_class)
 
