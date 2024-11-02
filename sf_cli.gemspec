@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.3.3'
   s.requirements = 'Salesforce CLI ( >= 2.56.7): https://developer.salesforce.com/tools/salesforcecli'
   s.metadata = {
-    "homepage_url" => "https://github.com/tmkw/sf_cli"
+    "homepage_uri" => "https://github.com/tmkw/sf_cli"
   }
   s.bindir = 'bin'
   s.executables = 'sf_cli'

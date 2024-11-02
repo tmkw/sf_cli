@@ -10,6 +10,7 @@ module SfCli::Sf::Org
     # Returns the org's connection information
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
+    # @param raw_output  [Boolian]       return the original command's output.
     #
     # @note this function returns the org information including security sensitive things such as access token, username and so on.
     # @return [ConnectionInfo] the org's connection information
@@ -29,18 +30,19 @@ module SfCli::Sf::Org
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_display_unified command reference
     #
-    def display(target_org: nil, api_version: nil)
+    def display(target_org: nil, api_version: nil, raw_output: false)
       flags    = {:"target-org" => target_org, :"api-version" => api_version}
-      json = exec(__method__, flags: flags, redirection: :null_stderr)
+      output = org_exec(__method__, flags: flags, redirection: :null_stderr, raw_output: raw_output)
+      return output if raw_output
 
       ConnectionInfo.new(
-        id:           json['result']['id'],
-        access_token: json['result']['accessToken'],
-        alias:        json['result']['alias'],
-        instance_url: json['result']['instanceUrl'],
-        user_name:    json['result']['username'],
-        api_version:  json['result']['apiVersion'],
-        status:       json['result']['connectedStatus']
+        id:           output['result']['id'],
+        access_token: output['result']['accessToken'],
+        alias:        output['result']['alias'],
+        instance_url: output['result']['instanceUrl'],
+        user_name:    output['result']['username'],
+        api_version:  output['result']['apiVersion'],
+        status:       output['result']['connectedStatus']
       )
     end
   end

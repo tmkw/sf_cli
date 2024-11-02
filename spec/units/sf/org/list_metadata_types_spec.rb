@@ -5,11 +5,21 @@ RSpec.describe 'SfCli::Sf::Org' do
     let(:target_org ) { nil }
     let(:api_version) { nil }
     let(:path) { nil }
+    let(:raw_output_flg) { false }
 
     before do
       allow(org)
-        .to receive(:exec)
-        .with('list metadata-types', flags: {:"target-org" => target_org, :"api-version" => api_version, :"output-file" => path}, redirection: :null_stderr)
+        .to receive(:org_exec)
+        .with(
+          'list metadata-types',
+          flags: {
+            :"target-org" => target_org,
+            :"api-version" => api_version,
+            :"output-file" => path
+          },
+          redirection: :null_stderr,
+          raw_output: raw_output_flg
+        )
         .and_return(exec_output)
     end
 
@@ -18,7 +28,7 @@ RSpec.describe 'SfCli::Sf::Org' do
       expect(result.metadata_objects.count).to be 1
       expect(result.metadata_objects.names).to eq ['InstalledPackage']
 
-      expect(org).to have_received :exec
+      expect(org).to have_received :org_exec
     end
 
     context 'using option: target_org' do
@@ -26,7 +36,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it "lists the metadata types in particular org" do
         org.list_metadata_types target_org: :dev
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
 
@@ -35,7 +45,16 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it 'lists the metadata types by paticular API version' do
         org.list_metadata_types api_version: 61.0
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
+      end
+    end
+
+    context 'using option: raw_output' do
+      let(:raw_output_flg) { true }
+
+      it 'returns the result formattend as same as the original command outputs' do
+        org.list_metadata_types raw_output: true
+        expect(org).to have_received :org_exec
       end
     end
 
@@ -44,7 +63,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it 'saves the result in a file' do
         org.list_metadata_types output_file: path
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
   end

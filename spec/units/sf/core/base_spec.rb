@@ -33,18 +33,32 @@ RSpec.describe 'SfCli::Sf::Core::Base' do
   end
 
   describe '#exec' do
-    before do
-      allow(test_object).to receive(:`).with('sf hoge generate --name MyProject --json --manifest 2> /dev/null').and_return(command_response)
-    end
-    
-    it 'executes a shell command operation' do
-      test_object.__send__(:exec, :generate, flags: {:"name" => 'MyProject'}, switches: {manifest: true}, redirection: :null_stderr)
-      expect(test_object).to have_received :`
+    context 'in case command execution successfully' do
+      before do
+        allow(test_object).to receive(:`).with('sf hoge generate --name MyProject --json --manifest 2> /dev/null').and_return(command_response)
+      end
+
+      it 'executes a shell command operation' do
+        test_object.__send__(:exec, :generate, flags: {:"name" => 'MyProject'}, switches: {manifest: true}, redirection: :null_stderr)
+        expect(test_object).to have_received :`
+      end
+
+      it 'returns a Hash object, which represents the sf command response' do
+        result = test_object.__send__(:exec, :generate, flags: {:"name" => 'MyProject'}, switches: {manifest: true}, redirection: :null_stderr)
+        expect(result).to be_instance_of Hash
+      end
     end
 
-    it 'returns a Hash object, which represents the sf command response' do
-      result = test_object.__send__(:exec, :generate, flags: {:"name" => 'MyProject'}, switches: {manifest: true}, redirection: :null_stderr)
-      expect(result).to be_instance_of Hash
+    context "in case of command's abortion" do
+      before do
+        allow(test_object).to receive(:`).with('sf hoge generate --name MyProject --json --manifest 2> /dev/null').and_return(error_response)
+      end
+
+      it 'raises CommandExecError' do
+        expect{
+          test_object.__send__(:exec, :generate, flags: {:"name" => 'MyProject'}, switches: {manifest: true}, redirection: :null_stderr)
+        }.to raise_error ::SfCli::CommandExecError, 'The requested resource does not exist'
+      end
     end
   end
 
@@ -72,6 +86,26 @@ RSpec.describe 'SfCli::Sf::Core::Base' do
         .to eq "a='abc' b=100 c=500 d='I am here'"
       end
     end
+  end
+
+  def error_response
+    <<~JSON
+      {
+        "name": "NOT_FOUND",
+        "message": "The requested resource does not exist",
+        "exitCode": 1,
+        "context": "SObjectDescribe",
+        "data": {
+          "errorCode": "NOT_FOUND",
+          "message": "The requested resource does not exist"
+        },
+        "stack": "....",
+        "warnings": [],
+        "code": "1",
+        "status": 1,
+        "commandName": "SObjectDescribe"
+      }
+    JSON
   end
 
   def command_response

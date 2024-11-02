@@ -3,7 +3,7 @@ RSpec.describe 'SfCli::Sf::Org' do
 
   describe '#display' do
     it "returns the current connection information of the org" do
-      allow(org).to receive(:exec).with(:display, flags: {:"target-org" => nil, :"api-version" => nil}, redirection: :null_stderr).and_return(exec_output)
+      allow(org).to receive(:org_exec).with(:display, flags: {:"target-org" => nil, :"api-version" => nil}, redirection: :null_stderr, raw_output: false).and_return(exec_output)
 
       connection_info = org.display
 
@@ -15,26 +15,43 @@ RSpec.describe 'SfCli::Sf::Org' do
       expect(connection_info.status).to eq 'Connected'
       expect(connection_info.alias).to eq 'dev'
 
-      expect(org).to have_received :exec
+      expect(org).to have_received :org_exec
     end
 
     context 'using option: target_org' do
       it 'can get a paticular org information' do
-        allow(org).to receive(:exec).with(:display, flags: {:"target-org" => :dev, :"api-version" => nil}, redirection: :null_stderr).and_return(exec_output)
+        allow(org).to receive(:org_exec).with(:display, flags: {:"target-org" => :dev, :"api-version" => nil}, redirection: :null_stderr, raw_output: false).and_return(exec_output)
         org.display target_org: :dev
 
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
 
     context 'using option: api_version' do
       it 'can get a paticular org information' do
-        allow(org).to receive(:exec).with(:display, flags: {:"target-org" => nil, :"api-version" => 61.0}, redirection: :null_stderr).and_return(exec_output)
+        allow(org).to receive(:org_exec).with(:display, flags: {:"target-org" => nil, :"api-version" => 61.0}, redirection: :null_stderr, raw_output: false).and_return(exec_output)
         org.display api_version: 61.0
 
-        expect(org).to have_received :exec
+        expect(org).to have_received :org_exec
       end
     end
+
+    context 'using option: raw_output' do
+      it 'returns the original output of the command' do
+        allow(org).
+          to receive(:org_exec)
+          .with(:display, flags: {:"target-org" => nil, :"api-version" => nil}, redirection: :null_stderr, raw_output: true)
+          .and_return(original_command_output)
+
+        org.display raw_output: true
+
+        expect(org).to have_received :org_exec
+      end
+    end
+  end
+
+  def original_command_output
+    "the result of sf org display"
   end
 
   def exec_output

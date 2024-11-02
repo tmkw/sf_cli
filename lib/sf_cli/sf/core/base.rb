@@ -1,24 +1,22 @@
 require 'json'
 require 'tempfile'
 
+require_relative '../../command_exec_error'
+
 module SfCli
   module Sf
     # @private :nodoc: just for developers
     module Core
       module Base
-        attr_reader :varbose
-
         private
 
         def exec(action, flags: {}, switches: {}, redirection: nil, raw_output: false, format: :json) # :doc:
           cmd = %|sf #{category} #{action}#{as_flag_options(flags)}#{as_switch_options(switches, format)}#{redirect redirection}|
-          puts cmd if varbose
 
           return `#{cmd}` if raw_output
 
           json = JSON.parse `#{cmd}`
-          puts json if varbose
-          raise StandardError.new(json['message']) if json['status'] != 0
+          raise ::SfCli::CommandExecError.new(json['message']) if json['status'] != 0
 
           json
         end

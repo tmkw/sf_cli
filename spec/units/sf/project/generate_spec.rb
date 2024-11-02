@@ -7,7 +7,9 @@ RSpec.describe 'SfCli::Sf::Project' do
         :generate,
         flags:        {name: 'TestProject', template: nil, :"output-dir" => nil},
         switches:     {manifest: false},
-        redirection:  :null_stderr
+        redirection:  :null_stderr,
+        raw_output:   false,
+        format:       :json
       )
       .and_return(exec_output)
 
@@ -27,7 +29,9 @@ RSpec.describe 'SfCli::Sf::Project' do
           :generate,
           flags:        {name: 'TestProject', template: nil, :"output-dir" => 'tmp'},
           switches:     {manifest: false},
-          redirection:  :null_stderr
+          redirection:  :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output output_dir: 'tmp')
 
@@ -44,7 +48,9 @@ RSpec.describe 'SfCli::Sf::Project' do
           :generate,
           flags:        {name: 'TestProject', template: :empty, :"output-dir" => nil},
           switches:     {manifest: false},
-          redirection:  :null_stderr
+          redirection:  :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output)
 
@@ -59,7 +65,9 @@ RSpec.describe 'SfCli::Sf::Project' do
           :generate,
           flags:        {name: 'TestProject', template: nil, :"output-dir" => nil},
           switches:     {manifest: true},
-          redirection:  :null_stderr
+          redirection:  :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output manifest: true)
 
@@ -76,7 +84,9 @@ RSpec.describe 'SfCli::Sf::Project' do
           :generate,
           flags:        {name: 'TestProject', template: :empty, :"output-dir" => 'tmp'},
           switches:     {manifest: true},
-          redirection:  :null_stderr
+          redirection:  :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output manifest: true, output_dir: 'tmp')
 

@@ -15,6 +15,9 @@ RSpec.describe 'SfCli::Sf::Project' do
     let(:ignore_conflicts) { false }
     let(:single_package) { false }
     let(:unzip) { false }
+    let(:redirect_type) { :null_stderr }
+    let(:raw_output) { false }
+    let(:command_output_format) { :json }
 
     before do
       allow(project)
@@ -38,7 +41,9 @@ RSpec.describe 'SfCli::Sf::Project' do
             :"single-package" => single_package,
             :"unzip" => unzip,
           },
-          redirection: :null_stderr)
+          redirection: redirect_type,
+          raw_output:  raw_output,
+          format:      command_output_format)
         .and_return(exec_output)
     end
 
@@ -129,6 +134,17 @@ RSpec.describe 'SfCli::Sf::Project' do
 
       it 'retrieve the source files by paticular API version' do
         project.retrieve_start metadata: [metadata], api_version: 61.0
+        expect(project).to have_received :exec
+      end
+    end
+
+    context 'using option: raw_output' do
+      let(:redirect_type) { nil }
+      let(:raw_output) { true }
+      let(:command_output_format) { :human }
+
+      it 'returns the result and errors as same as the original command does' do
+        project.retrieve_start metadata: [metadata], raw_output: true
         expect(project).to have_received :exec
       end
     end
