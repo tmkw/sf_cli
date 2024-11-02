@@ -5,7 +5,7 @@ module SfCli::Sf::Org
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
     # @param output_file [String]        pathname of the file in which to write the results
-    # @param format      [Symbol,String] output format. json or human is available. (default: json)
+    # @param raw_output  [Boolian]       return the original command's output.
     #
     # @return [Result] the command's output
     #
@@ -15,15 +15,15 @@ module SfCli::Sf::Org
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_metadata-types_unified command reference
     #
-    def list_metadata_types(target_org: nil, api_version: nil, output_file: nil, format: :json)
+    def list_metadata_types(target_org: nil, api_version: nil, output_file: nil, raw_output: false)
       flags    = {
         :"target-org" => target_org,
         :"api-version" => api_version,
         :"output-file" => output_file,
       }
       action = __method__.to_s.tr('_', '-').sub('-', ' ')
-      output = org_exec(action, flags: flags, redirection: :null_stderr, format: format)
-      return output if format.to_sym == :human
+      output = org_exec(action, flags: flags, redirection: :null_stderr, raw_output: raw_output)
+      return output if raw_output
 
       Result.new(
         metadata_objects:       MetadataObjects.new(output['result']['metadataObjects']),

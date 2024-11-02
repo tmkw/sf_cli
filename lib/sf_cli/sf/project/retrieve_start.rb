@@ -23,12 +23,13 @@ module SfCli::Sf::Project
     # @param unzip               [Boolian]       number of minutes to wait for command to complete
     # @param target_metadata_dir [String]        indicates that the zip file points to a directory structure for a single package
     # @param zip_file_name       [String]        file name to use for the retrieved zip file
+    # @param raw_output          [Boolian]       output what original command shows
     #
     # @return [Result] the retsult of the command
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_project_commands_unified.htm#cli_reference_project_retrieve_start_unified command reference
     #
-    def retrieve_start(metadata: nil, manifest: nil,  source_dir: nil, package_name: nil, target_org: nil, output_dir: nil,
+    def retrieve_start(metadata: nil, manifest: nil,  source_dir: nil, package_name: nil, target_org: nil, output_dir: nil, raw_output: false,
       api_version: nil, wait: nil, target_metadata_dir: nil, zip_file_name: nil, ignore_conflicts: false, single_package: false, unzip: false)
 
       flags = {
@@ -49,16 +50,19 @@ module SfCli::Sf::Project
         :"unzip" => unzip,
       }
       action = __method__.to_s.tr('_', ' ')
-      json = exec(action, flags: flags, switches: switches, redirection: :null_stderr)
+      command_output_format = raw_output ? :human : :json
+      redirect_type = raw_output ? nil : :null_stderr
+      output = exec(action, flags: flags, switches: switches, redirection: redirect_type, raw_output: raw_output, format: command_output_format)
+      return output if raw_output
 
       Result.new(
-        done:            json['result']['done'],
-        file_properties: json['result']['fileProperties'].map{|fp| create_file_property(fp)},
-        id:              json['result']['id'],
-        status:          json['result']['status'],
-        success:         json['result']['success'],
-        messages:        json['result']['messages'],
-        files:           json['result']['files'].map{|f| create_retrieved_file(f)}
+        done:            output['result']['done'],
+        file_properties: output['result']['fileProperties'].map{|fp| create_file_property(fp)},
+        id:              output['result']['id'],
+        status:          output['result']['status'],
+        success:         output['result']['success'],
+        messages:        output['result']['messages'],
+        files:           output['result']['files'].map{|f| create_retrieved_file(f)}
       )
     end
 

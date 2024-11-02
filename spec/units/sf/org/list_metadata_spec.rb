@@ -7,6 +7,7 @@ RSpec.describe 'SfCli::Sf::Org' do
     let(:target_org ) { nil }
     let(:api_version) { nil }
     let(:path) { nil }
+    let(:raw_output_flg) { false }
 
     before do
       allow(org)
@@ -21,7 +22,7 @@ RSpec.describe 'SfCli::Sf::Org' do
             :"output-file" => path
           },
           redirection: :null_stderr,
-          format: :json)
+          raw_output: raw_output_flg)
         .and_return(exec_output)
     end
 
@@ -71,6 +72,15 @@ RSpec.describe 'SfCli::Sf::Org' do
 
       it 'saves the result to a file' do
         org.list_metadata metadata_type, output_file: path
+        expect(org).to have_received :org_exec
+      end
+    end
+
+    context 'using option: raw_output' do
+      let(:raw_output_flg) { true }
+
+      it 'saves the result to a file' do
+        org.list_metadata metadata_type, raw_output: true
         expect(org).to have_received :org_exec
       end
     end

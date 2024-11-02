@@ -2,13 +2,15 @@ RSpec.describe 'SfCli::Sf::Org' do
   let(:org) { SfCli::Sf::Org::Core.new }
 
   describe '#list'do
+    let(:raw_output_flg) { false }
+
     before do
       allow(org).to receive(:org_exec).with(
         :list,
         flags: {
         },
         redirection: :null_stderr,
-        format:      :json
+        raw_output:  raw_output_flg
       )
       .and_return(list_response)
     end
@@ -22,6 +24,15 @@ RSpec.describe 'SfCli::Sf::Org' do
     it "lists the org, which each org is unique" do
       org_list = org.list
       expect(org_list.map(&:alias)).to contain_exactly('prod', 'sandbox01', 'sandbox02', 'dev', 'scratch01')
+    end
+
+    context 'in case of using option: raw_output' do
+      let(:raw_output_flg) { true }
+
+      it "returns the result as same as the command output foramat" do
+        org.list raw_output: true
+        expect(org).to have_received :org_exec
+      end
     end
   end
 

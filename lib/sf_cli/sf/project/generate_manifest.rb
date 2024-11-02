@@ -6,6 +6,7 @@ module SfCli::Sf::Project
     # @param output_dir  [String]  manifest's output directory in the project directory. You can use relative path from the project root (default: nil)
     # @param from_org    [String]  username or alias of the org that contains the metadata components from which to build a manifest (default: nil)
     # @param source_dir  [String]  paths to the local source files to include in the manifest (default: nil)
+    # @param raw_output [Boolian]  output what original command shows
     #
     # @example
     #  sf.project.generate_manifest metadata: %w[CustomObject Layout] # creates a package.xml, which is initialized with CustomObject and Layout
@@ -13,7 +14,7 @@ module SfCli::Sf::Project
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_project_commands_unified.htm#cli_reference_project_generate_manifest_unified command reference
     #
-    def generate_manifest(name: nil, output_dir: nil, api_version: nil, metadata: [], from_org: nil, source_dir: nil)
+    def generate_manifest(name: nil, output_dir: nil, api_version: nil, metadata: [], from_org: nil, source_dir: nil, raw_output: false)
       flags    = {
         :name           => name,
         :"metadata"     => (metadata.empty? ? nil : metadata.join(' ')),
@@ -23,9 +24,12 @@ module SfCli::Sf::Project
         :"api-version"  => api_version,
       }
       action = __method__.to_s.tr('_', ' ')
-      json = exec(action, flags: flags, redirection: :null_stderr)
+      command_output_format = raw_output ? :human : :json
+      redirect_type = raw_output ? nil : :null_stderr
+      output = exec(action, flags: flags, redirection: redirect_type, raw_output: raw_output, format: command_output_format)
+      return output if raw_output
 
-      json['result']['path']
+      output['result']['path']
     end
   end
 end

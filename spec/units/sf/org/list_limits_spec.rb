@@ -15,7 +15,7 @@ RSpec.describe 'SfCli::Sf::Org' do
             :"api-version" => api_version,
           },
           redirection: :null_stderr,
-          format: :json)
+          raw_output: false)
         .and_return(exec_output)
     end
 
