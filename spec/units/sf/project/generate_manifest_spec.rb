@@ -13,7 +13,9 @@ RSpec.describe 'SfCli::Sf::Project' do
           :"from-org"     => nil,
           :"api-version"  => nil,
         },
-        redirection:  :null_stderr
+        redirection:  :null_stderr,
+        raw_output:   false,
+        format:       :json
       )
       .and_return(exec_output)
 
@@ -32,7 +34,9 @@ RSpec.describe 'SfCli::Sf::Project' do
           :"from-org"     => nil,
           :"api-version"  => nil,
         },
-        redirection:  :null_stderr
+        redirection:  :null_stderr,
+        raw_output:   false,
+        format:       :json
       )
       .and_return(exec_output)
 
@@ -52,7 +56,9 @@ RSpec.describe 'SfCli::Sf::Project' do
             :"from-org"     => nil,
             :"api-version"  => nil,
           },
-          redirection:  :null_stderr
+          redirection:  :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output name: 'hoge.xml')
 
@@ -73,7 +79,9 @@ RSpec.describe 'SfCli::Sf::Project' do
             :"from-org"     => nil,
             :"api-version"  => nil,
           },
-          redirection: :null_stderr
+          redirection: :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output output_dir: 'tmp')
 
@@ -94,7 +102,9 @@ RSpec.describe 'SfCli::Sf::Project' do
             :"from-org"     => :dev,
             :"api-version"  => nil,
           },
-          redirection: :null_stderr
+          redirection: :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output)
 
@@ -115,7 +125,9 @@ RSpec.describe 'SfCli::Sf::Project' do
             :"from-org"     => nil,
             :"api-version"  => nil,
           },
-          redirection: :null_stderr
+          redirection: :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output)
 
@@ -136,11 +148,36 @@ RSpec.describe 'SfCli::Sf::Project' do
             :"from-org"     => nil,
             :"api-version"  => 61.0,
           },
-          redirection:  :null_stderr
+          redirection:  :null_stderr,
+          raw_output:   false,
+          format:       :json
         )
         .and_return(exec_output)
 
         project.generate_manifest metadata: %w[CustomObject], api_version: 61.0
+        expect(project).to have_received :exec
+      end
+    end
+
+    context 'using option: raw_output' do
+      it 'can set paticular API version in the manifest file' do
+        allow(project).to receive(:exec).with(
+          'generate manifest',
+          flags: {
+            name:           nil,
+            metadata:       'CustomObject',
+            :"output-dir"   => nil,
+            :"source-dir"   => nil,
+            :"from-org"     => nil,
+            :"api-version"  => nil,
+          },
+          redirection:  nil,
+          raw_output:   true,
+          format:       :human
+        )
+        .and_return(exec_output)
+
+        project.generate_manifest metadata: %w[CustomObject], raw_output: true
         expect(project).to have_received :exec
       end
     end

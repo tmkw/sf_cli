@@ -1,4 +1,5 @@
 require 'sf_cli'
+require 'byebug'
 require 'sf_cli/sf/model'
 require 'sf_cli/sf/model/query_condition'
 require 'sf_cli/sf/model/sf_command_connection'

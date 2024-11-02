@@ -4,6 +4,7 @@ module SfCli::Sf::Org
     # List the limits in your org
     # @param target_org  [Symbol,String] an alias of paticular org, or username can be used
     # @param api_version [Numeric]       override the api version used for api requests made by this command
+    # @param raw_output  [Boolian]       return the original command's output.
     #
     # @return [Limits] the list of limit information
     #
@@ -14,15 +15,17 @@ module SfCli::Sf::Org
     #
     # @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_org_commands_unified.htm#cli_reference_org_list_limits_unified command reference
     #
-    def list_limits(target_org: nil, api_version: nil)
+    def list_limits(target_org: nil, api_version: nil, raw_output: false)
       flags    = {
         :"target-org"    => target_org,
         :"api-version"   => api_version,
       }
       action = __method__.to_s.tr('_', ' ')
-      json = exec(action, flags: flags, redirection: :null_stderr)
+      output = org_exec(action, flags: flags, redirection: :null_stderr, raw_output: raw_output)
 
-      Limits.new(json['result'])
+      return output if raw_output
+
+      Limits.new(output['result'])
     end
 
     Limit = Data.define(:name, :remaining, :max)
