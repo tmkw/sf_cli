@@ -101,7 +101,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#generate_manifest-instance_method" title="#generate_manifest (instance method)">#<strong>generate_manifest</strong>(name: nil, output_dir: nil, api_version: nil, metadata: [], from_org: nil, source_dir: nil)  &#x21d2; Object </a>
+      <a href="#generate_manifest-instance_method" title="#generate_manifest (instance method)">#<strong>generate_manifest</strong>(name: nil, output_dir: nil, api_version: nil, metadata: [], from_org: nil, source_dir: nil, raw_output: false)  &#x21d2; Object </a>
     
 
     
@@ -134,7 +134,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="generate_manifest-instance_method">
   
-    #<strong>generate_manifest</strong>(name: nil, output_dir: nil, api_version: nil, metadata: [], from_org: nil, source_dir: nil)  &#x21d2; <tt>Object</tt> 
+    #<strong>generate_manifest</strong>(name: nil, output_dir: nil, api_version: nil, metadata: [], from_org: nil, source_dir: nil, raw_output: false)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -251,6 +251,24 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>raw_output</span>
+      
+      
+        <span class='type'>(<tt>Boolian</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>output what original command shows</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -267,7 +285,6 @@
       <pre class="lines">
 
 
-16
 17
 18
 19
@@ -280,12 +297,16 @@
 26
 27
 28
-29</pre>
+29
+30
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/project/generate_manifest.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/project/generate_manifest.rb', line 17</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_generate_manifest'>generate_manifest</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>output_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>api_version:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>metadata:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>from_org:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>source_dir:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_generate_manifest'>generate_manifest</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>output_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>api_version:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>metadata:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>from_org:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>source_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>raw_output:</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flags'>flags</span>    <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='symbol'>:name</span>           <span class='op'>=&gt;</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span>
     <span class='symbol'>:&quot;metadata&quot;</span>     <span class='op'>=&gt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_metadata'>metadata</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='id identifier rubyid_metadata'>metadata</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='comma'>,</span>
@@ -295,9 +316,12 @@
     <span class='symbol'>:&quot;api-version&quot;</span>  <span class='op'>=&gt;</span> <span class='id identifier rubyid_api_version'>api_version</span><span class='comma'>,</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid___method__'>__method__</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>_</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_json'>json</span> <span class='op'>=</span> <span class='id identifier rubyid_exec'>exec</span><span class='lparen'>(</span><span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='label'>flags:</span> <span class='id identifier rubyid_flags'>flags</span><span class='comma'>,</span> <span class='label'>redirection:</span> <span class='symbol'>:null_stderr</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_command_output_format'>command_output_format</span> <span class='op'>=</span> <span class='id identifier rubyid_raw_output'>raw_output</span> <span class='op'>?</span> <span class='symbol'>:human</span> <span class='op'>:</span> <span class='symbol'>:json</span>
+  <span class='id identifier rubyid_redirect_type'>redirect_type</span> <span class='op'>=</span> <span class='id identifier rubyid_raw_output'>raw_output</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='symbol'>:null_stderr</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_exec'>exec</span><span class='lparen'>(</span><span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='label'>flags:</span> <span class='id identifier rubyid_flags'>flags</span><span class='comma'>,</span> <span class='label'>redirection:</span> <span class='id identifier rubyid_redirect_type'>redirect_type</span><span class='comma'>,</span> <span class='label'>raw_output:</span> <span class='id identifier rubyid_raw_output'>raw_output</span><span class='comma'>,</span> <span class='label'>format:</span> <span class='id identifier rubyid_command_output_format'>command_output_format</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span> <span class='kw'>if</span> <span class='id identifier rubyid_raw_output'>raw_output</span>
 
-  <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>path</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>path</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -309,7 +333,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Oct 16 01:06:17 2024 by
+  Generated on Sun Nov  3 04:00:49 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>

@@ -2,6 +2,10 @@
 Object Model Support and Console CLI features will be dropped at sf_cli 1.3.
 They will be replaced by other gems.
 
+## 1.2.3 - 2024-11-03
+- NEW most of  org and project commands have `raw_output` option. When specifying this option, the methods returns the result formatted as same as the original command outputs.
+- FIX now sf.data.query shows errors when csv and human formatted output
+
 ## 1.2.2 - 2024-10-16
 - NEW `sf.data.query` can have block
 - FIX Object Model support functions

@@ -132,7 +132,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#retrieve_start-instance_method" title="#retrieve_start (instance method)">#<strong>retrieve_start</strong>(metadata: nil, manifest: nil, source_dir: nil, package_name: nil, target_org: nil, output_dir: nil, api_version: nil, wait: nil, target_metadata_dir: nil, zip_file_name: nil, ignore_conflicts: false, single_package: false, unzip: false)  &#x21d2; Result </a>
+      <a href="#retrieve_start-instance_method" title="#retrieve_start (instance method)">#<strong>retrieve_start</strong>(metadata: nil, manifest: nil, source_dir: nil, package_name: nil, target_org: nil, output_dir: nil, raw_output: false, api_version: nil, wait: nil, target_metadata_dir: nil, zip_file_name: nil, ignore_conflicts: false, single_package: false, unzip: false)  &#x21d2; Result </a>
     
 
     
@@ -165,7 +165,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="retrieve_start-instance_method">
   
-    #<strong>retrieve_start</strong>(metadata: nil, manifest: nil, source_dir: nil, package_name: nil, target_org: nil, output_dir: nil, api_version: nil, wait: nil, target_metadata_dir: nil, zip_file_name: nil, ignore_conflicts: false, single_package: false, unzip: false)  &#x21d2; <tt><span class='object_link'><a href="#Result-constant" title="SfCli::Sf::Project::RetrieveStart::Result (constant)">Result</a></span></tt> 
+    #<strong>retrieve_start</strong>(metadata: nil, manifest: nil, source_dir: nil, package_name: nil, target_org: nil, output_dir: nil, raw_output: false, api_version: nil, wait: nil, target_metadata_dir: nil, zip_file_name: nil, ignore_conflicts: false, single_package: false, unzip: false)  &#x21d2; <tt><span class='object_link'><a href="#Result-constant" title="SfCli::Sf::Project::RetrieveStart::Result (constant)">Result</a></span></tt> 
   
 
   
@@ -417,6 +417,24 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>raw_output</span>
+      
+      
+        <span class='type'>(<tt>Boolian</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>output what original command shows</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -451,7 +469,6 @@
       <pre class="lines">
 
 
-31
 32
 33
 34
@@ -483,12 +500,16 @@
 60
 61
 62
-63</pre>
+63
+64
+65
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/project/retrieve_start.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/project/retrieve_start.rb', line 32</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_retrieve_start'>retrieve_start</span><span class='lparen'>(</span><span class='label'>metadata:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>manifest:</span> <span class='kw'>nil</span><span class='comma'>,</span>  <span class='label'>source_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>package_name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>output_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_retrieve_start'>retrieve_start</span><span class='lparen'>(</span><span class='label'>metadata:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>manifest:</span> <span class='kw'>nil</span><span class='comma'>,</span>  <span class='label'>source_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>package_name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>target_org:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>output_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>raw_output:</span> <span class='kw'>false</span><span class='comma'>,</span>
   <span class='label'>api_version:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>wait:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>target_metadata_dir:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>zip_file_name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>ignore_conflicts:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>single_package:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>unzip:</span> <span class='kw'>false</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_flags'>flags</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -509,16 +530,19 @@
     <span class='symbol'>:&quot;unzip&quot;</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_unzip'>unzip</span><span class='comma'>,</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid___method__'>__method__</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>_</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_json'>json</span> <span class='op'>=</span> <span class='id identifier rubyid_exec'>exec</span><span class='lparen'>(</span><span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='label'>flags:</span> <span class='id identifier rubyid_flags'>flags</span><span class='comma'>,</span> <span class='label'>switches:</span> <span class='id identifier rubyid_switches'>switches</span><span class='comma'>,</span> <span class='label'>redirection:</span> <span class='symbol'>:null_stderr</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_command_output_format'>command_output_format</span> <span class='op'>=</span> <span class='id identifier rubyid_raw_output'>raw_output</span> <span class='op'>?</span> <span class='symbol'>:human</span> <span class='op'>:</span> <span class='symbol'>:json</span>
+  <span class='id identifier rubyid_redirect_type'>redirect_type</span> <span class='op'>=</span> <span class='id identifier rubyid_raw_output'>raw_output</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='symbol'>:null_stderr</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_exec'>exec</span><span class='lparen'>(</span><span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='label'>flags:</span> <span class='id identifier rubyid_flags'>flags</span><span class='comma'>,</span> <span class='label'>switches:</span> <span class='id identifier rubyid_switches'>switches</span><span class='comma'>,</span> <span class='label'>redirection:</span> <span class='id identifier rubyid_redirect_type'>redirect_type</span><span class='comma'>,</span> <span class='label'>raw_output:</span> <span class='id identifier rubyid_raw_output'>raw_output</span><span class='comma'>,</span> <span class='label'>format:</span> <span class='id identifier rubyid_command_output_format'>command_output_format</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span> <span class='kw'>if</span> <span class='id identifier rubyid_raw_output'>raw_output</span>
 
   <span class='const'><span class='object_link'><a href="#Result-constant" title="SfCli::Sf::Project::RetrieveStart::Result (constant)">Result</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-    <span class='label'>done:</span>            <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>done</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='label'>file_properties:</span> <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>fileProperties</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_fp'>fp</span><span class='op'>|</span> <span class='id identifier rubyid_create_file_property'>create_file_property</span><span class='lparen'>(</span><span class='id identifier rubyid_fp'>fp</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='comma'>,</span>
-    <span class='label'>id:</span>              <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='label'>status:</span>          <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>status</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='label'>success:</span>         <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>success</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='label'>messages:</span>        <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>messages</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='label'>files:</span>           <span class='id identifier rubyid_json'>json</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_create_retrieved_file'>create_retrieved_file</span><span class='lparen'>(</span><span class='id identifier rubyid_f'>f</span><span class='rparen'>)</span><span class='rbrace'>}</span>
+    <span class='label'>done:</span>            <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>done</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>file_properties:</span> <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>fileProperties</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_fp'>fp</span><span class='op'>|</span> <span class='id identifier rubyid_create_file_property'>create_file_property</span><span class='lparen'>(</span><span class='id identifier rubyid_fp'>fp</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='comma'>,</span>
+    <span class='label'>id:</span>              <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>status:</span>          <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>status</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>success:</span>         <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>success</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>messages:</span>        <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>messages</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>files:</span>           <span class='id identifier rubyid_output'>output</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>result</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>files</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_create_retrieved_file'>create_retrieved_file</span><span class='lparen'>(</span><span class='id identifier rubyid_f'>f</span><span class='rparen'>)</span><span class='rbrace'>}</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -531,7 +555,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Oct 16 01:06:17 2024 by
+  Generated on Sun Nov  3 04:00:49 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>
