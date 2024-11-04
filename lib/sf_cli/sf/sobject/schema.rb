@@ -44,6 +44,10 @@ module SfCli
           @relations ||= Relations.new(children_relations + parent_relations)
         end
 
+        def relation_names
+          relations.names
+        end
+
         def to_h
           schema
         end
@@ -169,7 +173,7 @@ module SfCli
         end
 
         def record_types
-          schema["recordTypeInfos"]
+          @record_types = schema["recordTypeInfos"].map{|rt| RecordType.new(**rt)}
         end
 
         def replicateable?
@@ -219,6 +223,7 @@ module SfCli
         end
 
         Relation = Struct.new(:name, :field, :class_name)
+        RecordType = Struct.new(:active, :available, :defaultRecordTypeMapping, :developerName, :master, :name, :recordTypeId, :urls)
 
         class Relations
           include Enumerable
@@ -276,6 +281,14 @@ module SfCli
 
           def name_and_labels
             map{|field| [field.name, field.label]}
+          end
+
+          def names
+            map(&:name)
+          end
+
+          def labels
+            map(&:label)
           end
 
           private
