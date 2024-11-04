@@ -3,8 +3,8 @@ require_relative 'lib/sf_cli/version'
 Gem::Specification.new do |s|
   s.name        = "sf_cli"
   s.version     = SfCli::VERSION
-  s.summary     = "A library for Salesforce CLI in Ruby"
-  s.description = "A class library for introducing Salesforce CLI to Ruby scripting. Currenty only sf command is the target of development."
+  s.summary     = "A library for introducing Salesforce CLI to Ruby scripting."
+  s.description = "A library for introducing Salesforce CLI to Ruby scripting."
   s.authors     = ["Takanobu Maekawa"]
   s.files       = Dir['lib/**/*.rb']
   s.homepage    = "https://github.com/tmkw/sf_cli"
@@ -17,4 +17,3 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables = 'sf_cli'
 end
-
