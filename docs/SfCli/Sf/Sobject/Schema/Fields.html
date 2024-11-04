@@ -192,7 +192,51 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#labels-instance_method" title="#labels (instance method)">#<strong>labels</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#name_and_labels-instance_method" title="#name_and_labels (instance method)">#<strong>name_and_labels</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#names-instance_method" title="#names (instance method)">#<strong>names</strong>  &#x21d2; Object </a>
     
 
     
@@ -266,12 +310,12 @@
       <pre class="lines">
 
 
-253
-254
-255</pre>
+258
+259
+260</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 253</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 258</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span>
   <span class='ivar'>@fields</span> <span class='op'>=</span> <span class='id identifier rubyid_schema'>schema</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>fields</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_h'>h</span><span class='op'>|</span> <span class='const'><span class='object_link'><a href="Field.html" title="SfCli::Sf::Sobject::Schema::Field (class)">Field</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Field.html#initialize-instance_method" title="SfCli::Sf::Sobject::Schema::Field#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_h'>h</span><span class='rparen'>)</span><span class='rbrace'>}</span>
@@ -303,12 +347,12 @@
       <pre class="lines">
 
 
-257
-258
-259</pre>
+262
+263
+264</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 257</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 262</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
@@ -333,20 +377,20 @@
       <pre class="lines">
 
 
-265
-266
-267
-268
-269
 270
 271
 272
 273
 274
-275</pre>
+275
+276
+277
+278
+279
+280</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 265</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 270</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>label:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_label'>label</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -358,6 +402,36 @@
     <span class='id identifier rubyid_attr_val'>attr_val</span> <span class='op'>=</span> <span class='id identifier rubyid_field'>field</span><span class='period'>.</span><span class='id identifier rubyid___send__'>__send__</span><span class='lparen'>(</span><span class='id identifier rubyid_attr_name'>attr_name</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_attr_val'>attr_val</span> <span class='op'>==</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
   <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="labels-instance_method">
+  
+    #<strong>labels</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+290
+291
+292</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 290</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_labels'>labels</span>
+  <span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:label</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -379,15 +453,45 @@
       <pre class="lines">
 
 
-277
-278
-279</pre>
+282
+283
+284</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 277</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 282</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name_and_labels'>name_and_labels</span>
   <span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_field'>field</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_field'>field</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_field'>field</span><span class='period'>.</span><span class='id identifier rubyid_label'>label</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="names-instance_method">
+  
+    #<strong>names</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+286
+287
+288</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 286</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_names'>names</span>
+  <span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:name</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -409,12 +513,12 @@
       <pre class="lines">
 
 
-261
-262
-263</pre>
+266
+267
+268</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 261</span>
+      <pre class="code"><span class="info file"># File 'lib/sf_cli/sf/sobject/schema.rb', line 266</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_a'>to_a</span>
   <span class='id identifier rubyid_fields'>fields</span>
@@ -429,7 +533,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Nov  3 04:00:49 2024 by
+  Generated on Mon Nov  4 10:14:18 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>
