@@ -2,6 +2,9 @@
 Object Model Support and Console CLI features will be dropped at sf_cli 1.3.
 They will be replaced by other gems.
 
+## 1.2.5 - 2024-11-17
+- FIX: command line construction bug when using raw_output option
+
 ## 1.2.4 - 2024-11-04
 - MISC: Schema class enhancement (SfCli::Sf::Sobject::Schema)
 
