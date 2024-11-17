@@ -47,8 +47,11 @@ module SfCli
           if format.to_sym == :json
             ' ' + {json: true}.merge(hash).each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
           else
-            return '' if hash.empty?
-            hash.each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
+            options = hash.each_with_object([]){|(k,v), arr| arr << %(--#{k}) if v}.join(' ')
+            return '' if options.empty?
+
+            options = ' ' + options unless options.start_with?(' ')
+            return options
           end
         end
 

@@ -13,13 +13,14 @@ RSpec.describe 'SfCli::Sf::Data' do
     let(:query_result) { [record] }
     let(:result_adjuster) { instance_double('SfCli::Sf::Data::Query::RegularResultAdjuster') }
     let(:record) { {'Id' => "0015j00001dsDuhAAE", 'Name' => "Aethna Home Products"} }
+    let(:redirection) { :null_stderr }
 
     before do
       allow(data).to receive(:exec).with(
         :query,
         flags: {:"target-org" => target_org, query: %|"#{soql}"|, :"result-format" => result_format, :"wait" => nil, :"api-version" => api_version},
         switches: {bulk: false},
-        redirection: :null_stderr,
+        redirection: redirection,
         raw_output: raw_output,
         format: format
       )
@@ -50,6 +51,7 @@ RSpec.describe 'SfCli::Sf::Data' do
       let(:output) { exec_output_formatted_by_csv }
       let(:result_adjuster) { instance_double('SfCli::Sf::Data::Query::RawOutputResultAdjuster') }
       let(:query_result) { output }
+      let(:redirection) { nil }
 
       it "returns the raw output formatted by CSV" do
         result = data.query soql, format: :csv
