@@ -46,7 +46,7 @@ RSpec.describe 'sf data query', :model do
   example 'returns the raw json output' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
-      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format json --json 2> /dev/null')
+      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format json --json')
       .and_return(command_response)
 
     raw_output = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, format: :json
@@ -57,7 +57,7 @@ RSpec.describe 'sf data query', :model do
   example 'returns the csv output' do
     allow_any_instance_of(SfCli::Sf::Data::Core)
       .to receive(:`)
-      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format csv 2> /dev/null')
+      .with('sf data query --query "SELECT Id, Name FROM Account LIMIT 1" --result-format csv')
       .and_return(command_response_formatted_by_csv)
 
     raw_output = sf.data.query %|SELECT Id, Name FROM Account LIMIT 1|, format: :csv
