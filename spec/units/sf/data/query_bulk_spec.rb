@@ -158,7 +158,7 @@ RSpec.describe 'SfCli::Sf::Data', :model do
           :query,
           flags: {:"target-org" => nil, query: '"SELECT Id, Name From Account"', :"result-format" => :csv, :"wait" => nil, :"api-version" => nil},
           switches: {:"bulk" => true},
-          redirection: :null_stderr,
+          redirection: nil,
           raw_output: true,
           format: :csv
         )

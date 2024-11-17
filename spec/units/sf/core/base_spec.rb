@@ -49,6 +49,17 @@ RSpec.describe 'SfCli::Sf::Core::Base' do
       end
     end
 
+    context 'in case of non-json output' do
+      before do
+        allow(test_object).to receive(:`).with('sf hoge generate --name MyProject --manifest 2> /dev/null').and_return(command_response)
+      end
+
+      it 'executes a shell command operation' do
+        test_object.__send__(:exec, :generate, flags: {:"name" => 'MyProject'}, switches: {manifest: true}, redirection: :null_stderr, format: :human)
+        expect(test_object).to have_received :`
+      end
+    end
+
     context "in case of command's abortion" do
       before do
         allow(test_object).to receive(:`).with('sf hoge generate --name MyProject --json --manifest 2> /dev/null').and_return(error_response)
