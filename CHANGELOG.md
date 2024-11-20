@@ -1,6 +1,12 @@
-## ANNOUNCE:
-Object Model Support and Console CLI features will be dropped at sf_cli 1.3.
-They will be replaced by other gems.
+## 1.3.0 - 2024-11-20
+- NEW: new command support
+    - `sf project deploy start`
+    - `sf apex generate class`
+    - `sf apex generate trigger`
+    - `sf lightning generate component`
+- CHANGE:
+    - drop Object Model Support
+    - drop command line interface
 
 ## 1.2.5 - 2024-11-17
 - FIX: command line construction bug when using raw_output option
