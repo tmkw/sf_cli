@@ -1,5 +1,6 @@
 require_relative '../core/base'
 require_relative './run'
+require_relative './generate'
 
 module SfCli
   module Sf
@@ -12,6 +13,7 @@ module SfCli
       class Core
         include ::SfCli::Sf::Core::Base
         include Run
+        include Generate
       end
     end
   end
