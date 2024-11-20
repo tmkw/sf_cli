@@ -63,25 +63,11 @@
 </p>
 <html>
 <body>
-  <h2>alias</h2>
-  <table>
-    <tbody>
-      <tr><td>list</td><td>✘</td></tr>
-      <tr><td>set</td><td>✘</td></tr>
-      <tr><td>unset</td><td>✘</td></tr>
-    </tbody>
-  </table>
-  <h2>analytics</h2>
-  <table>
-    <tbody>
-      <tr><td>generate template</td><td>✘</td></tr>
-    </tbody>
-  </table>
   <h2>apex</h2>
   <table>
     <tbody>
-      <tr><td>generate class</td><td>✘</td></tr>
-      <tr><td>generate trigger</td><td>✘</td></tr>
+      <tr><td>generate class</td><td>⭕</td></tr>
+      <tr><td>generate trigger</td><td>⭕</td></tr>
       <tr><td>get log</td><td>✘</td></tr>
       <tr><td>get test</td><td>✘</td></tr>
       <tr><td>list log</td><td>✘</td></tr>
@@ -123,14 +109,19 @@
       <tr><td>delete bulk</td><td>⭕</td></tr>
       <tr><td>delete record</td><td>⭕</td></tr>
       <tr><td>delete resume</td><td>⭕</td></tr>
-      <tr><td>export tree</td><td>✘</td></tr>
+      <tr><td>export bulk</td><td>✘</td></tr>
+      <tr><td>export bulk</td><td>✘</td></tr>
+      <tr><td>export resume</td><td>✘</td></tr>
       <tr><td>get record</td><td>⭕</td></tr>
       <tr><td>import tree</td><td>✘</td></tr>
+      <tr><td>import bulk</td><td>✘</td></tr>
+      <tr><td>import resume</td><td>✘</td></tr>
       <tr><td>query</td><td>⭕</td></tr>
       <tr><td>query resume</td><td>⭕</td></tr>
       <tr><td>resume</td><td>⭕</td></tr>
       <tr><td>search</td><td>⭕</td></tr>
-      <tr><td>update record</td><td>⭕</td></tr>
+      <tr><td>update record</td><td>✘</td></tr>
+      <tr><td>update bulk</td><td>⭕</td></tr>
       <tr><td>upsert bulk</td><td>⭕</td></tr>
       <tr><td>upsert resume</td><td>⭕</td></tr>
     </tbody>
@@ -139,7 +130,7 @@
   <table>
     <tbody>
       <tr><td>generate app</td><td>✘</td></tr>
-      <tr><td>generate component</td><td>✘</td></tr>
+      <tr><td>generate component</td><td>⭕</td></tr>
       <tr><td>generate event</td><td>✘</td></tr>
       <tr><td>generate interface</td><td>✘</td></tr>
       <tr><td>generate test</td><td>✘</td></tr>
@@ -220,7 +211,7 @@
       <tr><td>deploy quick</td><td>✘</td></tr>
       <tr><td>deploy report</td><td>✘</td></tr>
       <tr><td>deploy resume</td><td>✘</td></tr>
-      <tr><td>deploy start</td><td>✘</td></tr>
+      <tr><td>deploy start</td><td>⭕</td></tr>
       <tr><td>deploy validate</td><td>✘</td></tr>
       <tr><td>generate</td><td>⭕</td></tr>
       <tr><td>generate manifest</td><td>⭕</td></tr>
@@ -233,6 +224,8 @@
   <h2>Not Supported</h2>
   There's no plan to support the following categories
   <ul>
+    <li>alias</li>
+    <li>analytics</li>
     <li>config</li>
     <li>dev</li>
     <li>doctor</li>
@@ -247,7 +240,7 @@
 </body></div></div>
 
       <div id="footer">
-  Generated on Sun Nov 17 10:52:13 2024 by
+  Generated on Wed Nov 20 18:30:23 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.4).
 </div>
