@@ -48,7 +48,11 @@ Run Apex
   sf.apex.run file: StringIO.new("System.debug('Hello World')")
 == Supported sf commands
 [{SfCli::Sf::Apex::Run#run sf apex run}]
-  run apex code
+  Run apex code
+[{SfCli::Sf::Apex::Generate#generate_class sf apex generate class}]
+  Generate an Apex class
+[{SfCli::Sf::Apex::Generate#generate_trigger sf apex generate trigger}]
+  Generate an Apex trigger
 [{SfCli::Sf::Data::CreateRecord#create_record sf data create record}]
   Create a record
 [{SfCli::Sf::Data::DeleteBulk#delete_bulk sf data delete bulk}]
@@ -71,6 +75,8 @@ Run Apex
   Update records using Bulk API 2.0
 [{SfCli::Sf::Data::UpsertResume#upsert_resume sf data upsert resume}]
   Resume a bulk upsert job you previously started with Bulk API 2.0
+[{SfCli::Sf::Lightning::Generate#generate_component sf lightning component}]
+  Generate a bundle for an Aura component or a Lightning web component.
 [{SfCli::Sf::Org::Display#display sf org display}]
   Get a org’s connection information
 [{SfCli::Sf::Org::List#list sf org list}]
@@ -91,6 +97,8 @@ Run Apex
   Create a project manifest that lists the metadata components you want to deploy or retrieve
 [{SfCli::Sf::Project::RetrieveStart#retrieve_start sf project retrieve start}]
   Retrieve metadata from an org to your local project
+[{SfCli::Sf::Project::DeployStart#deploy_start sf project deploy start}]
+  Deploy metadata to an org from your local project.  
 [{SfCli::Sf::Sobject::Describe#describe sf sobject describe}]
   Get a a Salesforce object schema
 [{SfCli::Sf::Sobject::List#list sf sobject list}]

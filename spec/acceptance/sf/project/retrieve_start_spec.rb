@@ -1,3 +1,4 @@
+require 'spec_helper'
 require_relative '../../../support/shared_examples/sf_project_examples'
 
 RSpec.describe 'sf project retrieve start' do
